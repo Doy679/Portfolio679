@@ -54,18 +54,26 @@ Follow these steps to set up the project locally.
 
 To make the contact form work, you need to configure your SMTP settings.
 
-1.  Create a `.env` file in the root directory.
-2.  Add the following environment variables (example for Gmail):
-
-    ```env
-    SMTP_HOST=smtp.example.com
-    SMTP_PORT=587
-    SMTP_USER=your-email@example.com
-    SMTP_PASS=your-app-password
-    SMTP_SECURE=false
+1.  Copy the `.env.example` file to `.env.local`:
+    ```bash
+    cp .env.example .env.local
     ```
 
-    > **Note:** If using Gmail, you must enable 2-Step Verification and generate an **App Password** to use as `SMTP_PASS`.
+2.  Edit the `.env.local` file with your SMTP settings. For Gmail:
+    - Enable 2-Factor Authentication
+    - Generate an App Password (Google Account → Security → App passwords)
+    - Replace the placeholder values with your actual credentials
+
+    Example for Gmail:
+    ```env
+    SMTP_HOST=smtp.gmail.com
+    SMTP_PORT=465
+    SMTP_SECURE=true
+    SMTP_USER=gonzalesrondether86@gmail.com
+    SMTP_PASS=your-16-digit-app-password
+    ```
+
+    > **Note:** If using Gmail, you must enable 2-Step Verification and generate an **App Password** to use as `SMTP_PASS`. Do NOT use your regular Gmail password.
 
 ### ▶️ Running the Development Server
 

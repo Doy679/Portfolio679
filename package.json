@@ -6,11 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup-smtp": "bash setup-smtp.sh",
+    "test-smtp": "node test-smtp.js",
+    "update-smtp": "bash update-smtp-password.sh"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "daisyui": "^5.4.7",
+    "dotenv": "^17.2.3",
     "gsap": "^3.13.0",
     "next": "16.0.1",
     "nodemailer": "^7.0.11",
