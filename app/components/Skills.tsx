@@ -88,30 +88,6 @@ const Skills = () => {
                                 <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Bootstrap">
                                     <i className="fab fa-bootstrap text-3xl text-purple-500"></i>
                                 </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Angular">
-                                    <i className="fab fa-angular text-3xl text-red-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Node.js">
-                                    <i className="fab fa-node-js text-3xl text-green-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Express.js">
-                                    <i className="fas fa-server text-3xl text-gray-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="MySQL">
-                                    <i className="fas fa-database text-3xl text-blue-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Git">
-                                    <i className="fab fa-git-alt text-3xl text-orange-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Linux">
-                                    <i className="fab fa-linux text-3xl"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Nginx">
-                                    <i className="fas fa-server text-3xl text-green-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Cloudflare">
-                                    <i className="fas fa-cloud text-3xl text-orange-500"></i>
-                                </div>
                                 <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="GSAP">
                                     <i className="fas fa-wind text-3xl text-green-400"></i>
                                 </div>
@@ -141,6 +117,24 @@ const Skills = () => {
                                 </div>
                                 <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Linux">
                                     <i className="fab fa-linux text-3xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
+                        <div className="card-body items-center text-center">
+                            <i className="fas fa-tools text-4xl text-primary mb-4"></i>
+                            <h3 className="card-title text-2xl font-bold">Supporting Tools</h3>
+                            <div className="flex flex-wrap justify-center gap-4 mt-4">
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Git">
+                                    <i className="fab fa-git-alt text-3xl text-orange-500"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Node.js">
+                                    <i className="fab fa-node-js text-3xl text-green-500"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Webpack">
+                                    <i className="fas fa-cogs text-3xl text-blue-600"></i>
                                 </div>
                             </div>
                         </div>

@@ -61,7 +61,7 @@ const About = () => {
                                     </div>
                                     <div className="timeline-end timeline-box">
                                         <h4 className="font-bold text-lg">Bachelor's Degree in Computer Science</h4>
-                                        <p className="text-primary">Your University Name</p>
+                                        <p className="text-primary">A.S. Fortuna - University</p>
                                     </div>
                                     <hr />
                                 </li>
@@ -73,7 +73,7 @@ const About = () => {
                                     </div>
                                     <div className="timeline-end timeline-box">
                                         <h4 className="font-bold text-lg">Senior High School</h4>
-                                        <p className="text-primary">Your Senior High School Name</p>
+                                        <p className="text-primary">Looc A. C. Cortes Ave - Mandaue City</p>
                                     </div>
                                     <hr />
                                 </li>
@@ -85,7 +85,7 @@ const About = () => {
                                     </div>
                                     <div className="timeline-end timeline-box">
                                         <h4 className="font-bold text-lg">Junior High School</h4>
-                                        <p className="text-primary">Your Junior High School Name</p>
+                                        <p className="text-primary">Tingub - Mandaue City</p>
                                     </div>
                                     <hr />
                                 </li>
@@ -97,7 +97,7 @@ const About = () => {
                                     </div>
                                     <div className="timeline-end timeline-box">
                                         <h4 className="font-bold text-lg">Elementary School</h4>
-                                        <p className="text-primary">Your Elementary School Name</p>
+                                        <p className="text-primary">Cabancalan II - Mandaue City</p>
                                     </div>
                                 </li>
                             </ul>
