@@ -60,8 +60,8 @@ const About = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-primary"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.75-4.25a.75.75 0 00-1.5 0V15c0 .414.336.75.75.75h2.5a.75.75 0 000-1.5h-1.75v-1.75zM10 4a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 4z" clipRule="evenodd" /></svg>
                                     </div>
                                     <div className="timeline-end timeline-box">
-                                        <h4 className="font-bold text-lg">Bachelor's Degree in Computer Science</h4>
-                                        <p className="text-primary">A.S. Fortuna - University</p>
+                                        <h4 className="font-bold text-lg">Bachelor of Science in Information Technology</h4>
+                                        <p className="text-primary">A.S Fortuna, Mandaue City</p>
                                     </div>
                                     <hr />
                                 </li>
