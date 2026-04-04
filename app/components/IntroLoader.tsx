@@ -129,32 +129,39 @@ const IntroLoader = () => {
                                 />
                             </motion.div>
 
-                            {/* Name Reveal - Masked from the line */}
-                            <div className="absolute left-full ml-8 overflow-hidden">
+                            {/* Name Reveal - Desktop (Horizontal) & Mobile (Vertical Stack) */}
+                            <div className="absolute left-1/2 -translate-x-1/2 md:left-full md:translate-x-0 md:ml-8 mt-64 md:mt-0 overflow-hidden w-[90vw] md:w-auto text-center md:text-left">
                                 <motion.div
                                     initial={{ x: -100, opacity: 0 }}
-                                    animate={{ x: progress > 40 ? 0 : -100, opacity: progress > 40 ? 1 : 0 }}
+                                    animate={{ 
+                                        x: progress > 40 ? 0 : -100, 
+                                        opacity: progress > 40 ? 1 : 0,
+                                        y: 0 
+                                    }}
                                     transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
                                     className="flex flex-col"
                                 >
-                                    <h1 className="text-4xl md:text-6xl font-black font-montserrat tracking-tighter text-white uppercase leading-[0.8]">
+                                    <h1 className="text-3xl md:text-6xl font-black font-montserrat tracking-tighter text-white uppercase leading-[0.8]">
                                         RONDETHER
                                     </h1>
-                                    <h1 className="text-4xl md:text-6xl font-black font-montserrat tracking-tighter text-primary uppercase leading-[0.8] mt-2">
+                                    <h1 className="text-3xl md:text-6xl font-black font-montserrat tracking-tighter text-primary uppercase leading-[0.8] mt-2">
                                         GONZALES
                                     </h1>
                                 </motion.div>
                             </div>
 
-                            {/* Role Reveal - Masked to the other side */}
-                            <div className="absolute right-full mr-8 overflow-hidden hidden md:block">
+                            {/* Role Reveal - Desktop (Other Side) & Mobile (Below Name) */}
+                            <div className="absolute left-1/2 -translate-x-1/2 md:left-auto md:right-full md:translate-x-0 md:mr-8 mt-[22rem] md:mt-0 overflow-hidden w-[90vw] md:w-auto text-center md:text-right">
                                 <motion.div
                                     initial={{ x: 100, opacity: 0 }}
-                                    animate={{ x: progress > 60 ? 0 : 100, opacity: progress > 60 ? 1 : 0 }}
+                                    animate={{ 
+                                        x: progress > 60 ? 0 : 100, 
+                                        opacity: progress > 60 ? 1 : 0,
+                                        y: 0
+                                    }}
                                     transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-                                    className="text-right"
                                 >
-                                    <span className="text-xs font-mono text-white/40 uppercase tracking-[0.5em] whitespace-nowrap">
+                                    <span className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.5em] whitespace-nowrap">
                                         Frontend Engineer
                                     </span>
                                 </motion.div>
