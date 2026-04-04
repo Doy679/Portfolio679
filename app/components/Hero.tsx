@@ -63,7 +63,7 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start">
                 <div className="w-full lg:w-3/4 hero-text text-left pt-20 lg:pt-0">
                     <h1 className="font-montserrat text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12">
-                        Hi, I'm <br/>
+                        Hi, I&apos;m <br/>
                         <span className="text-primary mix-blend-difference font-extrabold">Rondether<br/>Gonzales</span>
                     </h1>
                     <h2 className="text-3xl md:text-4xl font-bold py-6">

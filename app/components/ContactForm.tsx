@@ -13,8 +13,24 @@ const ContactForm = () => {
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const [isPending, setIsPending] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
+    const contactRef = useRef<HTMLElement>(null);
 
     useGSAP(() => {
+        gsap.fromTo(contactRef.current,
+            { opacity: 0, y: 100 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: contactRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
         const inputs = gsap.utils.toArray<HTMLInputElement | HTMLTextAreaElement>('.form-field');
         inputs.forEach(input => {
             ScrollTrigger.create({
@@ -63,7 +79,7 @@ const ContactForm = () => {
     };
 
     return (
-        <section id="contact" className="py-20 bg-base-200">
+        <section id="contact" className="py-20 bg-base-200 opacity-0" ref={contactRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>

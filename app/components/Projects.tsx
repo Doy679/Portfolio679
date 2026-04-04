@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +11,21 @@ const Projects = () => {
     const projectsRef = React.useRef<HTMLElement>(null);
 
     useGSAP(() => {
+        gsap.fromTo(projectsRef.current,
+            { opacity: 0, y: 100 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: projectsRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
         const projectCards = gsap.utils.toArray<HTMLElement>('.project-card');
         console.log(projectCards);
         if (projectCards && Array.isArray(projectCards)) {
@@ -32,7 +46,7 @@ const Projects = () => {
     }, { scope: projectsRef });
 
     return (
-        <section id="projects" className="py-20 bg-base-200" ref={projectsRef}>
+        <section id="projects" className="py-20 bg-base-200 opacity-0" ref={projectsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">My Featured Projects</h2>

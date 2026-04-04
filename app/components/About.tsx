@@ -10,6 +10,21 @@ const About = () => {
     const aboutRef = React.useRef(null);
 
     useGSAP(() => {
+        gsap.fromTo(aboutRef.current,
+            { opacity: 0, y: 100 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: aboutRef.current,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            }
+        );
+
         ScrollTrigger.batch('.about-card', {
             onEnter: (elements) => {
                 gsap.fromTo(elements,
@@ -23,7 +38,7 @@ const About = () => {
     }, { scope: aboutRef });
 
     return (
-        <section id="about" className="py-20 bg-base-200" ref={aboutRef}>
+        <section id="about" className="py-20 bg-base-200 opacity-0" ref={aboutRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
