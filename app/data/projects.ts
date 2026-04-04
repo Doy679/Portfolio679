@@ -32,6 +32,6 @@ export const projects: Project[] = [
         description: "A responsive web tool for testing and analyzing network performance in the Philippines. Provides real-time insights into connection speed and stability.",
         image: "/wifitestph.png",
         badges: ["HTML", "CSS", "JavaScript", "Responsive Design", "Web Application"],
-        link: "https://wifitestph.netlify.app/",
+        link: "https://wifitestph.vercel.app/",
     },
 ];
