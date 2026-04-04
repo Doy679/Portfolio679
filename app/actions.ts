@@ -19,9 +19,16 @@ export async function sendEmail(formData: FormData) {
     return { success: false, error: 'Please provide a valid email address.' };
   }
 
-  // Check if environment variables are set
-  if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.error('Missing SMTP configuration. Please check your .env.local file.');
+  // We will hardcode the standard non-secret config and ONLY rely on env for the password
+  const SMTP_HOST = 'smtp.gmail.com';
+  const SMTP_PORT = 465;
+  const SMTP_SECURE = true;
+  const SMTP_USER = 'gonzalesrondether86@gmail.com';
+  const SMTP_PASS = process.env.SMTP_PASS;
+
+  // Check if the password environment variable is set
+  if (!SMTP_PASS) {
+    console.error('Missing SMTP_PASS. Please check your Netlify environment variables.');
     return {
       success: false,
       error: 'Email configuration is missing. Please contact the site administrator.'
@@ -31,12 +38,12 @@ export async function sendEmail(formData: FormData) {
   try {
     // Create transporter with SMTP configuration
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_SECURE, // true for 465, false for other ports
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: SMTP_USER,
+        pass: SMTP_PASS,
       },
     });
 
@@ -46,7 +53,7 @@ export async function sendEmail(formData: FormData) {
 
     // Send the email
     await transporter.sendMail({
-      from: `"${name}" <${process.env.SMTP_USER}>`,
+      from: `"${name}" <${SMTP_USER}>`,
       to: 'gonzalesrondether86@gmail.com', // You can also use an environment variable for the recipient
       replyTo: email,
       subject: `New Message: ${subject}`,
