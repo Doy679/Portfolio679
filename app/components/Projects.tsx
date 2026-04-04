@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,11 +12,20 @@ gsap.registerPlugin(ScrollTrigger);
 const Projects = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const imageRef = useRef<HTMLDivElement>(null);
+    const numberRef = useRef<HTMLDivElement>(null);
+    const activeNumberRef = useRef<HTMLSpanElement>(null);
+    
+    const indexRef = useRef(0);
     const [activeIndex, setActiveIndex] = useState(0);
     const [startScramble, setStartScramble] = useState(false);
+    const isAnimatingRef = useRef(false);
 
     useGSAP(() => {
         if (!sectionRef.current || !scrollAreaRef.current) return;
+
+        const isMobile = window.innerWidth < 1024;
 
         // Header Scramble Trigger
         ScrollTrigger.create({
@@ -35,170 +43,212 @@ const Projects = () => {
             trigger: scrollAreaRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: true,
+            scrub: isMobile ? 0.1 : true,
             onUpdate: (self) => {
-                // Determine active index based on scroll progress
                 const progress = self.progress;
                 const newIndex = Math.min(
                     Math.floor(progress * totalProjects),
                     totalProjects - 1
                 );
-                if (newIndex !== activeIndex) {
-                    setActiveIndex(newIndex);
+                
+                if (newIndex !== indexRef.current && !isAnimatingRef.current) {
+                    isAnimatingRef.current = true;
+                    indexRef.current = newIndex;
+
+                    const tl = gsap.timeline({
+                        onComplete: () => {
+                            isAnimatingRef.current = false;
+                        }
+                    });
+                    
+                    // Outgoing animation
+                    tl.to([contentRef.current, numberRef.current, activeNumberRef.current], {
+                        opacity: 0,
+                        y: -20,
+                        duration: 0.3,
+                        ease: "expo.in"
+                    }, 0);
+
+                    tl.to(imageRef.current, {
+                        opacity: 0,
+                        scale: 0.98,
+                        filter: "blur(10px)",
+                        duration: 0.4,
+                        ease: "expo.in",
+                        onComplete: () => {
+                            setActiveIndex(newIndex);
+                            gsap.set([contentRef.current, numberRef.current, activeNumberRef.current], {
+                                y: 20,
+                                opacity: 0
+                            });
+                            gsap.set(imageRef.current, {
+                                scale: 1.02,
+                                filter: "blur(20px)",
+                                opacity: 0
+                            });
+                        }
+                    }, 0);
+
+                    // Incoming animation
+                    tl.to([contentRef.current, numberRef.current, activeNumberRef.current], {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "expo.out",
+                        stagger: 0.05
+                    }, 0.4);
+
+                    tl.to(imageRef.current, {
+                        opacity: 1,
+                        scale: 1,
+                        filter: "blur(0px)",
+                        duration: 0.8,
+                        ease: "expo.out"
+                    }, 0.4);
                 }
             }
         });
 
-    }, [activeIndex]);
+    }, []);
 
     return (
         <section id="projects" className="bg-base-200 relative" ref={sectionRef}>
             <div ref={scrollAreaRef} className="relative" style={{ height: `${projects.length * 100}vh` }}>
                 
-                <div className="sticky top-0 h-screen w-full overflow-visible flex flex-col items-center justify-center">
+                <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
                     
                     <div className="container mx-auto px-6 lg:px-20 h-full flex flex-col">
                         
-                        <div className="pt-16 pb-6 text-center shrink-0">
+                        {/* Section Header */}
+                        <div className="pt-12 lg:pt-16 pb-4 text-center shrink-0">
                             <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
                                 <HackerText text="My Featured Projects" trigger={startScramble} />
                             </h2>
                             <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4"></div>
                         </div>
 
-                        <div className="flex-grow flex flex-col lg:flex-row items-center gap-10 lg:gap-16 pb-12 overflow-visible">
+                        {/* Main Content Area */}
+                        <div className="flex-grow flex flex-col lg:flex-row items-start gap-8 lg:gap-16 pt-4 lg:pt-8 pb-12 overflow-visible relative">
                             
-                            <div className="w-full lg:w-[40%] relative min-h-[450px] lg:h-full flex flex-col justify-center order-2 lg:order-1 overflow-visible">
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={activeIndex}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        transition={{ duration: 0.5, ease: "easeInOut" }}
-                                        className="space-y-5 lg:space-y-6 py-4"
-                                    >
-                                        <div className="flex items-center gap-4 text-primary font-mono text-base font-bold overflow-hidden h-8">
-                                            <div className="relative h-full flex flex-col items-start">
-                                                <AnimatePresence mode="wait">
-                                                    <motion.span
-                                                        key={activeIndex}
-                                                        initial={{ y: 20, opacity: 0 }}
-                                                        animate={{ y: 0, opacity: 1 }}
-                                                        exit={{ y: -20, opacity: 0 }}
-                                                        transition={{ duration: 0.3, ease: "easeOut" }}
-                                                    >
-                                                        0{activeIndex + 1}
-                                                    </motion.span>
-                                                </AnimatePresence>
-                                            </div>
-                                            <span className="text-primary/30 font-light">/</span>
-                                            <span className="text-primary/30">0{projects.length}</span>
+                            {/* Project Number (Background Accent) */}
+                            <div 
+                                ref={numberRef}
+                                className="absolute top-0 right-4 lg:right-10 font-black text-6xl md:text-8xl text-primary/20 font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0"
+                            >
+                                0{activeIndex + 1}
+                            </div>
+
+                            {/* Left Column: Project Info */}
+                            <div 
+                                className="w-full lg:w-[42%] relative flex flex-col order-2 lg:order-1 z-10"
+                            >
+                                <div className="space-y-4 lg:space-y-5">
+                                    {/* Number Header - Static part vs Animated part */}
+                                    <div className="flex items-center gap-4 text-primary font-mono text-sm font-bold h-6">
+                                        <div className="overflow-hidden h-full relative flex items-center">
+                                            <span ref={activeNumberRef} className="block">
+                                                0{activeIndex + 1}
+                                            </span>
+                                        </div>
+                                        <div className="text-primary/30 flex items-center gap-4 flex-grow">
+                                            <span className="font-light">/</span>
+                                            <span>0{projects.length}</span>
                                             <div className="h-[1px] flex-grow bg-primary/10 ml-2"></div>
                                         </div>
-                                        
+                                    </div>
+                                    
+                                    <div ref={contentRef} className="space-y-4 lg:space-y-5">
                                         <h3 className="text-2xl md:text-3xl lg:text-4xl font-black font-montserrat tracking-tighter leading-tight uppercase text-base-content">
                                             {projects[activeIndex].title}
                                         </h3>
 
-                                        <div className="flex flex-wrap gap-x-3 gap-y-2">
+                                        <div className="flex flex-wrap gap-x-2 gap-y-2">
                                             {projects[activeIndex].badges.map((badge, i) => (
-                                                <span key={i} className="text-[9px] uppercase font-bold tracking-[0.2em] text-base-content/40 flex items-center">
-                                                    {i !== 0 && <span className="text-primary/40 mr-3 font-mono">{'//'}</span>}
+                                                <span key={i} className="text-[9px] uppercase font-bold tracking-[0.15em] text-primary/70 bg-primary/5 px-2.5 py-1 rounded-md border border-primary/10">
                                                     {badge}
                                                 </span>
                                             ))}
                                         </div>
 
-                                        <p className="text-base-content/60 text-base md:text-lg leading-relaxed line-clamp-4 lg:line-clamp-none">
+                                        <p className="text-base-content/70 text-sm md:text-base lg:text-lg leading-relaxed line-clamp-3 md:line-clamp-4 lg:line-clamp-none max-w-xl">
                                             {projects[activeIndex].description}
                                         </p>
 
-                                        <div className="pt-4 lg:pt-6 flex">
-                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" ? (
-                                                <a 
-                                                    href={projects[activeIndex].link} 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer"
-                                                    className="group inline-flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-[10px] md:text-xs hover:gap-6 transition-all duration-300 py-2"
-                                                >
-                                                    <span>Explore Project</span>
-                                                    <div className="w-10 h-[1px] bg-primary group-hover:w-16 transition-all duration-500"></div>
-                                                    <i className="fas fa-arrow-right"></i>
-                                                </a>
-                                            ) : (
-                                                <div className="flex items-center gap-4 text-base-content/20 font-mono text-[9px] tracking-[0.3em] uppercase py-2.5 px-4 border border-base-content/5 rounded bg-base-300/30 w-fit">
+                                        <div className="pt-2 lg:pt-6 flex flex-col gap-4">
+                                            {!(projects[activeIndex].link && projects[activeIndex].link !== "#") && (
+                                                <div className="flex items-center gap-4 text-base-content/20 font-mono text-[10px] tracking-[0.3em] uppercase py-2 px-4 border border-base-content/5 rounded-lg bg-base-300/30 w-fit">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse"></span>
-                                                    Architecture {'//'} Secure
+                                                    In Development
                                                 </div>
                                             )}
                                         </div>
-                                    </motion.div>
-                                </AnimatePresence>
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Right Column: Fixed/Cross-fading Image */}
-                            <div className="w-full lg:w-[60%] flex flex-col gap-4 order-1 lg:order-2">
-                                <div className="flex justify-end items-end h-12 pr-4">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={activeIndex}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            className="font-black text-6xl text-primary/10 font-montserrat tracking-tighter leading-none"
-                                        >
-                                            0{activeIndex + 1}
-                                        </motion.div>
-                                    </AnimatePresence>
+                            {/* Right Column: Project Image (Browser Window Style) */}
+                            <div className="w-full lg:w-[60%] flex flex-col order-1 lg:order-2 z-10 lg:mt-8">
+                                {/* Hint Label above image - ensure min height to prevent jump */}
+                                <div className="min-h-[40px] flex items-center">
+                                    {projects[activeIndex].link && projects[activeIndex].link !== "#" && (
+                                        <div className="flex items-center gap-3 text-primary/60 font-mono text-[9px] tracking-[0.2em] uppercase self-end lg:self-start">
+                                            Click image to explore
+                                            <span className="w-8 h-[1px] bg-primary/30"></span>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={activeIndex}
-                                            initial={{ opacity: 0, scale: 0.95, rotateY: 5 }}
-                                            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                                            exit={{ opacity: 0, scale: 1.02, rotateY: -5 }}
-                                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                            className="absolute inset-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] border border-primary/20 bg-base-300"
+                                
+                                <div 
+                                    ref={imageRef}
+                                    className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] border border-primary/10 bg-base-300 group transition-all duration-500 hover:shadow-primary/10 max-h-[50vh] lg:max-h-none"
+                                >
+                                    {/* Browser-style Header */}
+                                    <div className="h-6 md:h-8 bg-base-300/90 border-b border-white/5 flex items-center px-3 gap-1.5 shrink-0 z-20 relative">
+                                        <div className="w-2 h-2 rounded-full bg-error/40"></div>
+                                        <div className="w-2 h-2 rounded-full bg-warning/40"></div>
+                                        <div className="w-2 h-2 rounded-full bg-success/40"></div>
+                                        <div className="ml-2 w-1/3 md:w-1/2 h-2.5 md:h-3.5 bg-base-100/50 rounded flex items-center px-2">
+                                            <div className="w-full h-1 bg-base-content/5 rounded-full"></div>
+                                        </div>
+                                    </div>
+
+                                    {projects[activeIndex].link && projects[activeIndex].link !== "#" ? (
+                                        <a
+                                            href={projects[activeIndex].link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full h-full cursor-pointer relative"
                                         >
-                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" ? (
-                                                <a
-                                                    href={projects[activeIndex].link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="block w-full h-full cursor-pointer"
-                                                >
-                                                    <Image
-                                                        src={projects[activeIndex].image}
-                                                        alt={projects[activeIndex].title}
-                                                        fill
-                                                        className="object-cover object-center transition-transform duration-300 hover:scale-105"
-                                                        sizes="(max-width: 1024px) 100vw, 60vw"
-                                                        priority
-                                                    />
-                                                </a>
-                                            ) : (
-                                                <Image
-                                                    src={projects[activeIndex].image}
-                                                    alt={projects[activeIndex].title}
-                                                    fill
-                                                    className="object-cover object-center"
-                                                    sizes="(max-width: 1024px) 100vw, 60vw"
-                                                    priority
-                                                />
-                                            )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-base-900/40 via-transparent to-transparent pointer-events-none"></div>
-                                            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 pointer-events-none"></div>
-                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" && (
-                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                                    <div className="bg-primary/90 text-primary-content px-6 py-3 rounded-full font-bold tracking-wider uppercase text-sm shadow-lg">
-                                                        <i className="fas fa-external-link-alt mr-2"></i>View Project
-                                                    </div>
+                                            <Image
+                                                src={projects[activeIndex].image}
+                                                alt={projects[activeIndex].title}
+                                                fill
+                                                className="object-contain object-center transition-all duration-700 group-hover:scale-[1.03] p-1 md:p-2"
+                                                sizes="(max-width: 1024px) 100vw, 60vw"
+                                                priority
+                                            />
+                                            {/* Hover Overlay */}
+                                            <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                                                <div className="bg-base-100 text-base-content px-6 py-3 rounded-full font-bold tracking-[0.2em] uppercase text-xs shadow-2xl scale-90 group-hover:scale-100 transition-transform duration-500 border border-primary/20">
+                                                    Visit Live Project <i className="fas fa-external-link-alt ml-2 text-primary"></i>
                                                 </div>
-                                            )}
-                                        </motion.div>
-                                    </AnimatePresence>
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        </a>
+                                    ) : (
+                                        <div className="w-full h-full relative">
+                                            <Image
+                                                src={projects[activeIndex].image}
+                                                alt={projects[activeIndex].title}
+                                                fill
+                                                className="object-contain object-center p-1 md:p-2"
+                                                sizes="(max-width: 1024px) 100vw, 60vw"
+                                                priority
+                                            />
+                                        </div>
+                                    )}
+                                    
+                                    <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/5 rounded-2xl"></div>
                                 </div>
                             </div>
 
@@ -206,19 +256,24 @@ const Projects = () => {
                     </div>
                 </div>
 
-                <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50 hidden lg:flex">
+                {/* Progress Indicators */}
+                <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-50 hidden lg:flex">
                     {projects.map((_, i) => (
                         <div 
                             key={i} 
                             onClick={() => {
-                                // Jump scroll to the corresponding section if needed
                                 window.scrollTo({
                                     top: (sectionRef.current?.offsetTop || 0) + (i * window.innerHeight),
                                     behavior: 'smooth'
                                 });
                             }}
-                            className={`w-1 cursor-pointer transition-all duration-500 rounded-full ${activeIndex === i ? 'h-12 bg-primary shadow-[0_0_10px_rgba(var(--p),0.5)]' : 'h-4 bg-primary/20'}`}
-                        />
+                            className="group flex items-center gap-4 cursor-pointer"
+                        >
+                            <span className={`text-[10px] font-bold font-mono transition-all duration-300 ${activeIndex === i ? 'opacity-100 text-primary translate-x-0' : 'opacity-0 translate-x-4 text-base-content/40'}`}>
+                                PROJECT 0{i+1}
+                            </span>
+                            <div className={`w-1.5 transition-all duration-500 rounded-full ${activeIndex === i ? 'h-12 bg-primary shadow-[0_0_15px_rgba(var(--p),0.6)]' : 'h-4 bg-primary/20 group-hover:bg-primary/40'}`} />
+                        </div>
                     ))}
                 </div>
             </div>

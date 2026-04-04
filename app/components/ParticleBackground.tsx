@@ -47,10 +47,10 @@ class Particle {
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fill();
 
-        const a = this.x - mouse.x;
-        const b = this.y - mouse.y;
-        const distance = Math.sqrt(a * a + b * b);
-        if (distance < 70) {
+        const dx = this.x - mouse.x;
+        const dy = this.y - mouse.y;
+        const distanceSq = dx * dx + dy * dy;
+        if (distanceSq < 4900) { // 70 * 70
             this.accX = (this.x - mouse.x) / 100;
             this.accY = (this.y - mouse.y) / 100;
             this.vx += this.accX;
@@ -73,7 +73,7 @@ const ParticleBackground = () => {
         let wh = canvas.height = window.innerHeight;
 
         const particles: Particle[] = [];
-        const amount = 100;
+        const amount = typeof window !== 'undefined' && window.innerWidth < 768 ? 40 : 100;
         const mouse = { x: -9999, y: -9999 };
 
         const onMouseMove = (e: MouseEvent) => {

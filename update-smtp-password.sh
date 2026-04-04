@@ -4,6 +4,14 @@
 echo "Portfolio SMTP Password Update"
 echo "==============================="
 
+# Load existing environment variables if they exist
+if [ -f .env.local ]; then
+    export $(grep -v '^#' .env.local | xargs)
+    echo "Current SMTP User: $SMTP_USER"
+else
+    read -p "Your email address: " SMTP_USER
+fi
+
 # Prompt for app password
 read -s -p "Enter your Google App Password (16 characters, no spaces): " app_password
 echo
@@ -21,16 +29,13 @@ fi
 # Update the .env.local file
 cat > .env.local << EOF
 # SMTP Configuration for Portfolio Contact Form
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=gonzalesrondether86@gmail.com
+SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+SMTP_PORT=${SMTP_PORT:-465}
+SMTP_SECURE=${SMTP_SECURE:-true}
+SMTP_USER=$SMTP_USER
 SMTP_PASS=$app_password
 EOF
 
 echo
 echo "✅ .env.local file updated successfully!"
 echo "Your SMTP password has been saved securely."
-echo
-echo "Now starting the development server..."
-npm run dev

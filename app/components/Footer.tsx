@@ -2,6 +2,7 @@
 import React from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
+import { siteConfig } from '../config/site';
 
 const Footer = () => {
     const footerRef = React.useRef<HTMLElement>(null);
@@ -25,8 +26,8 @@ const Footer = () => {
             <div className="glowing-line h-1 bg-primary absolute top-0 left-0"></div>
             
             <aside>
-                <p className="font-medium text-sm">Rondether Gonzales</p> 
-                <p className="text-xs mt-1">Copyright © 2025 - All rights reserved</p>
+                <p className="font-medium text-sm">{siteConfig.name}</p> 
+                <p className="text-xs mt-1">Copyright © {new Date().getFullYear()} - All rights reserved</p>
             </aside>
         </footer>
     );

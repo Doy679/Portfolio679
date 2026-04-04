@@ -24,7 +24,7 @@ const Hero = () => {
     }, []);
 
     useGSAP(() => {
-        // Typing Animation (Keep GSAP for typing as it's better at string manipulation)
+        // Typing Animation
         const texts = ["Junior Web Developer", "Front End Developer"];
         const masterTl = gsap.timeline({ repeat: -1 });
 
@@ -37,13 +37,12 @@ const Hero = () => {
         // Blinking cursor
         gsap.to('.cursor', { opacity: 0, ease: "power2.inOut", repeat: -1 });
 
-        // --- High-End Parallax Scrub Effects (Keep GSAP for scroll scrubbing) ---
-        // Optimize for performance: only run heavy animations on desktop
+        // Parallax Effects - Desktop Only
         const isDesktop = window.innerWidth > 1024;
 
         if (isDesktop) {
             gsap.to('.hero-text-container', {
-                y: 150,
+                y: 100,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: heroRef.current,
@@ -54,8 +53,8 @@ const Hero = () => {
             });
 
             gsap.to('.hero-bg-img', {
-                y: 200,
-                scale: 1.1,
+                y: 150,
+                scale: 1.05,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: heroRef.current,
@@ -63,34 +62,6 @@ const Hero = () => {
                     end: 'bottom top',
                     scrub: true,
                 }
-            });
-
-            // --- Magnetic Buttons ---
-            const magneticButtons = gsap.utils.toArray<HTMLElement>('.btn-magnetic');
-            magneticButtons.forEach((btn) => {
-                btn.addEventListener('mousemove', (e) => {
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    
-                    gsap.to(btn, {
-                        x: x * 0.3,
-                        y: y * 0.3,
-                        duration: 0.3,
-                        ease: "power2.out",
-                        overwrite: true
-                    });
-                });
-
-                btn.addEventListener('mouseleave', () => {
-                    gsap.to(btn, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.5,
-                        ease: "elastic.out(1, 0.3)",
-                        overwrite: true
-                    });
-                });
             });
         }
 
@@ -166,13 +137,30 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="flex flex-wrap gap-4 mt-4"
                     >
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projects" className="btn btn-primary btn-lg shadow-[0_0_20px_rgba(var(--p),0.4)] btn-magnetic">
+                        <motion.a 
+                            whileHover={{ scale: 1.05, y: -5 }} 
+                            whileTap={{ scale: 0.95 }} 
+                            href="#projects" 
+                            className="btn btn-primary btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300"
+                        >
                             <i className="fas fa-briefcase mr-2"></i>View Projects
                         </motion.a>
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm btn-magnetic">
+                        <motion.a 
+                            whileHover={{ scale: 1.05, y: -5 }} 
+                            whileTap={{ scale: 0.95 }} 
+                            href="#contact" 
+                            className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                        >
                             <i className="fas fa-envelope mr-2"></i>Contact Me
                         </motion.a>
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm btn-magnetic">
+                        <motion.a 
+                            whileHover={{ scale: 1.05, y: -5 }} 
+                            whileTap={{ scale: 0.95 }} 
+                            href="/cv.pdf" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                        >
                             <i className="fas fa-download mr-2"></i>Download CV
                         </motion.a>
                     </motion.div>

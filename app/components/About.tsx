@@ -16,39 +16,57 @@ const About = () => {
     useGSAP(() => {
         if (!containerRef.current || !wrapperRef.current) return;
 
+        const isMobile = window.innerWidth < 1024;
         const sections = gsap.utils.toArray('.horizontal-panel');
         
         // Calculate the total width to scroll horizontally
         const totalWidth = containerRef.current.scrollWidth - window.innerWidth;
 
-        gsap.to(sections, {
-            x: () => -totalWidth, // Move left by the total hidden width
-            ease: 'none',
-            scrollTrigger: {
-                trigger: wrapperRef.current,
-                pin: true, // Pin the wrapper to the screen
-                start: 'top top',
-                end: () => `+=${totalWidth}`, // Scroll distance equals the width of the content
-                scrub: 1, // Smooth scrubbing
-                invalidateOnRefresh: true, // Recalculate on resize
-                onUpdate: (self) => {
-                    // Panel 1: Progress near 0
-                    if (self.progress < 0.2) {
-                        setStartAboutScramble(true);
-                    } else if (self.progress > 0.3 && self.progress < 0.7) {
-                        // Reset when moving away if you want it to re-scramble
-                        // But usually just setting them based on position
-                    }
+        if (!isMobile) {
+            gsap.to(sections, {
+                x: () => -totalWidth, // Move left by the total hidden width
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: wrapperRef.current,
+                    pin: true, // Pin the wrapper to the screen
+                    start: 'top top',
+                    end: () => `+=${totalWidth}`, // Scroll distance equals the width of the content
+                    scrub: 1, // Smooth scrubbing
+                    invalidateOnRefresh: true, // Recalculate on resize
+                    onUpdate: (self) => {
+                        // Panel 1: Progress near 0
+                        if (self.progress < 0.2) {
+                            setStartAboutScramble(true);
+                        }
 
-                    // Panel 3: Progress near 0.8 to 1.0
-                    if (self.progress > 0.75) {
-                        setStartEduScramble(true);
-                    } else if (self.progress < 0.6) {
-                        setStartEduScramble(false);
+                        // Panel 3: Progress near 0.8 to 1.0
+                        if (self.progress > 0.75) {
+                            setStartEduScramble(true);
+                        } else if (self.progress < 0.6) {
+                            setStartEduScramble(false);
+                        }
                     }
                 }
+            });
+        } else {
+            // Mobile: Normal vertical scroll instead of horizontal to save performance
+            // Just trigger the scramble effects as we scroll past
+            ScrollTrigger.create({
+                trigger: wrapperRef.current,
+                start: 'top 80%',
+                onEnter: () => setStartAboutScramble(true)
+            });
+
+            // For education section
+            const eduHeader = document.querySelector('.edu-header-trigger');
+            if (eduHeader) {
+                ScrollTrigger.create({
+                    trigger: eduHeader,
+                    start: 'top 80%',
+                    onEnter: () => setStartEduScramble(true)
+                });
             }
-        });
+        }
 
         // Initial trigger for the first panel
         ScrollTrigger.create({
@@ -63,10 +81,10 @@ const About = () => {
 
     return (
         <section id="about" className="overflow-hidden bg-base-200" ref={wrapperRef}>
-            <div className="h-screen flex items-center" ref={containerRef} style={{ width: '300vw' }}>
+            <div className="flex lg:h-screen items-center flex-col lg:flex-row" ref={containerRef} style={{ width: typeof window !== 'undefined' && window.innerWidth < 1024 ? '100%' : '300vw' }}>
                 
                 {/* Panel 1: About Me (Part 1) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-6 md:px-10 pt-24 md:pt-28">
+                <div className="horizontal-panel w-full lg:w-screen min-h-[70vh] lg:h-screen flex flex-col items-center justify-center px-6 md:px-10 py-20 lg:pt-28">
                      <div className="text-center mb-8 w-full max-w-4xl mx-auto">
                         <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
                             <HackerText text="About Me" trigger={startAboutScramble} />
@@ -75,7 +93,7 @@ const About = () => {
                         <p className="text-base md:text-lg font-medium leading-relaxed max-w-3xl mx-auto text-base-content/70">
                             As a recent Bachelor of Science in Information Technology (BSIT) graduate and an aspiring Junior Frontend Developer, I am driven by a curiosity for how digital experiences are crafted. My journey into coding began with a desire to understand the logic behind the tools we use every day, and I am now eager to apply my skills in a professional environment.
                         </p>
-                        <div className="mt-8 flex flex-col items-center gap-4 animate-bounce opacity-50 text-base-content">
+                        <div className="mt-8 flex flex-col items-center gap-4 animate-bounce opacity-50 text-base-content lg:flex hidden">
                             <span className="text-sm uppercase tracking-widest">Scroll to continue</span>
                             <i className="fas fa-arrow-right"></i>
                         </div>
@@ -83,7 +101,7 @@ const About = () => {
                 </div>
 
                 {/* Panel 2: About Me (Part 2) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-6 md:px-10 pt-24 md:pt-28">
+                <div className="horizontal-panel w-full lg:w-screen min-h-[70vh] lg:h-screen flex flex-col items-center justify-center px-6 md:px-10 py-20 lg:pt-28 bg-base-300/30">
                      <div className="text-center mb-6 w-full max-w-4xl mx-auto space-y-4 md:space-y-6">
                         <p className="text-base md:text-xl font-medium leading-relaxed max-w-3xl mx-auto text-base-content/80">
                             My technical foundation is built on core programming principles, including Object-Oriented Programming (OOP) and Data Structures.
@@ -103,14 +121,14 @@ const About = () => {
                 </div>
 
                 {/* Panel 3: Education (Timeline) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-4 md:px-20 relative pt-24 md:pt-28">
+                <div className="horizontal-panel w-full lg:w-screen min-h-screen lg:h-screen flex flex-col items-center justify-center px-4 md:px-20 relative py-20 lg:pt-28">
                     <div className="w-full max-w-6xl">
-                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center">
+                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center edu-header-trigger">
                             <HackerText text="Education" trigger={startEduScramble} />
                         </h2>
                         <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-12 md:mb-16"></div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                              {/* College */}
                             <div className="card bg-base-100 shadow-2xl border-t-4 border-primary hover:-translate-y-4 transition-transform duration-300">
                                 <div className="card-body">

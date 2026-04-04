@@ -4,6 +4,8 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { sendEmail } from '../actions';
+import { siteConfig } from '../config/site';
+import { ContactFormData } from '../lib/validation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +14,7 @@ const ContactForm = () => {
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const [isPending, setIsPending] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
     const formRef = useRef<HTMLFormElement>(null);
     const contactRef = useRef<HTMLElement>(null);
 
@@ -47,6 +50,7 @@ const ContactForm = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsPending(true);
+        setFieldErrors({});
 
         const formData = new FormData(e.currentTarget);
 
@@ -58,6 +62,9 @@ const ContactForm = () => {
                 setToastType('success');
                 (e.target as HTMLFormElement).reset();
             } else {
+                if (result.fieldErrors) {
+                    setFieldErrors(result.fieldErrors);
+                }
                 setToastMessage(result.error || 'Failed to send message.');
                 setToastType('error');
             }
@@ -92,24 +99,24 @@ const ContactForm = () => {
                         <div className="card-body">
                             <h3 className="card-title text-2xl font-bold">Contact Information</h3>
                             <div className="space-y-4 mt-6">
-                                <p><i className="fas fa-envelope mr-2 text-primary"></i> <a href="mailto:gonzalesrondether86@gmail.com" className="link link-hover">gonzalesrondether86@gmail.com</a></p>
+                                <p><i className="fas fa-envelope mr-2 text-primary"></i> <a href={`mailto:${siteConfig.contact.email}`} className="link link-hover">{siteConfig.contact.email}</a></p>
                                 <p><i className="fas fa-phone-alt mr-2 text-primary"></i> +63 985 906 5880</p>
                                 <p><i className="fas fa-location-dot mr-2 text-primary"></i> Tingub Mandaue City</p>
-                                <p><i className="fab fa-github mr-2 text-primary"></i> <a href="https://github.com/Doy679" target="_blank" rel="noopener noreferrer" className="link link-hover">github.com/Doy679</a></p>
+                                <p><i className="fab fa-github mr-2 text-primary"></i> <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="link link-hover">{siteConfig.links.github.replace('https://', '')}</a></p>
                             </div>
                             <div className="mt-6">
                                 <h4 className="font-bold text-lg mb-4">Connect with me</h4>
                                 <div className="flex gap-4">
-                                    <a href="https://www.facebook.com/Gonzales.rondether.2001?mibextid=ZbWKwL" className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
+                                    <a href={siteConfig.links.facebook} className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
                                         <i className="fab fa-facebook-f"></i>
                                     </a>
                                     <a href="https://www.instagram.com/ron.gzls/" className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
                                         <i className="fab fa-instagram"></i>
                                     </a>
-                                    <a href="https://www.linkedin.com/in/ron-dether-gonzales-6551942b8/" className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
+                                    <a href={siteConfig.links.linkedin} className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
                                         <i className="fab fa-linkedin-in"></i>
                                     </a>
-                                    <a href="https://github.com/Doy679" className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
+                                    <a href={siteConfig.links.github} className="btn btn-circle btn-primary" target="_blank" rel="noopener noreferrer">
                                         <i className="fab fa-github"></i>
                                     </a>
                                     <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-primary" title="View CV">
@@ -124,10 +131,22 @@ const ContactForm = () => {
                         <div className="card-body">
                             <h3 className="card-title text-2xl font-bold">Send me a message</h3>
                             <form className="space-y-4 mt-6" onSubmit={handleSubmit} ref={formRef}>
-                                <input type="text" name="name" placeholder="Your Name" className="input input-bordered w-full form-field" required />
-                                <input type="email" name="email" placeholder="Your Email" className="input input-bordered w-full form-field" required />
-                                <input type="text" name="subject" placeholder="Subject" className="input input-bordered w-full form-field" required />
-                                <textarea name="message" className="textarea textarea-bordered h-32 w-full form-field" placeholder="Your message here..." required></textarea>
+                                <div className="form-control">
+                                    <input type="text" name="name" placeholder="Your Name" className={`input input-bordered w-full form-field ${fieldErrors.name ? 'input-error' : ''}`} required />
+                                    {fieldErrors.name && <label className="label"><span className="label-text-alt text-error">{fieldErrors.name}</span></label>}
+                                </div>
+                                <div className="form-control">
+                                    <input type="email" name="email" placeholder="Your Email" className={`input input-bordered w-full form-field ${fieldErrors.email ? 'input-error' : ''}`} required />
+                                    {fieldErrors.email && <label className="label"><span className="label-text-alt text-error">{fieldErrors.email}</span></label>}
+                                </div>
+                                <div className="form-control">
+                                    <input type="text" name="subject" placeholder="Subject" className={`input input-bordered w-full form-field ${fieldErrors.subject ? 'input-error' : ''}`} required />
+                                    {fieldErrors.subject && <label className="label"><span className="label-text-alt text-error">{fieldErrors.subject}</span></label>}
+                                </div>
+                                <div className="form-control">
+                                    <textarea name="message" className={`textarea textarea-bordered h-32 w-full form-field ${fieldErrors.message ? 'textarea-error' : ''}`} placeholder="Your message here..." required></textarea>
+                                    {fieldErrors.message && <label className="label"><span className="label-text-alt text-error">{fieldErrors.message}</span></label>}
+                                </div>
                                 <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
                                     {isPending ? <span className="loading loading-spinner"></span> : 'Send Message'}
                                 </button>
