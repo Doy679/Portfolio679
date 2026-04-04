@@ -1,13 +1,15 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import HackerText from './HackerText';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
     const skillsRef = React.useRef(null);
+    const [startScramble, setStartScramble] = useState(false);
 
     useGSAP(() => {
         // Scrubbed Parallax Effect - Subtler entry
@@ -25,6 +27,14 @@ const Skills = () => {
                 }
             }
         );
+
+        ScrollTrigger.create({
+            trigger: skillsRef.current,
+            start: 'top 70%',
+            onEnter: () => setStartScramble(true),
+            onLeaveBack: () => setStartScramble(false),
+            onEnterBack: () => setStartScramble(true)
+        });
 
         ScrollTrigger.batch('.skill-card', {
             onEnter: (elements) => {
@@ -77,40 +87,45 @@ const Skills = () => {
             logo.addEventListener('mouseleave', () => tl.reverse());
         });
 
-        // --- Tilt Effect for Skill Cards ---
-        const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
-        cards.forEach((card) => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
+        // --- Tilt Effect for Skill Cards (Desktop Only) ---
+        const isDesktop = window.innerWidth > 1024;
+        if (isDesktop) {
+            const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
+            cards.forEach((card) => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
 
-                gsap.to(card, {
-                    rotateX: rotateX,
-                    rotateY: rotateY,
-                    scale: 1.02,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    perspective: 1000
+                    gsap.to(card, {
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.02,
+                        duration: 0.5,
+                        ease: "power2.out",
+                        perspective: 1000,
+                        overwrite: true
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        duration: 0.5,
+                        ease: "power2.out",
+                        overwrite: true
+                    });
                 });
             });
-
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, {
-                    rotateX: 0,
-                    rotateY: 0,
-                    scale: 1,
-                    duration: 0.5,
-                    ease: "power2.out"
-                });
-            });
-        });
+        }
 
     }, { scope: skillsRef });
 
@@ -118,7 +133,9 @@ const Skills = () => {
         <section id="skills" className="py-20" ref={skillsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                    <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">My Skills</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
+                        <HackerText text="My Skills" trigger={startScramble} />
+                    </h2>
                     <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
                 </div>
 

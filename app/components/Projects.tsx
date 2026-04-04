@@ -1,172 +1,225 @@
 'use client';
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projects } from '../data/projects';
-import ProjectCarousel from './ProjectCarousel';
+import HackerText from './HackerText';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
-    const projectsRef = React.useRef<HTMLElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
+    const scrollAreaRef = useRef<HTMLDivElement>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [startScramble, setStartScramble] = useState(false);
 
     useGSAP(() => {
-        // High-end Scrubbed Parallax Effect for the Section
-        gsap.fromTo(projectsRef.current,
-            { opacity: 0.2, y: 50 },
-            {
-                opacity: 1,
-                y: 0,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: projectsRef.current,
-                    start: 'top bottom',
-                    end: 'top 40%',
-                    scrub: true,
+        if (!sectionRef.current || !scrollAreaRef.current) return;
+
+        // Header Scramble Trigger
+        ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: 'top 70%',
+            onEnter: () => setStartScramble(true),
+            onLeaveBack: () => setStartScramble(false),
+            onEnterBack: () => setStartScramble(true)
+        });
+
+        // Sticky Scroll Logic
+        const totalProjects = projects.length;
+        
+        ScrollTrigger.create({
+            trigger: scrollAreaRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+            onUpdate: (self) => {
+                // Determine active index based on scroll progress
+                const progress = self.progress;
+                const newIndex = Math.min(
+                    Math.floor(progress * totalProjects),
+                    totalProjects - 1
+                );
+                if (newIndex !== activeIndex) {
+                    setActiveIndex(newIndex);
                 }
             }
-        );
+        });
 
-        const projectCards = gsap.utils.toArray<HTMLElement>('.project-card');
-        
-        if (projectCards && Array.isArray(projectCards)) {
-            projectCards.forEach((card, i) => {
-                // Determine a slight stagger/speed difference based on column/index
-                const yOffset = (i % 3) * 50 + 100; // Parallax stagger
-
-                gsap.fromTo(card,
-                    { y: yOffset, opacity: 0 },
-                    { 
-                        y: 0, 
-                        opacity: 1, 
-                        ease: 'none', 
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top bottom-=100',
-                            end: 'top center',
-                            scrub: 1, // Smooth scrub
-                        }
-                    }
-                );
-
-                // Internal Image Parallax
-                const img = card.querySelector('img');
-                if (img) {
-                    gsap.fromTo(img,
-                        { y: -10 },
-                        {
-                            y: 10,
-                            ease: 'none',
-                            scrollTrigger: {
-                                trigger: card,
-                                start: 'top bottom',
-                                end: 'bottom top',
-                                scrub: true,
-                            }
-                        }
-                    );
-                }
-            });
-        }
-    }, { scope: projectsRef });
+    }, [activeIndex]);
 
     return (
-        <section id="projects" className="py-20 bg-base-200" ref={projectsRef}>
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">My Featured Projects</h2>
-                    <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
-                </div>
+        <section id="projects" className="bg-base-200 relative" ref={sectionRef}>
+            <div ref={scrollAreaRef} className="relative" style={{ height: `${projects.length * 100}vh` }}>
+                
+                <div className="sticky top-0 h-screen w-full overflow-visible flex flex-col items-center justify-center">
+                    
+                    <div className="container mx-auto px-6 lg:px-20 h-full flex flex-col">
+                        
+                        <div className="pt-16 pb-6 text-center shrink-0">
+                            <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
+                                <HackerText text="My Featured Projects" trigger={startScramble} />
+                            </h2>
+                            <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4"></div>
+                        </div>
 
-                <ProjectCarousel projects={projects} />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12 max-w-[90rem] mx-auto xl:px-8">
-                    {projects && Array.isArray(projects) ? (
-                        projects.map((project, index) => {
-                            const CardWrapper = project.link ? 'a' : 'div';
-                            const wrapperProps = project.link ? {
-                                href: project.link,
-                                target: "_blank",
-                                rel: "noopener noreferrer"
-                            } : {};
-
-                            return (
-                                <CardWrapper 
-                                    key={index} 
-                                    {...wrapperProps}
-                                    className={`group relative bg-base-100 rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-3 flex flex-col project-card shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(var(--p),0.2)] ${project.link ? 'cursor-pointer' : 'cursor-default'}`}
-                                >
-                                    {/* Inner Glow Effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"></div>
-
-                                    <div className="relative w-full aspect-[16/10] bg-base-300/50 overflow-hidden border-b border-white/5 p-2">
-                                        {/* Subtle Image Overlay */}
-                                        <div className="absolute inset-0 bg-base-100/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-                                        
-                                        <Image 
-                                            src={project.image} 
-                                            alt={project.title} 
-                                            fill
-                                            className="object-contain p-2 transition-transform duration-700" 
-                                        />
-                                    </div>
-                                    <div className="p-8 relative z-20 bg-base-100 flex flex-col flex-grow">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="flex gap-2">
-                                                {project.title.includes("IN DEVELOPMENT") && (
-                                                    <span className="px-3 py-1 bg-yellow-400/10 border border-yellow-400/20 text-[10px] font-bold text-yellow-400 tracking-widest uppercase rounded-full flex items-center gap-2">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
-                                                        In Dev
-                                                    </span>
-                                                )}
+                        <div className="flex-grow flex flex-col lg:flex-row items-center gap-10 lg:gap-16 pb-12 overflow-visible">
+                            
+                            <div className="w-full lg:w-[40%] relative min-h-[450px] lg:h-full flex flex-col justify-center order-2 lg:order-1 overflow-visible">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={activeIndex}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        className="space-y-5 lg:space-y-6 py-4"
+                                    >
+                                        <div className="flex items-center gap-4 text-primary font-mono text-base font-bold overflow-hidden h-8">
+                                            <div className="relative h-full flex flex-col items-start">
+                                                <AnimatePresence mode="wait">
+                                                    <motion.span
+                                                        key={activeIndex}
+                                                        initial={{ y: 20, opacity: 0 }}
+                                                        animate={{ y: 0, opacity: 1 }}
+                                                        exit={{ y: -20, opacity: 0 }}
+                                                        transition={{ duration: 0.3, ease: "easeOut" }}
+                                                    >
+                                                        0{activeIndex + 1}
+                                                    </motion.span>
+                                                </AnimatePresence>
                                             </div>
+                                            <span className="text-primary/30 font-light">/</span>
+                                            <span className="text-primary/30">0{projects.length}</span>
+                                            <div className="h-[1px] flex-grow bg-primary/10 ml-2"></div>
                                         </div>
-                                        <h3 className="text-2xl font-bold mb-2 text-base-content group-hover:text-primary transition-colors duration-300 font-montserrat tracking-tight">
-                                            {project.title.replace(" (IN DEVELOPMENT)", "")}
+                                        
+                                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-black font-montserrat tracking-tighter leading-tight uppercase text-base-content">
+                                            {projects[activeIndex].title}
                                         </h3>
 
-                                        {/* Technologies directly under Title */}
-                                        <div className="flex flex-wrap gap-1.5 mb-6">
-                                            {project.badges && Array.isArray(project.badges) ? (
-                                                project.badges.map((badge, badgeIndex) => (
-                                                    <span 
-                                                        key={badgeIndex} 
-                                                        className="px-2 py-0.5 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-[10px] font-medium tracking-wide whitespace-nowrap"
-                                                    >
-                                                        {badge}
-                                                    </span>
-                                                ))
-                                            ) : null}
+                                        <div className="flex flex-wrap gap-x-3 gap-y-2">
+                                            {projects[activeIndex].badges.map((badge, i) => (
+                                                <span key={i} className="text-[9px] uppercase font-bold tracking-[0.2em] text-base-content/40 flex items-center">
+                                                    {i !== 0 && <span className="text-primary/40 mr-3 font-mono">{'//'}</span>}
+                                                    {badge}
+                                                </span>
+                                            ))}
                                         </div>
 
-                                        <p className="text-base-content/70 text-sm mb-8 leading-relaxed">
-                                            {project.description}
+                                        <p className="text-base-content/60 text-base md:text-lg leading-relaxed line-clamp-4 lg:line-clamp-none">
+                                            {projects[activeIndex].description}
                                         </p>
-                                        
-                                        <div className="mt-auto pt-6 border-t border-white/5">
-                                            {/* Minimal View Project Link - Only show if link exists */}
-                                            {project.link ? (
-                                                <div className="flex items-center gap-2 text-sm font-semibold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                                                    <span>View Project</span>
-                                                    <i className="fas fa-arrow-right text-xs"></i>
-                                                </div>
+
+                                        <div className="pt-4 lg:pt-6 flex">
+                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" ? (
+                                                <a 
+                                                    href={projects[activeIndex].link} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    className="group inline-flex items-center gap-4 text-primary font-bold tracking-[0.3em] uppercase text-[10px] md:text-xs hover:gap-6 transition-all duration-300 py-2"
+                                                >
+                                                    <span>Explore Project</span>
+                                                    <div className="w-10 h-[1px] bg-primary group-hover:w-16 transition-all duration-500"></div>
+                                                    <i className="fas fa-arrow-right"></i>
+                                                </a>
                                             ) : (
-                                                <div className="text-[10px] font-bold uppercase tracking-widest text-base-content/30">
-                                                    System Overview
+                                                <div className="flex items-center gap-4 text-base-content/20 font-mono text-[9px] tracking-[0.3em] uppercase py-2.5 px-4 border border-base-content/5 rounded bg-base-300/30 w-fit">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse"></span>
+                                                    Architecture {'//'} Secure
                                                 </div>
                                             )}
                                         </div>
-                                    </div>
-                                </CardWrapper>
-                            );
-                        })
-                    ) : (
-                        <div className="col-span-full text-center py-10">
-                            <p className="text-base-content/60">No projects to display</p>
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Right Column: Fixed/Cross-fading Image */}
+                            <div className="w-full lg:w-[60%] flex flex-col gap-4 order-1 lg:order-2">
+                                <div className="flex justify-end items-end h-12 pr-4">
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={activeIndex}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            className="font-black text-6xl text-primary/10 font-montserrat tracking-tighter leading-none"
+                                        >
+                                            0{activeIndex + 1}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={activeIndex}
+                                            initial={{ opacity: 0, scale: 0.95, rotateY: 5 }}
+                                            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                                            exit={{ opacity: 0, scale: 1.02, rotateY: -5 }}
+                                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                            className="absolute inset-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] border border-primary/20 bg-base-300"
+                                        >
+                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" ? (
+                                                <a
+                                                    href={projects[activeIndex].link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="block w-full h-full cursor-pointer"
+                                                >
+                                                    <Image
+                                                        src={projects[activeIndex].image}
+                                                        alt={projects[activeIndex].title}
+                                                        fill
+                                                        className="object-cover object-center transition-transform duration-300 hover:scale-105"
+                                                        sizes="(max-width: 1024px) 100vw, 60vw"
+                                                        priority
+                                                    />
+                                                </a>
+                                            ) : (
+                                                <Image
+                                                    src={projects[activeIndex].image}
+                                                    alt={projects[activeIndex].title}
+                                                    fill
+                                                    className="object-cover object-center"
+                                                    sizes="(max-width: 1024px) 100vw, 60vw"
+                                                    priority
+                                                />
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-base-900/40 via-transparent to-transparent pointer-events-none"></div>
+                                            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 pointer-events-none"></div>
+                                            {projects[activeIndex].link && projects[activeIndex].link !== "#" && (
+                                                <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                                    <div className="bg-primary/90 text-primary-content px-6 py-3 rounded-full font-bold tracking-wider uppercase text-sm shadow-lg">
+                                                        <i className="fas fa-external-link-alt mr-2"></i>View Project
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                            </div>
+
                         </div>
-                    )}
+                    </div>
+                </div>
+
+                <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-50 hidden lg:flex">
+                    {projects.map((_, i) => (
+                        <div 
+                            key={i} 
+                            onClick={() => {
+                                // Jump scroll to the corresponding section if needed
+                                window.scrollTo({
+                                    top: (sectionRef.current?.offsetTop || 0) + (i * window.innerHeight),
+                                    behavior: 'smooth'
+                                });
+                            }}
+                            className={`w-1 cursor-pointer transition-all duration-500 rounded-full ${activeIndex === i ? 'h-12 bg-primary shadow-[0_0_10px_rgba(var(--p),0.5)]' : 'h-4 bg-primary/20'}`}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

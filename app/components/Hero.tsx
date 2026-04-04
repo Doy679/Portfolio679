@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
@@ -7,12 +7,21 @@ import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingShape from './FloatingShape';
+import HackerText from './HackerText';
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
 const Hero = () => {
     const heroRef = React.useRef(null);
     const typingTextRef = React.useRef(null);
+    const [startScramble, setStartScramble] = useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setStartScramble(true);
+        }, 3800);
+        return () => clearTimeout(timeout);
+    }, []);
 
     useGSAP(() => {
         // Typing Animation (Keep GSAP for typing as it's better at string manipulation)
@@ -29,42 +38,61 @@ const Hero = () => {
         gsap.to('.cursor', { opacity: 0, ease: "power2.inOut", repeat: -1 });
 
         // --- High-End Parallax Scrub Effects (Keep GSAP for scroll scrubbing) ---
-        gsap.to('.hero-text-container', {
-            y: 150,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: heroRef.current,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true,
-            }
-        });
+        // Optimize for performance: only run heavy animations on desktop
+        const isDesktop = window.innerWidth > 1024;
 
-        // --- Magnetic Buttons ---
-        const magneticButtons = gsap.utils.toArray<HTMLElement>('.btn-magnetic');
-        magneticButtons.forEach((btn) => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                gsap.to(btn, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.3,
-                    ease: "power2.out"
-                });
+        if (isDesktop) {
+            gsap.to('.hero-text-container', {
+                y: 150,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true,
+                }
             });
 
-            btn.addEventListener('mouseleave', () => {
-                gsap.to(btn, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.5,
-                    ease: "elastic.out(1, 0.3)"
+            gsap.to('.hero-bg-img', {
+                y: 200,
+                scale: 1.1,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true,
+                }
+            });
+
+            // --- Magnetic Buttons ---
+            const magneticButtons = gsap.utils.toArray<HTMLElement>('.btn-magnetic');
+            magneticButtons.forEach((btn) => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    gsap.to(btn, {
+                        x: x * 0.3,
+                        y: y * 0.3,
+                        duration: 0.3,
+                        ease: "power2.out",
+                        overwrite: true
+                    });
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "elastic.out(1, 0.3)",
+                        overwrite: true
+                    });
                 });
             });
-        });
+        }
 
     }, { scope: heroRef });
 
@@ -107,7 +135,8 @@ const Hero = () => {
                     >
                         Hi, I&apos;m <br/>
                         <span className="text-primary mix-blend-difference font-extrabold relative inline-block">
-                            Rondether<br/>Gonzales
+                            <HackerText text="RONDETHER" trigger={startScramble} /><br/>
+                            <HackerText text="GONZALES" trigger={startScramble} delay={300} />
                         </span>
                     </motion.h1>
                     

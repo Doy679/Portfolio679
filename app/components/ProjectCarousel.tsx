@@ -39,24 +39,26 @@ const ProjectCarousel: React.FC<ProjectCarouselProps> = ({ projects }) => {
 
     return (
         <div className="relative w-full max-w-6xl mx-auto mb-20 px-4">
-            <div className="relative overflow-hidden rounded-3xl bg-base-300 shadow-2xl border border-white/5 aspect-[16/9] md:aspect-[21/9]">
+            <div className="relative overflow-hidden rounded-3xl bg-base-300 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] border border-primary/20 aspect-[16/9] md:aspect-[21/9]">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentIndex}
-                        initial={{ opacity: 0, scale: 1.1 }}
+                        initial={{ opacity: 0, scale: 1.05 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                         className="absolute inset-0"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
-                        <Image 
-                            src={currentProject.image} 
+                        <Image
+                            src={currentProject.image}
                             alt={currentProject.title}
                             fill
                             priority
-                            className="object-cover object-top"
+                            className="object-cover object-center"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         />
+                        <div className="absolute inset-0 ring-1 ring-inset ring-white/10 pointer-events-none"></div>
                         
                         <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 md:px-16 max-w-2xl">
                             <motion.div

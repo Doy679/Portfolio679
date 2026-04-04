@@ -4,113 +4,116 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const IntroLoader = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const [terminalLines, setTerminalLines] = useState<string[]>([]);
+    const [progress, setProgress] = useState(0);
+
+    const logs = [
+        "> sudo systemctl start portfolio.service",
+        "> Loading kernel modules...",
+        "> Initializing React 19 Engine",
+        "> Mounting GSAP Animation Driver",
+        "> Optimizing assets...",
+        "> Fetching credentials: RONDETHER_GONZALES",
+        "> Injecting 3D components",
+        "> Compiling featured projects...",
+        "> Launching main interface..."
+    ];
 
     useEffect(() => {
-        // Lock scrolling while loading and force to top
         document.body.style.overflow = 'hidden';
         window.scrollTo(0, 0);
 
-        // Automatically hide the loader after the animation completes
+        logs.forEach((log, index) => {
+            setTimeout(() => {
+                setTerminalLines(prev => [...prev, log]);
+            }, index * 200);
+        });
+
+        const interval = setInterval(() => {
+            setProgress(prev => {
+                if (prev < 100) return prev + 1;
+                clearInterval(interval);
+                return 100;
+            });
+        }, 30);
+
         const timer = setTimeout(() => {
             setIsLoading(false);
-            // Wait for the Framer Motion exit animation to finish before unlocking the body
             setTimeout(() => {
                 document.body.style.overflow = '';
             }, 1000);
-        }, 2800); // Slightly longer for the staggered effect
+        }, 3800);
 
         return () => {
+            clearInterval(interval);
             clearTimeout(timer);
-            document.body.style.overflow = ''; // Cleanup on unmount
+            document.body.style.overflow = '';
         };
     }, []);
-
-    // Animation variants for the container to stagger children
-    const containerVariants = {
-        hidden: { opacity: 1 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.08,
-                delayChildren: 0.2,
-            },
-        },
-        exit: {
-            y: '-100%',
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.3 }
-        }
-    };
-
-    // Animation variants for individual letters
-    const letterVariants = {
-        hidden: { y: '120%', opacity: 0, rotateY: 45, filter: 'blur(10px)' },
-        visible: {
-            y: 0,
-            opacity: 1,
-            rotateY: 0,
-            filter: 'blur(0px)',
-            transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] as any }
-        },
-        exit: {
-            y: '-120%',
-            opacity: 0,
-            transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] as any }
-        }
-    };
-
-    const word1 = "MY".split('');
-    const word2 = "PORTFOLIO".split('');
 
     return (
         <AnimatePresence>
             {isLoading && (
                 <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] overflow-hidden"
+                    initial={{ opacity: 1 }}
+                    exit={{ 
+                        y: '-100%', 
+                        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+                    }}
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#0a0a0a] font-mono text-xs md:text-sm"
                 >
-                    <div className="flex items-center justify-center space-x-6 md:space-x-12 overflow-hidden perspective-[1000px]">
-                        {/* Word 1: MY */}
-                        <div className="flex overflow-hidden pb-4">
-                            {word1.map((letter, index) => (
-                                <motion.span
-                                    key={`w1-${index}`}
-                                    variants={letterVariants}
-                                    className="text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] font-montserrat font-black text-base-content uppercase inline-block"
-                                >
-                                    {letter}
-                                </motion.span>
-                            ))}
+                    <div className="w-full max-w-2xl px-6">
+                        <div className="flex items-center gap-2 mb-4 opacity-50">
+                            <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+                            <span className="ml-2 text-[10px] tracking-widest uppercase text-white">system_console — 80x24</span>
                         </div>
 
-                        {/* Word 2: PORTFOLIO */}
-                        <div className="flex overflow-hidden pb-4">
-                            {word2.map((letter, index) => (
-                                <motion.span
-                                    key={`w2-${index}`}
-                                    variants={letterVariants}
-                                    className="text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] font-montserrat font-black text-primary uppercase inline-block"
+                        <div className="min-h-[180px] mb-8 space-y-1">
+                            {terminalLines.map((line, i) => (
+                                <motion.div 
+                                    key={i}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    className="text-primary/90"
                                 >
-                                    {letter}
-                                </motion.span>
+                                    <span className="text-white/30 mr-2">[{new Date().toLocaleTimeString()}]</span>
+                                    {line}
+                                </motion.div>
                             ))}
+                            <motion.div 
+                                animate={{ opacity: [1, 0] }}
+                                transition={{ repeat: Infinity, duration: 0.8 }}
+                                className="w-2 h-4 bg-primary inline-block align-middle ml-1"
+                            />
                         </div>
-                    </div>
-                    
-                    {/* Minimalist Progress Line */}
-                    <motion.div 
-                        className="absolute bottom-12 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-white/10"
-                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                    >
+
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-[10px] uppercase tracking-widest text-white/40">
+                                <span>Deployment Progress</span>
+                                <span>{progress}%</span>
+                            </div>
+                            <div className="h-[2px] w-full bg-white/5 overflow-hidden">
+                                <motion.div 
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${progress}%` }}
+                                    className="h-full bg-primary"
+                                />
+                            </div>
+                        </div>
+
                         <motion.div 
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 1 }}
-                            transition={{ duration: 2.2, ease: "easeInOut" }}
-                            className="w-full h-full bg-white origin-left"
-                        />
-                    </motion.div>
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: progress > 85 ? 1 : 0 }}
+                            className="mt-12 text-center"
+                        >
+                            <h1 className="text-2xl md:text-3xl font-black font-montserrat tracking-tighter text-white">
+                                RONDETHER <span className="text-primary">GONZALES</span>
+                            </h1>
+                        </motion.div>
+                    </div>
+                    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,100,0.06))] bg-[length:100%_2px,3px_100%] z-[10000]"></div>
                 </motion.div>
             )}
         </AnimatePresence>

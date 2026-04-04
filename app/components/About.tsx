@@ -1,14 +1,17 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import HackerText from './HackerText';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLElement>(null);
+    const [startAboutScramble, setStartAboutScramble] = useState(false);
+    const [startEduScramble, setStartEduScramble] = useState(false);
 
     useGSAP(() => {
         if (!containerRef.current || !wrapperRef.current) return;
@@ -28,7 +31,32 @@ const About = () => {
                 end: () => `+=${totalWidth}`, // Scroll distance equals the width of the content
                 scrub: 1, // Smooth scrubbing
                 invalidateOnRefresh: true, // Recalculate on resize
+                onUpdate: (self) => {
+                    // Panel 1: Progress near 0
+                    if (self.progress < 0.2) {
+                        setStartAboutScramble(true);
+                    } else if (self.progress > 0.3 && self.progress < 0.7) {
+                        // Reset when moving away if you want it to re-scramble
+                        // But usually just setting them based on position
+                    }
+
+                    // Panel 3: Progress near 0.8 to 1.0
+                    if (self.progress > 0.75) {
+                        setStartEduScramble(true);
+                    } else if (self.progress < 0.6) {
+                        setStartEduScramble(false);
+                    }
+                }
             }
+        });
+
+        // Initial trigger for the first panel
+        ScrollTrigger.create({
+            trigger: wrapperRef.current,
+            start: 'top 50%',
+            onEnter: () => setStartAboutScramble(true),
+            onLeaveBack: () => setStartAboutScramble(false),
+            onEnterBack: () => setStartAboutScramble(true)
         });
         
     }, { scope: wrapperRef });
@@ -40,7 +68,9 @@ const About = () => {
                 {/* Panel 1: About Me (Part 1) */}
                 <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-6 md:px-10 pt-24 md:pt-28">
                      <div className="text-center mb-8 w-full max-w-4xl mx-auto">
-                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">About Me</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
+                            <HackerText text="About Me" trigger={startAboutScramble} />
+                        </h2>
                         <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
                         <p className="text-base md:text-lg font-medium leading-relaxed max-w-3xl mx-auto text-base-content/70">
                             As a recent Bachelor of Science in Information Technology (BSIT) graduate and an aspiring Junior Frontend Developer, I am driven by a curiosity for how digital experiences are crafted. My journey into coding began with a desire to understand the logic behind the tools we use every day, and I am now eager to apply my skills in a professional environment.
@@ -75,7 +105,9 @@ const About = () => {
                 {/* Panel 3: Education (Timeline) */}
                 <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-4 md:px-20 relative pt-24 md:pt-28">
                     <div className="w-full max-w-6xl">
-                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center">Education</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center">
+                            <HackerText text="Education" trigger={startEduScramble} />
+                        </h2>
                         <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-12 md:mb-16"></div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
