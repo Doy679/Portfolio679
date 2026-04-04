@@ -19,7 +19,7 @@ export const projects: Project[] = [
         description: "A comprehensive platform and admin dashboard built for the FONUS Cebu Federation of Cooperatives. Includes a public-facing portal and a secure admin management system (https://fc2025.netlify.app/admin).",
         image: "/FonusCebu.png",
         badges: ["HTML", "CSS", "JavaScript", "Bootstrap", "Web Application", "Admin Dashboard"],
-        link: "https://fc2025.netlify.app/",
+        link: "https://fonuscebu.vercel.app/",
     },
     {
         title: "Grading System for Senior High School",
