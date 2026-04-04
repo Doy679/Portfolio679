@@ -124,7 +124,7 @@ const ParticleBackground = () => {
         };
     }, []);
 
-    return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10" />;
+    return <canvas ref={canvasRef} className="fixed top-0 left-0 -z-10 pointer-events-none" style={{ willChange: 'transform' }} />;
 };
 
 export default ParticleBackground;

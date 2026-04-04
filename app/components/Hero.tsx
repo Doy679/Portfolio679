@@ -72,14 +72,14 @@ const Hero = () => {
             
             {/* Split Screen Background Image */}
             <motion.div 
-                initial={{ opacity: 0, x: 100 }}
+                initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left"
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left pointer-events-none"
             >
-                <div className="relative w-full h-full hero-bg-img opacity-60 lg:opacity-80 mix-blend-luminosity">
+                <div className="relative w-full h-full hero-bg-img opacity-40 lg:opacity-100 mix-blend-luminosity lg:mix-blend-normal">
                      {/* 3D Element as an aura behind the image */}
-                     <div className="absolute inset-0 z-0 opacity-40 scale-125">
+                     <div className="absolute inset-0 z-0 opacity-30 lg:opacity-60 scale-150">
                         <FloatingShape />
                      </div>
                      
@@ -99,10 +99,10 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <motion.h1 
-                        initial={{ opacity: 0, y: 50 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-montserrat text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12"
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-montserrat text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] drop-shadow-2xl mt-8 lg:mt-12"
                     >
                         Hi, I&apos;m <br/>
                         <span className="text-primary mix-blend-difference font-extrabold relative inline-block">

@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,81 +12,90 @@ const About = () => {
     const wrapperRef = useRef<HTMLElement>(null);
     const [startAboutScramble, setStartAboutScramble] = useState(false);
     const [startEduScramble, setStartEduScramble] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+    useGSAP(() => {
+        const mm = gsap.matchMedia();
+        const prefersReducedMotion = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+
+        // Desktop Animations (Horizontal Scroll)
+        mm.add("(min-width: 1024px)", () => {
+            if (!containerRef.current || !wrapperRef.current || prefersReducedMotion) {
+                if (prefersReducedMotion) {
+                    setStartAboutScramble(true);
+                    setStartEduScramble(true);
+                }
+                return;
+            }
+
+            const sections = gsap.utils.toArray('.horizontal-panel');
+            const totalWidth = containerRef.current.scrollWidth - window.innerWidth;
+
+            gsap.to(sections, {
+                x: () => -totalWidth,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: wrapperRef.current,
+                    pin: true,
+                    start: 'top top',
+                    end: () => `+=${totalWidth}`,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    onUpdate: (self) => {
+                        if (self.progress > 0.05) setStartAboutScramble(true);
+                        
+                        if (self.progress > 0.6) {
+                            setStartEduScramble(true);
+                        } else if (self.progress < 0.4) {
+                            setStartEduScramble(false);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Mobile Animations (Vertical Stacking)
+        mm.add("(max-width: 1023px)", () => {
+            if (prefersReducedMotion) {
+                setStartAboutScramble(true);
+                setStartEduScramble(true);
+                return;
+            }
+            const panels = gsap.utils.toArray('.mobile-panel');
+            panels.forEach((panel: any) => {
+                gsap.fromTo(panel, 
+                    { opacity: 0, y: 30 },
+                    { 
+                        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: panel,
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+            });
+
+            ScrollTrigger.create({
+                trigger: "#about-content-1",
+                start: "top 95%",
+                onEnter: () => setStartAboutScramble(true)
+            });
+
+            ScrollTrigger.create({
+                trigger: ".edu-header-trigger",
+                start: "top 95%",
+                onEnter: () => setStartEduScramble(true)
+            });
+        });
+
+        return () => mm.revert();
     }, []);
 
-    useGSAP(() => {
-        if (!containerRef.current || !wrapperRef.current || isMobile) return;
-
-        const sections = gsap.utils.toArray('.horizontal-panel');
-        const totalWidth = containerRef.current.scrollWidth - window.innerWidth;
-
-        gsap.to(sections, {
-            x: () => -totalWidth,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: wrapperRef.current,
-                pin: true,
-                start: 'top top',
-                end: () => `+=${totalWidth}`,
-                scrub: 1,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => {
-                    if (self.progress < 0.2) setStartAboutScramble(true);
-                    if (self.progress > 0.75) {
-                        setStartEduScramble(true);
-                    } else if (self.progress < 0.6) {
-                        setStartEduScramble(false);
-                    }
-                }
-            }
-        });
-    }, [isMobile]);
-
-    // Agile Mobile Animations
-    useGSAP(() => {
-        if (!isMobile) return;
-
-        const panels = gsap.utils.toArray('.mobile-panel');
-        panels.forEach((panel: any) => {
-            gsap.fromTo(panel, 
-                { opacity: 0, y: 30 },
-                { 
-                    opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: panel,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    }
-                }
-            );
-        });
-
-        ScrollTrigger.create({
-            trigger: "#about-content-1",
-            start: "top 80%",
-            onEnter: () => setStartAboutScramble(true)
-        });
-
-        ScrollTrigger.create({
-            trigger: ".edu-header-trigger",
-            start: "top 80%",
-            onEnter: () => setStartEduScramble(true)
-        });
-    }, [isMobile]);
-
     return (
-        <section id="about" className="bg-base-200" ref={wrapperRef}>
+        <section id="about" className="bg-base-200 overflow-x-clip" ref={wrapperRef}>
             <div 
-                className="flex flex-col lg:flex-row lg:h-screen items-center" 
-                ref={containerRef} 
-                style={{ width: isMobile ? '100%' : '300vw' }}
+                className="flex flex-col lg:flex-row w-full lg:w-[300vw] relative" 
+                ref={containerRef}
             >
                 
                 {/* Panel 1: About Me (Part 1) */}
@@ -117,14 +126,14 @@ const About = () => {
                 </div>
 
                 {/* Panel 3: Education */}
-                <div className="mobile-panel horizontal-panel w-full lg:w-screen min-h-fit lg:h-screen flex flex-col items-center justify-center px-4 md:px-20 py-20 lg:py-0">
+                <div id="education-panel" className="mobile-panel horizontal-panel w-full lg:w-screen min-h-fit lg:h-screen flex flex-col items-center justify-center px-6 md:px-10 lg:px-20 py-20 lg:py-0">
                     <div className="w-full max-w-6xl">
                         <h2 className="text-3xl md:text-4xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center edu-header-trigger">
                             <HackerText text="Education" trigger={startEduScramble} />
                         </h2>
-                        <div className="w-16 h-1 bg-primary/40 mx-auto mt-4 mb-16"></div>
+                        <div className="w-16 h-1 bg-primary/40 mx-auto mt-4 mb-12 md:mb-16"></div>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                             <div className="card bg-base-100 shadow-xl border-t-4 border-primary">
                                 <div className="card-body p-6">
                                     <div className="text-primary font-bold text-lg">2022 - 2026</div>
@@ -132,7 +141,6 @@ const About = () => {
                                     <p className="text-sm text-base-content/60 mt-2">A.S Fortuna, Mandaue City</p>
                                 </div>
                             </div>
-                            {/* ... other cards simplified for brevity in this block but logic remains same ... */}
                             <div className="card bg-base-100 shadow-xl border-t-4 border-accent">
                                 <div className="card-body p-6">
                                     <div className="text-accent font-bold text-lg">2018 - 2020</div>

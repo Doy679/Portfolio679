@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
@@ -19,8 +19,46 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'Rondether Gonzales - Portfolio',
-  description: 'Personal Portfolio of Rondether Gonzales, showcasing expertise in web development and software engineering.',
+  title: {
+    default: 'Rondether Gonzales | Junior Frontend Developer',
+    template: '%s | Rondether Gonzales'
+  },
+  description: 'Aspiring Junior Frontend Developer specializing in React, Next.js, and high-performance web animations. Explore my portfolio of digital solutions.',
+  keywords: ['Frontend Developer', 'React Developer', 'Web Development', 'Next.js', 'GSAP Animations', 'Portfolio'],
+  authors: [{ name: 'Rondether Gonzales' }],
+  creator: 'Rondether Gonzales',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://rgonzales.netlify.app/',
+    title: 'Rondether Gonzales | Junior Frontend Developer',
+    description: 'Explore high-performance digital experiences and web solutions.',
+    siteName: 'Rondether Gonzales Portfolio',
+    images: [
+      {
+        url: '/og-image.png', // You should create this image later
+        width: 1200,
+        height: 630,
+        alt: 'Rondether Gonzales Portfolio Preview',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rondether Gonzales | Junior Frontend Developer',
+    description: 'Building the future of the web with React and Next.js.',
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5, // Allow zoom for accessibility but keep it stable
 }
 
 export default function RootLayout({
@@ -29,11 +67,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" data-theme="dark">
-      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans`}>
+    <html lang="en" data-theme="dark" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+      </head>
+      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased overflow-x-clip w-full relative`}>
         <IntroLoader />
         <SmoothScroll>
-          {children}
+          <div className="flex flex-col min-h-screen w-full overflow-x-clip relative">
+            {children}
+          </div>
         </SmoothScroll>
 
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" strategy="lazyOnload" />

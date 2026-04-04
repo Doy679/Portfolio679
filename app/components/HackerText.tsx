@@ -48,7 +48,15 @@ const HackerText: React.FC<HackerTextProps> = ({ text, className, delay = 0, tri
         };
     }, [text, delay, trigger]);
 
-    return <span className={className}>{scrambledText}</span>;
+    return (
+        <span 
+            className={className} 
+            style={{ willChange: 'contents' }}
+            aria-label={text}
+        >
+            <span aria-hidden="true">{scrambledText}</span>
+        </span>
+    );
 };
 
 export default HackerText;

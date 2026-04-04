@@ -29,4 +29,42 @@ html[data-theme="dark"] .glass-card {
   backdrop-filter: blur(10px); /* Glassmorphism blur effect */
   border-bottom: 1px solid hsl(var(--b1) / 0.2); /* Subtle border */
   box-shadow: 0 4px 6px -1px hsl(var(--b1) / 0.1), 0 2px 4px -2px hsl(var(--b1) / 0.1); /* Light shadow */
-}body { overflow-x: hidden; }
+}html, body { 
+  overflow-x: clip; 
+  width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Custom Scrollbar for a premium look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--b1));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--p) / 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--p) / 0.5);
+}
+
+/* Prevent zoom on input focus for mobile (especially iOS) */
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+/* Maintain font weight and family for DaisyUI components */
+.input, .textarea {
+  font-size: 16px !important;
+}

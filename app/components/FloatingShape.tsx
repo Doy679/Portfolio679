@@ -40,8 +40,18 @@ export default function FloatingShape() {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
-    <div className="w-full h-[60vh] lg:h-full cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, isMobile ? 1 : 2]}>
+    <div className="w-full h-[60vh] lg:h-full cursor-grab active:cursor-grabbing pointer-events-none lg:pointer-events-auto">
+      <Canvas 
+        camera={{ position: [0, 0, 5], fov: 45 }} 
+        dpr={[1, isMobile ? 1 : 2]}
+        gl={{ 
+          powerPreference: "high-performance",
+          antialias: true,
+          alpha: true,
+          stencil: false,
+          depth: true
+        }}
+      >
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ec4899" />
         <directionalLight position={[-10, -10, -5]} intensity={1} color="#8b5cf6" />
