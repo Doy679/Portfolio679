@@ -10,14 +10,12 @@ const Skills = () => {
     const skillsRef = React.useRef(null);
 
     useGSAP(() => {
-        // Cinematic Scrubbed Parallax Effect - Subtler entry
+        // Scrubbed Parallax Effect - Subtler entry
         gsap.fromTo(skillsRef.current,
-            { opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' },
+            { opacity: 0.2, y: 50 },
             {
                 opacity: 1,
-                scale: 1,
                 y: 0,
-                filter: 'blur(0px)',
                 ease: 'none',
                 scrollTrigger: {
                     trigger: skillsRef.current,

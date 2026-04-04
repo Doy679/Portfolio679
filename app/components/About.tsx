@@ -34,8 +34,7 @@ const About = () => {
         // Cinematic exit animation for the entire about section
         gsap.to(wrapperRef.current, {
             opacity: 0,
-            scale: 0.9,
-            filter: 'blur(10px)',
+            y: -50,
             ease: 'none',
             scrollTrigger: {
                 trigger: wrapperRef.current,

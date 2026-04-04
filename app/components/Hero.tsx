@@ -27,12 +27,10 @@ const Hero = () => {
         // Blinking cursor
         gsap.to('.cursor', { opacity: 0, ease: "power2.inOut", repeat: -1 });
 
-        // --- High-End Cinematic Parallax Scrub Effects ---
+        // --- High-End Parallax Scrub Effects (Keep GSAP for scroll scrubbing) ---
         gsap.to('.hero-text-container', {
-            y: 200,
+            y: 150,
             opacity: 0,
-            scale: 0.9,
-            filter: 'blur(10px)',
             ease: 'none',
             scrollTrigger: {
                 trigger: heroRef.current,
@@ -44,8 +42,7 @@ const Hero = () => {
 
         gsap.to('.hero-bg-img', {
             y: 200,
-            scale: 1.2,
-            filter: 'blur(10px) brightness(0.5)',
+            scale: 1.1,
             ease: 'none',
             scrollTrigger: {
                 trigger: heroRef.current,
