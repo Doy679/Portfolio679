@@ -134,18 +134,18 @@ const Projects = () => {
                                     </p>
                                     
                                     <div className="flex flex-col gap-6 mt-auto">
-                                        <div className="flex flex-wrap gap-2">
+                                        <div className="flex flex-wrap gap-1.5">
                                             {project.badges && Array.isArray(project.badges) ? (
                                                 project.badges.map((badge, badgeIndex) => (
                                                     <span 
                                                         key={badgeIndex} 
-                                                        className="px-2.5 py-1 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-xs font-medium tracking-wide"
+                                                        className="px-2 py-0.5 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-[10px] font-medium tracking-wide"
                                                     >
                                                         {badge}
                                                     </span>
                                                 ))
                                             ) : (
-                                                <span className="text-xs text-base-content/50">No badges</span>
+                                                <span className="text-[10px] text-base-content/50">No badges</span>
                                             )}
                                         </div>
                                         
