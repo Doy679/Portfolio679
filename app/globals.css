@@ -29,4 +29,4 @@ html[data-theme="dark"] .glass-card {
   backdrop-filter: blur(10px); /* Glassmorphism blur effect */
   border-bottom: 1px solid hsl(var(--b1) / 0.2); /* Subtle border */
   box-shadow: 0 4px 6px -1px hsl(var(--b1) / 0.1), 0 2px 4px -2px hsl(var(--b1) / 0.1); /* Light shadow */
-}
+}body { overflow-x: hidden; }
