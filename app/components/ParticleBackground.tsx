@@ -2,6 +2,63 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 
+class Particle {
+    x: number;
+    y: number;
+    dest: { x: number; y: number };
+    r: number;
+    vx: number;
+    vy: number;
+    accX: number;
+    accY: number;
+    friction: number;
+    color: string;
+
+    constructor(x: number, y: number, ww: number, wh: number) {
+        this.x = Math.random() * ww;
+        this.y = Math.random() * wh;
+        this.dest = { x: x, y: y };
+        this.r = Math.random() * 2 + 1;
+        this.vx = (Math.random() - 0.5) * 5;
+        this.vy = (Math.random() - 0.5) * 5;
+        this.accX = 0;
+        this.accY = 0;
+        this.friction = Math.random() * 0.05 + 0.94;
+        
+        // Use document conditionally since it might be SSR
+        const isDark = typeof document !== 'undefined' ? (document.documentElement.getAttribute('data-theme') === 'dark' || !document.documentElement.hasAttribute('data-theme')) : true;
+        const alpha = Math.random() * 0.5 + 0.5;
+        this.color = isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(79, 70, 229, ${alpha})`;
+    }
+
+    render(ctx: CanvasRenderingContext2D, mouse: { x: number, y: number }) {
+        this.accX = (this.dest.x - this.x) / 1000;
+        this.accY = (this.dest.y - this.y) / 1000;
+        this.vx += this.accX;
+        this.vy += this.accY;
+        this.vx *= this.friction;
+        this.vy *= this.friction;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        const a = this.x - mouse.x;
+        const b = this.y - mouse.y;
+        const distance = Math.sqrt(a * a + b * b);
+        if (distance < 70) {
+            this.accX = (this.x - mouse.x) / 100;
+            this.accY = (this.y - mouse.y) / 100;
+            this.vx += this.accX;
+            this.vy += this.accY;
+        }
+    }
+}
+
 const ParticleBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -18,60 +75,6 @@ const ParticleBackground = () => {
         const particles: Particle[] = [];
         const amount = 100;
         const mouse = { x: -9999, y: -9999 };
-
-        class Particle {
-            x: number;
-            y: number;
-            dest: { x: number; y: number };
-            r: number;
-            vx: number;
-            vy: number;
-            accX: number;
-            accY: number;
-            friction: number;
-            color: string;
-
-            constructor(x: number, y: number) {
-                this.x = Math.random() * ww;
-                this.y = Math.random() * wh;
-                this.dest = { x: x, y: y };
-                this.r = Math.random() * 2 + 1;
-                this.vx = (Math.random() - 0.5) * 5;
-                this.vy = (Math.random() - 0.5) * 5;
-                this.accX = 0;
-                this.accY = 0;
-                this.friction = Math.random() * 0.05 + 0.94;
-                this.color = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.5})`;
-            }
-
-            render() {
-                if (!ctx) return;
-                this.accX = (this.dest.x - this.x) / 1000;
-                this.accY = (this.dest.y - this.y) / 1000;
-                this.vx += this.accX;
-                this.vy += this.accY;
-                this.vx *= this.friction;
-                this.vy *= this.friction;
-
-                this.x += this.vx;
-                this.y += this.vy;
-
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.r, Math.PI * 2, false as any);
-                ctx.fill();
-
-                const a = this.x - mouse.x;
-                const b = this.y - mouse.y;
-                const distance = Math.sqrt(a * a + b * b);
-                if (distance < 70) {
-                    this.accX = (this.x - mouse.x) / 100;
-                    this.accY = (this.y - mouse.y) / 100;
-                    this.vx += this.accX;
-                    this.vy += this.accY;
-                }
-            }
-        }
 
         const onMouseMove = (e: MouseEvent) => {
             mouse.x = e.clientX;
@@ -95,13 +98,13 @@ const ParticleBackground = () => {
             wh = canvas.height = window.innerHeight;
             particles.length = 0;
             for (let i = 0; i < amount; i++) {
-                particles.push(new Particle(Math.random() * ww, Math.random() * wh));
+                particles.push(new Particle(Math.random() * ww, Math.random() * wh, ww, wh));
             }
         };
 
         const animate = () => {
             ctx.clearRect(0, 0, ww, wh);
-            particles.forEach(p => p.render());
+            particles.forEach(p => p.render(ctx, mouse));
             requestAnimationFrame(animate);
         };
 

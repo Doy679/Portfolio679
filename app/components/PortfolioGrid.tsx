@@ -39,7 +39,7 @@ export default function PortfolioGrid() {
         <h2 id="projects" className="text-4xl font-bold text-center mb-10">My Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           
-          {projects.map((project, index) => (
+          {projects && Array.isArray(projects) ? projects.map((project, index) => (
             <div key={index} className="card w-96 bg-base-100 shadow-xl scroll-item">
               <figure><Image src={project.image} alt={project.title} width={500} height={500} /></figure>
               <div className="card-body">
@@ -50,7 +50,7 @@ export default function PortfolioGrid() {
                   </div>
               </div>
             </div>
-          ))}
+          )) : <p>Loading projects...</p>}
 
         </div>
     </div>

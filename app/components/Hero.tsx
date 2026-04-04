@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
-import ParticleBackground from './ParticleBackground';
 
 gsap.registerPlugin(TextPlugin);
 
@@ -15,10 +14,10 @@ const Hero = () => {
     useGSAP(() => {
         // Typing Animation
         const texts = ["IT Undergraduate", "Front End Developer"];
-        let masterTl = gsap.timeline({ repeat: -1 });
+        const masterTl = gsap.timeline({ repeat: -1 });
 
         texts.forEach(text => {
-            let tl = gsap.timeline({ repeat: 1, yoyo: true, repeatDelay: 1 });
+            const tl = gsap.timeline({ repeat: 1, yoyo: true, repeatDelay: 1 });
             tl.to(typingTextRef.current, { duration: 2, text: text });
             masterTl.add(tl);
         });
@@ -33,44 +32,56 @@ const Hero = () => {
             { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
         );
 
-        // Image Reveal Animation
+        // Image Reveal Animation (Fade in the background image)
         gsap.fromTo(
-            '.avatar',
-            { clipPath: 'circle(0% at 50% 50%)' },
-            { clipPath: 'circle(75% at 50% 50%)', duration: 2, ease: 'power3.out', delay: 1 }
+            '.hero-bg-img',
+            { opacity: 0, x: 100 },
+            { opacity: 0.8, x: 0, duration: 1.5, ease: 'power3.out', delay: 0.5 }
         );
 
     }, { scope: heroRef });
 
     return (
-        <div id="home" className="hero min-h-screen pt-16 lg:pt-0" ref={heroRef}>
-            <ParticleBackground />
-            <div className="hero-content flex-col lg:flex-row-reverse justify-between w-full px-10">
-                <div className="relative lg:w-1/2 flex justify-center">
-                    <div className="avatar relative z-10">
-                        <div className="w-60 h-60 md:w-72 md:h-72 rounded-full border-4 border-primary overflow-hidden shadow-2xl shadow-primary">
-                            <Image src="/me.jpg" alt="Rondether Gonzales" fill objectFit="cover" className="rounded-full" />
-                        </div>
-                    </div>
+        <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative" ref={heroRef}>
+            
+            {/* Split Screen Background Image - Now visible on all sizes */}
+            <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left">
+                <div className="relative w-full h-full hero-bg-img opacity-60 lg:opacity-80 mix-blend-luminosity">
+                     <Image 
+                        src="/me.jpg" 
+                        alt="Rondether Gonzales" 
+                        fill 
+                        style={{ objectFit: 'cover', objectPosition: 'center' }} 
+                        priority 
+                    />
+                    {/* Gradient Overlay to fade the image into the background color smoothly */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent"></div>
                 </div>
-                <div className="lg:w-1/2 hero-text">
-                    <h1 className="text-5xl font-bold">Hi, I'm <span className="text-primary">Rondether Gonzales</span></h1>
-                    <h2 className="text-3xl font-bold py-6">
+            </div>
+
+            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start">
+                <div className="w-full lg:w-3/4 hero-text text-left pt-20 lg:pt-0">
+                    <h1 className="font-montserrat text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12">
+                        Hi, I'm <br/>
+                        <span className="text-primary mix-blend-difference font-extrabold">Rondether<br/>Gonzales</span>
+                    </h1>
+                    <h2 className="text-3xl md:text-4xl font-bold py-6">
                         <span ref={typingTextRef}></span><span className="cursor text-primary">|</span>
                     </h2>
-                    <p className="py-6">
+                    <p className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium">
                         Driven by a deep passion for technology and committed to building effective digital solutions.
                         My focus is in Front-End Development, utilizing foundational web languages
                         and applying principles of great design. I am highly motivated to acquire new technical knowledge.
                     </p>
-                    <div className="flex flex-wrap gap-4">
-                        <a href="#projects" className="btn btn-primary">
+                    <div className="flex flex-wrap gap-4 mt-4">
+                        <a href="#projects" className="btn btn-primary btn-lg">
                             <i className="fas fa-briefcase mr-2"></i>View Projects
                         </a>
-                        <a href="#contact" className="btn btn-outline btn-primary">
+                        <a href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm">
                             <i className="fas fa-envelope mr-2"></i>Contact Me
                         </a>
-                        <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary">
+                        <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm">
                             <i className="fas fa-download mr-2"></i>Download CV
                         </a>
                     </div>

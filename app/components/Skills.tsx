@@ -25,9 +25,13 @@ const Skills = () => {
         logos.forEach(logo => {
             const tl = gsap.timeline({ paused: true, onReverseComplete: () => { gsap.set(logo, { clearProps: "all" }); } });
 
+            // Dynamically get the color of the icon inside the logo
+            const icon = logo.querySelector('i');
+            const iconColor = icon ? window.getComputedStyle(icon).color : 'rgba(255, 191, 0, 0.8)'; // Fallback to primary if no icon found
+
             tl.to(logo, {
                 scale: 1.2,
-                filter: 'drop-shadow(0 0 10px hsl(var(--p)))',
+                filter: `drop-shadow(0 0 12px ${iconColor})`,
                 duration: 0.3,
                 ease: 'power2.out'
             });

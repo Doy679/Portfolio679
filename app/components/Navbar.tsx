@@ -6,7 +6,7 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 gsap.registerPlugin(ScrollToPlugin);
 
 const Navbar = () => {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
         e.preventDefault();
@@ -37,7 +37,7 @@ const Navbar = () => {
                         <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact</a></li>
                     </ul>
                 </div>
-                <a href="#" className="btn btn-ghost text-xl">Rondether Gonzales</a>
+                <a href="#" className="btn btn-ghost text-xl font-poppins font-bold tracking-wide">Rondether Gonzales</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
