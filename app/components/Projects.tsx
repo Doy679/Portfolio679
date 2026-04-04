@@ -27,6 +27,19 @@ const Projects = () => {
             }
         );
 
+        // Exit Animation - Fades out as it leaves the top
+        gsap.to(projectsRef.current, {
+            opacity: 0,
+            y: -50,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: projectsRef.current,
+                start: 'bottom center',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
         const projectCards = gsap.utils.toArray<HTMLElement>('.project-card');
         
         if (projectCards && Array.isArray(projectCards)) {
@@ -123,7 +136,7 @@ const Projects = () => {
                                     <div className="flex flex-col gap-6 mt-auto">
                                         <div className="flex flex-wrap gap-2">
                                             {project.badges && Array.isArray(project.badges) ? (
-                                                project.badges.slice(0, 4).map((badge, badgeIndex) => (
+                                                project.badges.map((badge, badgeIndex) => (
                                                     <span 
                                                         key={badgeIndex} 
                                                         className="px-2.5 py-1 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-xs font-medium tracking-wide"
