@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { sendEmail } from '../actions';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,20 +34,13 @@ const ContactForm = () => {
         const formData = new FormData(e.currentTarget);
 
         try {
-            const response = await fetch('https://formspree.io/f/your-form-id', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    Accept: 'application/json',
-                },
-            });
+            const result = await sendEmail(formData);
 
-            if (response.ok) {
+            if (result.success) {
                 setToastMessage('Message sent successfully!');
                 setToastType('success');
                 (e.target as HTMLFormElement).reset();
             } else {
-                const result = await response.json();
                 setToastMessage(result.error || 'Failed to send message.');
                 setToastType('error');
             }
@@ -56,6 +50,7 @@ const ContactForm = () => {
                 setShowToast(false);
             }, 3000);
         } catch (error) {
+            console.error('Contact form submission error:', error);
             setToastMessage('Network error. Please try again later.');
             setToastType('error');
             setShowToast(true);
