@@ -6,13 +6,24 @@ const IntroLoader = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // Lock scrolling while loading
+        if (isLoading) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
         // Automatically hide the loader after the animation completes
         const timer = setTimeout(() => {
             setIsLoading(false);
+            document.body.style.overflow = ''; // Ensure scroll is restored
         }, 2800); // Slightly longer for the staggered effect
 
-        return () => clearTimeout(timer);
-    }, []);
+        return () => {
+            clearTimeout(timer);
+            document.body.style.overflow = ''; // Cleanup on unmount
+        };
+    }, [isLoading]);
 
     // Animation variants for the container to stagger children
     const containerVariants = {
