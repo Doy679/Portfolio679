@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -21,11 +21,20 @@ const Projects = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [startScramble, setStartScramble] = useState(false);
     const isAnimatingRef = useRef(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect mobile for layout switching
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useGSAP(() => {
-        if (!sectionRef.current || !scrollAreaRef.current) return;
-
-        const isMobile = window.innerWidth < 1024;
+        if (!sectionRef.current || !scrollAreaRef.current || isMobile) return;
 
         // Header Scramble Trigger
         ScrollTrigger.create({
@@ -36,14 +45,14 @@ const Projects = () => {
             onEnterBack: () => setStartScramble(true)
         });
 
-        // Sticky Scroll Logic
+        // Sticky Scroll Logic (Desktop Only)
         const totalProjects = projects.length;
         
         ScrollTrigger.create({
             trigger: scrollAreaRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: isMobile ? 0.1 : true,
+            scrub: true,
             onUpdate: (self) => {
                 const progress = self.progress;
                 const newIndex = Math.min(
@@ -61,7 +70,6 @@ const Projects = () => {
                         }
                     });
                     
-                    // Outgoing animation
                     tl.to([contentRef.current, numberRef.current, activeNumberRef.current], {
                         opacity: 0,
                         y: -20,
@@ -89,7 +97,6 @@ const Projects = () => {
                         }
                     }, 0);
 
-                    // Incoming animation
                     tl.to([contentRef.current, numberRef.current, activeNumberRef.current], {
                         opacity: 1,
                         y: 0,
@@ -109,7 +116,80 @@ const Projects = () => {
             }
         });
 
-    }, []);
+    }, [isMobile]);
+
+    // Project Item Component for Mobile (Vertical List)
+    const ProjectItemMobile = ({ project, index }: { project: any, index: number }) => (
+        <div className="w-full flex flex-col gap-6 py-12 border-b border-primary/10 last:border-0">
+            {/* Project Image */}
+            <div className="w-full flex flex-col gap-3">
+                <div className="flex items-center justify-between px-1">
+                    <div className="text-primary font-mono text-xs font-bold">
+                        0{index + 1} <span className="text-primary/30 mx-2">/</span> 0{projects.length}
+                    </div>
+                    {project.link && project.link !== "#" && (
+                        <div className="text-primary/60 font-mono text-[9px] tracking-[0.1em] uppercase">
+                            Click to explore <i className="fas fa-external-link-alt ml-1"></i>
+                        </div>
+                    )}
+                </div>
+                
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-primary/10 bg-base-300">
+                    <div className="h-6 bg-base-300/90 border-b border-white/5 flex items-center px-2 gap-1 shrink-0 relative z-10">
+                        <div className="w-1.5 h-1.5 rounded-full bg-error/40"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-warning/40"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-success/40"></div>
+                    </div>
+                    
+                    {project.link && project.link !== "#" ? (
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative">
+                            <Image src={project.image} alt={project.title} fill className="object-cover object-top p-1" />
+                        </a>
+                    ) : (
+                        <Image src={project.image} alt={project.title} fill className="object-cover object-top p-1" />
+                    )}
+                </div>
+            </div>
+
+            {/* Project Info */}
+            <div className="space-y-4 px-1">
+                <h3 className="text-2xl font-black font-montserrat tracking-tighter uppercase text-base-content">
+                    {project.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                    {project.badges.map((badge: string, i: number) => (
+                        <span key={i} className="text-[8px] uppercase font-bold tracking-[0.1em] text-primary/70 bg-primary/5 px-2 py-1 rounded border border-primary/10">
+                            {badge}
+                        </span>
+                    ))}
+                </div>
+                <p className="text-base-content/70 text-sm leading-relaxed">
+                    {project.description}
+                </p>
+            </div>
+        </div>
+    );
+
+    if (isMobile) {
+        return (
+            <section id="projects" className="bg-base-200 px-6 py-20" ref={sectionRef}>
+                <div className="container mx-auto">
+                    <div className="text-center mb-10">
+                        <h2 className="text-2xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
+                            My Featured Projects
+                        </h2>
+                        <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4"></div>
+                    </div>
+                    
+                    <div className="flex flex-col">
+                        {projects.map((project, i) => (
+                            <ProjectItemMobile key={i} project={project} index={i} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section id="projects" className="bg-base-200 relative" ref={sectionRef}>
@@ -139,11 +219,8 @@ const Projects = () => {
                             </div>
 
                             {/* Left Column: Project Info */}
-                            <div 
-                                className="w-full lg:w-[42%] relative flex flex-col order-2 lg:order-1 z-10"
-                            >
+                            <div className="w-full lg:w-[42%] relative flex flex-col order-2 lg:order-1 z-10">
                                 <div className="space-y-4 lg:space-y-5">
-                                    {/* Number Header - Static part vs Animated part */}
                                     <div className="flex items-center gap-4 text-primary font-mono text-sm font-bold h-6">
                                         <div className="overflow-hidden h-full relative flex items-center">
                                             <span ref={activeNumberRef} className="block">
@@ -188,7 +265,6 @@ const Projects = () => {
 
                             {/* Right Column: Project Image (Browser Window Style) */}
                             <div className="w-full lg:w-[60%] flex flex-col order-1 lg:order-2 z-10 lg:mt-8">
-                                {/* Hint Label above image - ensure min height to prevent jump */}
                                 <div className="min-h-[40px] flex items-center">
                                     {projects[activeIndex].link && projects[activeIndex].link !== "#" && (
                                         <div className="flex items-center gap-3 text-primary/60 font-mono text-[9px] tracking-[0.2em] uppercase self-end lg:self-start">
@@ -202,7 +278,6 @@ const Projects = () => {
                                     ref={imageRef}
                                     className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] border border-primary/10 bg-base-300 group transition-all duration-500 hover:shadow-primary/10 max-h-[50vh] lg:max-h-none"
                                 >
-                                    {/* Browser-style Header */}
                                     <div className="h-6 md:h-8 bg-base-300/90 border-b border-white/5 flex items-center px-3 gap-1.5 shrink-0 z-20 relative">
                                         <div className="w-2 h-2 rounded-full bg-error/40"></div>
                                         <div className="w-2 h-2 rounded-full bg-warning/40"></div>
@@ -227,7 +302,6 @@ const Projects = () => {
                                                 sizes="(max-width: 1024px) 100vw, 60vw"
                                                 priority
                                             />
-                                            {/* Hover Overlay */}
                                             <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                                                 <div className="bg-base-100 text-base-content px-6 py-3 rounded-full font-bold tracking-[0.2em] uppercase text-xs shadow-2xl scale-90 group-hover:scale-100 transition-transform duration-500 border border-primary/20">
                                                     Visit Live Project <i className="fas fa-external-link-alt ml-2 text-primary"></i>
