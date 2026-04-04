@@ -11,11 +11,13 @@ const Projects = () => {
     const projectsRef = React.useRef<HTMLElement>(null);
 
     useGSAP(() => {
-        // High-end Scrubbed Parallax Effect for the Section
+        // High-end Cinematic Scrubbed Parallax Effect for the Section
         gsap.fromTo(projectsRef.current,
-            { opacity: 0.5 },
+            { opacity: 0, scale: 0.9, filter: 'blur(10px)' },
             {
                 opacity: 1,
+                scale: 1,
+                filter: 'blur(0px)',
                 ease: 'none',
                 scrollTrigger: {
                     trigger: projectsRef.current,

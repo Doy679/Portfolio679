@@ -16,17 +16,19 @@ const ContactForm = () => {
     const contactRef = useRef<HTMLElement>(null);
 
     useGSAP(() => {
-        // Scrubbed Parallax Effect
+        // Cinematic Scrubbed Parallax Effect
         gsap.fromTo(contactRef.current,
-            { opacity: 0.2, y: 150 },
+            { opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' },
             {
                 opacity: 1,
+                scale: 1,
                 y: 0,
+                filter: 'blur(0px)',
                 ease: 'none',
                 scrollTrigger: {
                     trigger: contactRef.current,
                     start: 'top bottom',
-                    end: 'top 30%',
+                    end: 'top 40%',
                     scrub: true,
                 }
             }

@@ -30,6 +30,20 @@ const About = () => {
                 invalidateOnRefresh: true, // Recalculate on resize
             }
         });
+
+        // Cinematic exit animation for the entire about section
+        gsap.to(wrapperRef.current, {
+            opacity: 0,
+            scale: 0.9,
+            filter: 'blur(10px)',
+            ease: 'none',
+            scrollTrigger: {
+                trigger: wrapperRef.current,
+                start: () => `bottom+=${totalWidth} center`, // Start fading out after the horizontal scroll finishes
+                end: () => `bottom+=${totalWidth} top`,
+                scrub: true,
+            }
+        });
         
     }, { scope: wrapperRef });
 
