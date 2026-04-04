@@ -67,7 +67,7 @@ const IntroLoader = () => {
                                 <motion.span
                                     key={`w1-${index}`}
                                     variants={letterVariants}
-                                    className="text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] font-montserrat font-black text-white uppercase inline-block"
+                                    className="text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] font-montserrat font-black text-base-content uppercase inline-block"
                                 >
                                     {letter}
                                 </motion.span>

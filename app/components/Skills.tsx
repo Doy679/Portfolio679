@@ -10,17 +10,18 @@ const Skills = () => {
     const skillsRef = React.useRef(null);
 
     useGSAP(() => {
+        // Scrubbed Parallax Effect - Subtler entry
         gsap.fromTo(skillsRef.current,
-            { opacity: 0, y: 100 },
+            { opacity: 0.5, y: 50 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-                ease: 'power3.out',
+                ease: 'none',
                 scrollTrigger: {
                     trigger: skillsRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
+                    start: 'top bottom',
+                    end: 'top 40%',
+                    scrub: true,
                 }
             }
         );
@@ -28,37 +29,49 @@ const Skills = () => {
         ScrollTrigger.batch('.skill-card', {
             onEnter: (elements) => {
                 gsap.fromTo(elements,
-                    { opacity: 0, y: 50, willChange: 'transform, opacity' },
-                    { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out', clearProps: 'all' }
+                    { opacity: 0, y: 30, willChange: 'transform, opacity' },
+                    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', clearProps: 'all' }
                 );
             },
-            start: 'top 80%',
+            start: 'top 85%',
             once: true,
         });
 
         const logos = gsap.utils.toArray<HTMLElement>('.logo');
         logos.forEach(logo => {
-            const tl = gsap.timeline({ paused: true, onReverseComplete: () => { gsap.set(logo, { clearProps: "all" }); } });
+            // Randomize starting positions very slightly
+            gsap.set(logo, {
+                y: gsap.utils.random(-5, 5),
+                x: gsap.utils.random(-5, 5),
+                rotation: gsap.utils.random(-2, 2)
+            });
+
+            // Create a subtler continuous floating animation
+            gsap.to(logo, {
+                y: `+=${gsap.utils.random(5, 10)}`,
+                x: `+=${gsap.utils.random(-5, 5)}`,
+                rotation: `+=${gsap.utils.random(-3, 3)}`,
+                duration: gsap.utils.random(3, 5),
+                ease: "sine.inOut",
+                yoyo: true,
+                repeat: -1,
+                delay: gsap.utils.random(0, 2)
+            });
+
+            // Interactive hover effect
+            const tl = gsap.timeline({ paused: true });
 
             // Dynamically get the color of the icon inside the logo
             const icon = logo.querySelector('i');
-            const iconColor = icon ? window.getComputedStyle(icon).color : 'rgba(255, 191, 0, 0.8)'; // Fallback to primary if no icon found
+            const iconColor = icon ? window.getComputedStyle(icon).color : 'rgba(255, 191, 0, 0.8)';
 
             tl.to(logo, {
-                scale: 1.2,
-                filter: `drop-shadow(0 0 12px ${iconColor})`,
+                scale: 1.3,
+                filter: `drop-shadow(0 0 15px ${iconColor})`,
+                zIndex: 10,
                 duration: 0.3,
-                ease: 'power2.out'
+                ease: 'back.out(1.7)'
             });
-
-            // Create a jiggle sub-timeline that repeats
-            const jiggleSubTl = gsap.timeline({ repeat: -1, yoyo: true });
-            jiggleSubTl.to(logo, { x: '+=2', y: '-=2', rotate: 2, duration: 0.1, ease: 'power1.inOut' })
-                       .to(logo, { x: '-=4', y: '+=4', rotate: -4, duration: 0.1, ease: 'power1.inOut' })
-                       .to(logo, { x: '+=2', y: '-=2', rotate: 2, duration: 0.1, ease: 'power1.inOut' });
-
-            // Add the jiggle sub-timeline to the main timeline, starting immediately after the scale
-            tl.add(jiggleSubTl, "-=0.1"); // Start jiggle 0.1s before the scale ends for a smoother transition
 
             logo.addEventListener('mouseenter', () => tl.play());
             logo.addEventListener('mouseleave', () => tl.reverse());
@@ -67,7 +80,7 @@ const Skills = () => {
     }, { scope: skillsRef });
 
     return (
-        <section id="skills" className="py-20 opacity-0" ref={skillsRef}>
+        <section id="skills" className="py-20" ref={skillsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">My Skills</h2>
@@ -154,6 +167,30 @@ const Skills = () => {
                                 </div>
                                 <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Webpack">
                                     <i className="fas fa-cogs text-3xl text-blue-600"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
+                        <div className="card-body items-center text-center">
+                            <i className="fas fa-screwdriver-wrench text-4xl text-primary mb-4"></i>
+                            <h3 className="card-title text-2xl font-bold">IT Support & Hardware</h3>
+                            <div className="flex flex-wrap justify-center gap-4 mt-4">
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Printer Network Sharing">
+                                    <i className="fas fa-print text-3xl text-gray-400"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Hardware & Software Repair">
+                                    <i className="fas fa-microchip text-3xl text-green-400"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Networking & LAN Routing">
+                                    <i className="fas fa-network-wired text-3xl text-blue-400"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Assemble/Disassemble PC">
+                                    <i className="fas fa-desktop text-3xl text-indigo-400"></i>
+                                </div>
+                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Reformat & Install O.S.">
+                                    <i className="fas fa-compact-disc text-3xl text-red-400"></i>
                                 </div>
                             </div>
                         </div>

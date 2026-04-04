@@ -38,14 +38,14 @@ const About = () => {
             <div className="h-screen flex items-center" ref={containerRef} style={{ width: '300vw' }}>
                 
                 {/* Panel 1: About Me (Part 1) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-10 pt-32 md:pt-40">
-                     <div className="text-center mb-10 w-full max-w-4xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 font-montserrat text-white drop-shadow-xl tracking-tighter uppercase">About Me</h2>
-                        <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-8"></div>
-                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto text-slate-300">
+                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-10 pt-24 md:pt-28">
+                     <div className="text-center mb-6 w-full max-w-4xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 font-montserrat text-base-content drop-shadow-xl tracking-tighter uppercase">About Me</h2>
+                        <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6"></div>
+                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto text-base-content/80">
                             As a recent Bachelor of Science in Information Technology (BSIT) graduate and an aspiring Junior Frontend Developer, I am driven by a curiosity for how digital experiences are crafted. My journey into coding began with a desire to understand the logic behind the tools we use every day, and I am now eager to apply my skills in a professional environment where I can continue to gain more learning and experience.
                         </p>
-                        <div className="mt-12 flex flex-col items-center gap-4 animate-bounce opacity-50">
+                        <div className="mt-8 flex flex-col items-center gap-4 animate-bounce opacity-50 text-base-content">
                             <span className="text-sm uppercase tracking-widest">Scroll to continue</span>
                             <i className="fas fa-arrow-right"></i>
                         </div>
@@ -53,15 +53,15 @@ const About = () => {
                 </div>
 
                 {/* Panel 2: About Me (Part 2) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-10 pt-32 md:pt-40">
-                     <div className="text-center mb-10 w-full max-w-4xl mx-auto">
-                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto text-slate-300">
+                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-10 pt-24 md:pt-28">
+                     <div className="text-center mb-6 w-full max-w-4xl mx-auto">
+                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto text-base-content/80">
                             My technical foundation is built on core programming principles, including Object-Oriented Programming (OOP) and Data Structures. On the frontend, I focus on building responsive and functional layouts using HTML, CSS, Bootstrap, and Tailwind CSS. I also have foundational experience with server-side logic and database management through Node.js, Express.js, and MySQL, and I am familiar with using Git for version control.
                         </p>
-                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto mt-6 text-slate-300">
+                        <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto mt-4 text-base-content/80">
                             I am a committed learner who values growth and precision. I view every project as an opportunity to sharpen my technical skills, follow modern web standards, and contribute to the development of reliable digital solutions. My goal is to work alongside experienced professionals to build impactful tools while evolving my expertise as a developer.
                         </p>
-                        <div className="mt-12">
+                        <div className="mt-8">
                             <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg shadow-lg shadow-primary/30">
                                 <i className="fas fa-download mr-2"></i>Download My CV
                             </a>
@@ -70,7 +70,7 @@ const About = () => {
                 </div>
 
                 {/* Panel 3: Education (Timeline) */}
-                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-4 md:px-20 relative pt-32 md:pt-40">
+                <div className="horizontal-panel w-screen flex flex-col items-center justify-center px-4 md:px-20 relative pt-24 md:pt-28">
                     <div className="w-full max-w-6xl">
                         <h3 className="text-5xl font-black mb-16 text-center font-montserrat tracking-tighter">Education</h3>
                         

@@ -86,53 +86,67 @@ const Projects = () => {
                                 href={project.link || "#"} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="group bg-base-100 rounded-xl overflow-hidden border border-white/5 hover:border-white/10 transition-all hover:-translate-y-2 block cursor-pointer project-card shadow-2xl"
+                                className="group relative bg-base-100 rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-3 block cursor-pointer project-card shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(var(--p),0.2)]"
                             >
-                                <div className="relative w-full aspect-video bg-base-300/30 overflow-hidden">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-base-100/40 to-transparent z-10 opacity-30"></div>
+                                {/* Inner Glow Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"></div>
+
+                                <div className="relative w-full aspect-[16/10] bg-base-300/50 overflow-hidden border-b border-white/5">
+                                    {/* Subtle Image Overlay */}
+                                    <div className="absolute inset-0 bg-base-100/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                                    
                                     <img 
                                         src={project.image} 
                                         alt={project.title} 
-                                        className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105 p-2" 
+                                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" 
                                     />
                                 </div>
-                                <div className="p-8">
+                                <div className="p-8 relative z-20 bg-base-100 flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex gap-2">
                                             {project.title.includes("IN DEVELOPMENT") && (
-                                                <span className="text-sm font-medium text-yellow-400 tracking-wider uppercase flex items-center gap-1">
-                                                    <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
-                                                    In Development
+                                                <span className="px-3 py-1 bg-yellow-400/10 border border-yellow-400/20 text-xs font-bold text-yellow-400 tracking-wider uppercase rounded-full flex items-center gap-2">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
+                                                    In Dev
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-primary transition-colors">
+                                    <h3 className="text-2xl font-bold mb-3 text-base-content group-hover:text-primary transition-colors duration-300 font-montserrat tracking-tight">
                                         {project.title.replace(" (IN DEVELOPMENT)", "")}
                                     </h3>
-                                    <p className="text-slate-400 text-base mb-8 leading-relaxed line-clamp-3">
+                                    <p className="text-base-content/70 text-sm mb-6 leading-relaxed line-clamp-3 flex-grow">
                                         {project.description}
                                     </p>
-                                    <div className="flex flex-wrap gap-3">
-                                        {project.badges && Array.isArray(project.badges) ? (
-                                            project.badges.slice(0, 5).map((badge, badgeIndex) => (
-                                                <span 
-                                                    key={badgeIndex} 
-                                                    className="px-3 py-1.5 bg-white/5 border border-white/10 text-slate-300 rounded-md text-sm font-medium"
-                                                >
-                                                    {badge}
-                                                </span>
-                                            ))
-                                        ) : (
-                                            <span className="text-sm text-slate-500">No badges</span>
-                                        )}
+                                    
+                                    <div className="flex flex-col gap-6 mt-auto">
+                                        <div className="flex flex-wrap gap-2">
+                                            {project.badges && Array.isArray(project.badges) ? (
+                                                project.badges.slice(0, 4).map((badge, badgeIndex) => (
+                                                    <span 
+                                                        key={badgeIndex} 
+                                                        className="px-2.5 py-1 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-xs font-medium tracking-wide"
+                                                    >
+                                                        {badge}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="text-xs text-base-content/50">No badges</span>
+                                            )}
+                                        </div>
+                                        
+                                        {/* Minimal View Project Link */}
+                                        <div className="flex items-center gap-2 text-sm font-semibold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                            <span>View Project</span>
+                                            <i className="fas fa-arrow-right text-xs"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
                         ))
                     ) : (
                         <div className="col-span-full text-center py-10">
-                            <p className="text-slate-400">No projects to display</p>
+                            <p className="text-base-content/60">No projects to display</p>
                         </div>
                     )}
                 </div>

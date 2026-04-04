@@ -110,7 +110,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium text-slate-300"
+                        className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium text-base-content/80"
                     >
                         Driven by a deep passion for technology and committed to building effective digital solutions.
                         My focus is in Front-End Development, utilizing foundational web languages
