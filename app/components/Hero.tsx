@@ -15,7 +15,7 @@ const Hero = () => {
 
     useGSAP(() => {
         // Typing Animation (Keep GSAP for typing as it's better at string manipulation)
-        const texts = ["IT Undergraduate", "Front End Developer"];
+        const texts = ["Junior Web Developer", "Front End Developer"];
         const masterTl = gsap.timeline({ repeat: -1 });
 
         texts.forEach(text => {
@@ -88,12 +88,6 @@ const Hero = () => {
                         Hi, I&apos;m <br/>
                         <span className="text-primary mix-blend-difference font-extrabold relative inline-block">
                             Rondether<br/>Gonzales
-                            <motion.div 
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                transition={{ duration: 1, delay: 0.8, ease: "anticipate" }}
-                                className="absolute -bottom-2 left-0 w-full h-2 bg-primary origin-left rounded-full"
-                            />
                         </span>
                     </motion.h1>
                     
