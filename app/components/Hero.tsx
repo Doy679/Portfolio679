@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
@@ -13,7 +14,7 @@ const Hero = () => {
     const typingTextRef = React.useRef(null);
 
     useGSAP(() => {
-        // Typing Animation
+        // Typing Animation (Keep GSAP for typing as it's better at string manipulation)
         const texts = ["IT Undergraduate", "Front End Developer"];
         const masterTl = gsap.timeline({ repeat: -1 });
 
@@ -26,22 +27,8 @@ const Hero = () => {
         // Blinking cursor
         gsap.to('.cursor', { opacity: 0, ease: "power2.inOut", repeat: -1 });
 
-        // Intro Animation
-        gsap.fromTo(
-            '.hero-text > *',
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' }
-        );
-
-        // Image Reveal Animation (Fade in the background image)
-        gsap.fromTo(
-            '.hero-bg-img',
-            { opacity: 0, x: 100 },
-            { opacity: 0.8, x: 0, duration: 1.5, ease: 'power3.out', delay: 0.5 }
-        );
-
-        // --- High-End Parallax Scrub Effects ---
-        gsap.to('.hero-text', {
+        // --- High-End Parallax Scrub Effects (Keep GSAP for scroll scrubbing) ---
+        gsap.to('.hero-text-container', {
             y: 150,
             opacity: 0,
             ease: 'none',
@@ -70,8 +57,13 @@ const Hero = () => {
     return (
         <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative" ref={heroRef}>
             
-            {/* Split Screen Background Image - Now visible on all sizes */}
-            <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left">
+            {/* Split Screen Background Image */}
+            <motion.div 
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left"
+            >
                 <div className="relative w-full h-full hero-bg-img opacity-60 lg:opacity-80 mix-blend-luminosity">
                      <Image 
                         src="/me.jpg" 
@@ -80,37 +72,67 @@ const Hero = () => {
                         style={{ objectFit: 'cover', objectPosition: 'center' }} 
                         priority 
                     />
-                    {/* Gradient Overlay to fade the image into the background color smoothly */}
                     <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent"></div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start">
-                <div className="w-full lg:w-3/4 hero-text text-left pt-20 lg:pt-0">
-                    <h1 className="font-montserrat text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12">
+            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
+                <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-montserrat text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12"
+                    >
                         Hi, I&apos;m <br/>
-                        <span className="text-primary mix-blend-difference font-extrabold">Rondether<br/>Gonzales</span>
-                    </h1>
-                    <h2 className="text-3xl md:text-4xl font-bold py-6">
+                        <span className="text-primary mix-blend-difference font-extrabold relative inline-block">
+                            Rondether<br/>Gonzales
+                            <motion.div 
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{ duration: 1, delay: 0.8, ease: "anticipate" }}
+                                className="absolute -bottom-2 left-0 w-full h-2 bg-primary origin-left rounded-full"
+                            />
+                        </span>
+                    </motion.h1>
+                    
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-3xl md:text-4xl font-bold py-6"
+                    >
                         <span ref={typingTextRef}></span><span className="cursor text-primary">|</span>
-                    </h2>
-                    <p className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium">
+                    </motion.h2>
+                    
+                    <motion.p 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium text-slate-300"
+                    >
                         Driven by a deep passion for technology and committed to building effective digital solutions.
                         My focus is in Front-End Development, utilizing foundational web languages
                         and applying principles of great design. I am highly motivated to acquire new technical knowledge.
-                    </p>
-                    <div className="flex flex-wrap gap-4 mt-4">
-                        <a href="#projects" className="btn btn-primary btn-lg">
+                    </motion.p>
+                    
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex flex-wrap gap-4 mt-4"
+                    >
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projects" className="btn btn-primary btn-lg shadow-[0_0_20px_rgba(var(--p),0.4)]">
                             <i className="fas fa-briefcase mr-2"></i>View Projects
-                        </a>
-                        <a href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm">
+                        </motion.a>
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm">
                             <i className="fas fa-envelope mr-2"></i>Contact Me
-                        </a>
-                        <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm">
+                        </motion.a>
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm">
                             <i className="fas fa-download mr-2"></i>Download CV
-                        </a>
-                    </div>
+                        </motion.a>
+                    </motion.div>
                 </div>
             </div>
         </div>
