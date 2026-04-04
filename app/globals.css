@@ -68,3 +68,26 @@ input, select, textarea {
 .input, .textarea {
   font-size: 16px !important;
 }
+
+/* Animated Gradient Text - Refined Palette */
+.gradient-text-animate {
+  background: linear-gradient(
+    to right, 
+    #818cf8 0%, 
+    #c084fc 50%, 
+    #818cf8 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #818cf8; /* Fallback for browsers that don't support text-clip */
+  animation: gradientMove 8s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}

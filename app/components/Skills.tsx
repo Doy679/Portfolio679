@@ -1,93 +1,115 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import HackerText from './HackerText';
+import GradientTitle from './GradientTitle';
+import SkillCard from './SkillCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
     const skillsRef = React.useRef(null);
-    const [startScramble, setStartScramble] = useState(false);
+
+    const skillCategories = [
+        {
+            title: "Programming Languages",
+            icon: "fas fa-code",
+            className: "md:col-span-5",
+            skills: [
+                { name: "JS/TS", icon: "fab fa-js-square", color: "#F7DF1E" },
+                { name: "Java", icon: "fab fa-java", color: "#ED8B00" },
+                { name: "C/C++", icon: "fas fa-file-code", color: "#00599C" },
+                { name: "C#", icon: "fas fa-file-code", color: "#239120" }
+            ]
+        },
+        {
+            title: "Frontend & Frameworks",
+            icon: "fas fa-layer-group",
+            className: "md:col-span-7",
+            skills: [
+                { name: "React", icon: "fab fa-react", color: "#61DAFB" },
+                { name: "Next.js", icon: "fas fa-globe", color: "#FFFFFF" },
+                { name: "Tailwind", icon: "fab fa-css3-alt", color: "#06B6D4" },
+                { name: "GSAP", icon: "fas fa-wind", color: "#88CE02" },
+                { name: "HTML/CSS", icon: "fab fa-html5", color: "#E34F26" },
+                { name: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
+                { name: "DaisyUI", icon: "fas fa-fill-drip", color: "#EC4899" }
+            ]
+        },
+        {
+            title: "Supporting Tools",
+            icon: "fas fa-tools",
+            className: "md:col-span-6",
+            skills: [
+                { name: "GIT/GITHUB", icon: "fab fa-git-alt", color: "#F05032" },
+                { name: "Node.js", icon: "fab fa-node-js", color: "#339933" },
+                { name: "Webpack", icon: "fas fa-cogs", color: "#8DD6F9" },
+                { name: "VS Code", icon: "fas fa-laptop-code", color: "#007ACC" }
+            ]
+        },
+        {
+            title: "OS & Environments",
+            icon: "fas fa-desktop",
+            className: "md:col-span-6",
+            skills: [
+                { name: "Windows", icon: "fab fa-windows", color: "#0078D4" },
+                { name: "Linux", icon: "fab fa-linux", color: "#FCC624" },
+                { name: "Command Line", icon: "fas fa-terminal", color: "#4D4D4D" }
+            ]
+        },
+        {
+            title: "IT Support & Hardware Expertise",
+            icon: "fas fa-screwdriver-wrench",
+            className: "md:col-span-12",
+            skills: [
+                { name: "PC Hardware", icon: "fas fa-microchip", color: "#10B981" },
+                { name: "Networking", icon: "fas fa-network-wired", color: "#60A5FA" },
+                { name: "Reformat O.S.", icon: "fas fa-compact-disc", color: "#F87171" },
+                { name: "LAN Routing", icon: "fas fa-route", color: "#A78BFA" },
+                { name: "Printer Sharing", icon: "fas fa-print", color: "#9CA3AF" }
+            ]
+        }
+    ];
 
     useGSAP(() => {
-        // Scrubbed Parallax Effect - Subtler entry
+        // Smooth entry animation - No scrubbing to avoid conflicts
         gsap.fromTo(skillsRef.current,
-            { opacity: 0.2, y: 50 },
+            { opacity: 0, y: 30 },
             {
                 opacity: 1,
                 y: 0,
-                ease: 'none',
+                duration: 1,
+                ease: 'power3.out',
                 scrollTrigger: {
                     trigger: skillsRef.current,
-                    start: 'top bottom',
-                    end: 'top 40%',
-                    scrub: true,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
                 }
             }
         );
 
-        ScrollTrigger.create({
-            trigger: skillsRef.current,
-            start: 'top 70%',
-            onEnter: () => setStartScramble(true),
-            onLeaveBack: () => setStartScramble(false),
-            onEnterBack: () => setStartScramble(true)
-        });
-
+        // Staggered reveal for bento cards
         ScrollTrigger.batch('.skill-card', {
             onEnter: (elements) => {
                 gsap.fromTo(elements,
-                    { opacity: 0, y: 30, willChange: 'transform, opacity' },
-                    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out', clearProps: 'all' }
+                    { opacity: 0, y: 40, willChange: 'transform, opacity' },
+                    { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'expo.out', clearProps: 'all' }
                 );
             },
             start: 'top 85%',
             once: true,
         });
 
-        const logos = gsap.utils.toArray<HTMLElement>('.logo');
-        logos.forEach(logo => {
-            // Randomize starting positions very slightly
-            gsap.set(logo, {
-                y: gsap.utils.random(-5, 5),
-                x: gsap.utils.random(-5, 5),
-                rotation: gsap.utils.random(-2, 2)
-            });
-
-            // Create a subtler continuous floating animation
-            gsap.to(logo, {
-                y: `+=${gsap.utils.random(5, 10)}`,
-                x: `+=${gsap.utils.random(-5, 5)}`,
-                rotation: `+=${gsap.utils.random(-3, 3)}`,
-                duration: gsap.utils.random(3, 5),
-                ease: "sine.inOut",
-                yoyo: true,
-                repeat: -1,
-                delay: gsap.utils.random(0, 2)
-            });
-
-            // Interactive hover effect
-            const tl = gsap.timeline({ paused: true });
-
-            // Dynamically get the color of the icon inside the logo
-            const icon = logo.querySelector('i');
-            const iconColor = icon ? window.getComputedStyle(icon).color : 'rgba(255, 191, 0, 0.8)';
-
-            tl.to(logo, {
-                scale: 1.3,
-                filter: `drop-shadow(0 0 15px ${iconColor})`,
-                zIndex: 10,
-                duration: 0.3,
-                ease: 'back.out(1.7)'
-            });
-
-            logo.addEventListener('mouseenter', () => tl.play());
-            logo.addEventListener('mouseleave', () => tl.reverse());
+        // Hide section when completely scrolled past into Projects
+        ScrollTrigger.create({
+            trigger: skillsRef.current,
+            start: 'bottom top',
+            onEnter: () => gsap.set(skillsRef.current, { visibility: 'hidden' }),
+            onEnterBack: () => gsap.set(skillsRef.current, { visibility: 'visible' }),
         });
 
-        // --- Tilt Effect for Skill Cards (Desktop Only) ---
+        // Tilt effect for desktop
         const isDesktop = window.innerWidth > 1024;
         if (isDesktop) {
             const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
@@ -100,8 +122,8 @@ const Skills = () => {
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     
-                    const rotateX = (y - centerY) / 20;
-                    const rotateY = (centerX - x) / 20;
+                    const rotateX = (y - centerY) / 30;
+                    const rotateY = (centerX - x) / 30;
 
                     gsap.to(card, {
                         rotateX: rotateX,
@@ -130,123 +152,25 @@ const Skills = () => {
     }, { scope: skillsRef });
 
     return (
-        <section id="skills" className="py-20" ref={skillsRef}>
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
-                        <HackerText text="My Skills" trigger={startScramble} />
+        <section id="skills" className="py-24 bg-base-200/50" ref={skillsRef}>
+            <div className="container mx-auto px-6 md:px-10 lg:px-20">
+                <div className="text-center mb-20">
+                    <h2 className="text-3xl md:text-4xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
+                        <GradientTitle text="My Skills" />
                     </h2>
-                    <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
+                    <div className="w-16 h-1 bg-primary/30 mx-auto mt-6 rounded-full shadow-[0_0_20px_rgba(var(--p),0.2)]"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
-                        <div className="card-body items-center text-center">
-                            <i className="fas fa-code text-4xl text-primary mb-4"></i>
-                            <h3 className="card-title text-2xl font-bold">Programming Languages</h3>
-                            <div className="flex flex-wrap justify-center gap-4 mt-4">
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="JavaScript/TypeScript">
-                                    <i className="fab fa-js-square text-3xl text-yellow-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Java">
-                                    <i className="fab fa-java text-3xl text-red-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="C/C++">
-                                    <i className="fas fa-file-code text-3xl text-blue-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="C#">
-                                    <i className="fas fa-file-code text-3xl text-purple-500"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
-                        <div className="card-body items-center text-center">
-                            <i className="fas fa-layer-group text-4xl text-primary mb-4"></i>
-                            <h3 className="card-title text-2xl font-bold">Technologies & Frameworks</h3>
-                            <div className="flex flex-wrap justify-center gap-4 mt-4">
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="HTML/CSS">
-                                    <i className="fab fa-html5 text-3xl text-orange-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Bootstrap">
-                                    <i className="fab fa-bootstrap text-3xl text-purple-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="GSAP">
-                                    <i className="fas fa-wind text-3xl text-green-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Next.js">
-                                    <i className="fas fa-globe text-3xl"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="React">
-                                    <i className="fab fa-react text-3xl text-blue-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="DaisyUI">
-                                    <i className="fas fa-fill-drip text-3xl text-pink-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Tailwind CSS">
-                                    <i className="fab fa-css3-alt text-3xl text-blue-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
-                        <div className="card-body items-center text-center">
-                            <i className="fas fa-desktop text-4xl text-primary mb-4"></i>
-                            <h3 className="card-title text-2xl font-bold">Operating Systems & Server Expertise</h3>
-                            <div className="flex flex-wrap justify-center gap-4 mt-4">
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Windows">
-                                    <i className="fab fa-windows text-3xl text-blue-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Linux">
-                                    <i className="fab fa-linux text-3xl"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
-                        <div className="card-body items-center text-center">
-                            <i className="fas fa-tools text-4xl text-primary mb-4"></i>
-                            <h3 className="card-title text-2xl font-bold">Supporting Tools</h3>
-                            <div className="flex flex-wrap justify-center gap-4 mt-4">
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Git">
-                                    <i className="fab fa-git-alt text-3xl text-orange-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Node.js">
-                                    <i className="fab fa-node-js text-3xl text-green-500"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Webpack">
-                                    <i className="fas fa-cogs text-3xl text-blue-600"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card bg-base-100 shadow-xl skill-card glass-card">
-                        <div className="card-body items-center text-center">
-                            <i className="fas fa-screwdriver-wrench text-4xl text-primary mb-4"></i>
-                            <h3 className="card-title text-2xl font-bold">IT Support & Hardware</h3>
-                            <div className="flex flex-wrap justify-center gap-4 mt-4">
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Printer Network Sharing">
-                                    <i className="fas fa-print text-3xl text-gray-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Hardware & Software Repair">
-                                    <i className="fas fa-microchip text-3xl text-green-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Networking & LAN Routing">
-                                    <i className="fas fa-network-wired text-3xl text-blue-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Assemble/Disassemble PC">
-                                    <i className="fas fa-desktop text-3xl text-indigo-400"></i>
-                                </div>
-                                <div className="p-4 bg-base-200 rounded-full tooltip logo" data-tip="Reformat & Install O.S.">
-                                    <i className="fas fa-compact-disc text-3xl text-red-400"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    {skillCategories.map((cat, idx) => (
+                        <SkillCard 
+                            key={idx}
+                            title={cat.title}
+                            icon={cat.icon}
+                            skills={cat.skills}
+                            className={cat.className}
+                        />
+                    ))}
                 </div>
             </div>
         </section>

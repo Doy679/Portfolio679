@@ -5,14 +5,13 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projects } from '../data/projects';
-import HackerText from './HackerText';
+import GradientTitle from './GradientTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const desktopContainerRef = useRef<HTMLDivElement>(null);
-    const [startScramble, setStartScramble] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
 
     useGSAP(() => {
@@ -24,17 +23,8 @@ const Projects = () => {
 
             if (prefersReducedMotion) {
                 gsap.set('.project-wrapper', { opacity: 1, visibility: 'visible', y: 0, position: 'relative' });
-                setStartScramble(true);
                 return;
             }
-
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: 'top 70%',
-                onEnter: () => setStartScramble(true),
-                onLeaveBack: () => setStartScramble(false),
-                onEnterBack: () => setStartScramble(true)
-            });
 
             const projectWrappers = gsap.utils.toArray('.project-wrapper');
             const totalProjects = projects.length;
@@ -215,7 +205,7 @@ const Projects = () => {
                         {/* Static Section Header */}
                         <div className="pt-16 pb-4 text-left shrink-0 z-50">
                             <h2 className="text-3xl font-black font-montserrat tracking-[0.1em] uppercase text-base-content/20">
-                                <HackerText text="Selected Works" trigger={startScramble} />
+                                <GradientTitle text="Selected Works" />
                             </h2>
                             <div className="w-24 h-1 bg-primary mt-2"></div>
                         </div>

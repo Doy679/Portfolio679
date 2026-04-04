@@ -26,7 +26,7 @@ export const projects: Project[] = [
         description: "A comprehensive academic management system tailored for Senior High Schools. This tool automates complex grade calculations, maintains detailed student profiles, and generates official academic reports, significantly reducing the administrative workload for faculty and staff.",
         image: "/Grading%20System.png",
         badges: ["Angular", "Node.js", "MySQL", "Responsive Design", "Web Application"],
-        link: "#",
+        link: "https://capstone-grading-system.vercel.app/account/login",
     },
     {
         title: "WiFi Test PH",

@@ -5,8 +5,8 @@ export const siteConfig = {
   url: "https://rondether-portfolio.vercel.app", // Update with actual URL
   ogImage: "https://rondether-portfolio.vercel.app/og.png",
   links: {
-    github: "https://github.com/your-username", // Update with actual github
-    linkedin: "https://linkedin.com/in/your-profile", // Update with actual linkedin
+    github: "https://github.com/Doy679", // Update with actual github
+    linkedin: "https://www.linkedin.com/in/ron-dether-gonzales-6551942b8/", // Update with actual linkedin
     facebook: "https://facebook.com/your-profile",
   },
   contact: {

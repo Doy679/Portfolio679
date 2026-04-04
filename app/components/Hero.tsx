@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
@@ -7,21 +7,13 @@ import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingShape from './FloatingShape';
-import HackerText from './HackerText';
+import GradientTitle from './GradientTitle';
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
 const Hero = () => {
-    const heroRef = React.useRef(null);
-    const typingTextRef = React.useRef(null);
-    const [startScramble, setStartScramble] = useState(false);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setStartScramble(true);
-        }, 3800);
-        return () => clearTimeout(timeout);
-    }, []);
+    const heroRef = useRef(null);
+    const typingTextRef = useRef(null);
 
     useGSAP(() => {
         // Typing Animation
@@ -98,18 +90,24 @@ const Hero = () => {
 
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-montserrat text-5xl md:text-6xl lg:text-8xl font-black tracking-tighter leading-[0.9] drop-shadow-2xl mt-8 lg:mt-12"
+                    <div 
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter leading-none drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
                     >
-                        Hi, I&apos;m <br/>
-                        <span className="text-primary mix-blend-difference font-extrabold relative inline-block">
-                            <HackerText text="RONDETHER" trigger={startScramble} /><br/>
-                            <HackerText text="GONZALES" trigger={startScramble} delay={300} />
-                        </span>
-                    </motion.h1>
+                        <GradientTitle 
+                            text="RONDETHER" 
+                            inView={false} 
+                            initialX={-40} 
+                            initialY={0} 
+                            delay={0.3} 
+                        />
+                        <GradientTitle 
+                            text="GONZALES" 
+                            inView={false} 
+                            initialX={-40} 
+                            initialY={0} 
+                            delay={0.5} 
+                        />
+                    </div>
                     
                     <motion.h2 
                         initial={{ opacity: 0, y: 30 }}
@@ -159,7 +157,7 @@ const Hero = () => {
                             href="/cv.pdf" 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                            className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
                         >
                             <i className="fas fa-download mr-2"></i>Download CV
                         </motion.a>
