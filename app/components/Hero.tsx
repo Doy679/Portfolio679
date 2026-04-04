@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import FloatingShape from './FloatingShape';
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
@@ -39,16 +40,30 @@ const Hero = () => {
             }
         });
 
-        gsap.to('.hero-bg-img', {
-            y: 200,
-            scale: 1.1,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: heroRef.current,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true,
-            }
+        // --- Magnetic Buttons ---
+        const magneticButtons = gsap.utils.toArray<HTMLElement>('.btn-magnetic');
+        magneticButtons.forEach((btn) => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(btn, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
         });
 
     }, { scope: heroRef });
@@ -64,15 +79,21 @@ const Hero = () => {
                 className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left"
             >
                 <div className="relative w-full h-full hero-bg-img opacity-60 lg:opacity-80 mix-blend-luminosity">
+                     {/* 3D Element as an aura behind the image */}
+                     <div className="absolute inset-0 z-0 opacity-40 scale-125">
+                        <FloatingShape />
+                     </div>
+                     
                      <Image 
-                        src="/me.jpg" 
+                        src="/new.png" 
                         alt="Rondether Gonzales" 
                         fill 
                         style={{ objectFit: 'cover', objectPosition: 'top' }} 
+                        className="relative z-10"
                         priority 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent z-20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent z-20"></div>
                 </div>
             </motion.div>
 
@@ -116,13 +137,13 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="flex flex-wrap gap-4 mt-4"
                     >
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projects" className="btn btn-primary btn-lg shadow-[0_0_20px_rgba(var(--p),0.4)]">
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#projects" className="btn btn-primary btn-lg shadow-[0_0_20px_rgba(var(--p),0.4)] btn-magnetic">
                             <i className="fas fa-briefcase mr-2"></i>View Projects
                         </motion.a>
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm">
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="#contact" className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm btn-magnetic">
                             <i className="fas fa-envelope mr-2"></i>Contact Me
                         </motion.a>
-                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm">
+                        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-secondary btn-lg bg-base-100/50 backdrop-blur-sm btn-magnetic">
                             <i className="fas fa-download mr-2"></i>Download CV
                         </motion.a>
                     </motion.div>

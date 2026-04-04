@@ -34,4 +34,11 @@ export const projects: Project[] = [
         badges: ["HTML", "CSS", "JavaScript", "Responsive Design", "Web Application"],
         link: "https://wifitestph.vercel.app/",
     },
+    {
+        title: "Decode the Culture (Codigo Street & Culture)",
+        description: "An authentic e-commerce platform for streetwear and urban culture apparel. Features product collections, seamless shopping experience, and brand storytelling.",
+        image: "/Decodetheculture.png",
+        badges: ["E-commerce", "Next.js", "React", "Tailwind CSS", "Brand Identity"],
+        link: "https://decodetheculture.vercel.app/",
+    },
 ];

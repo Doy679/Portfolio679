@@ -77,6 +77,41 @@ const Skills = () => {
             logo.addEventListener('mouseleave', () => tl.reverse());
         });
 
+        // --- Tilt Effect for Skill Cards ---
+        const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
+        cards.forEach((card) => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                gsap.to(card, {
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    scale: 1.02,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    perspective: 1000
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotateX: 0,
+                    rotateY: 0,
+                    scale: 1,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+        });
+
     }, { scope: skillsRef });
 
     return (

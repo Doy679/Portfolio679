@@ -1,9 +1,11 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projects } from '../data/projects';
+import ProjectCarousel from './ProjectCarousel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,6 +80,8 @@ const Projects = () => {
                     <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
                 </div>
 
+                <ProjectCarousel projects={projects} />
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12 max-w-[90rem] mx-auto xl:px-8">
                     {projects && Array.isArray(projects) ? (
                         projects.map((project, index) => {
@@ -101,10 +105,11 @@ const Projects = () => {
                                         {/* Subtle Image Overlay */}
                                         <div className="absolute inset-0 bg-base-100/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
                                         
-                                        <img 
+                                        <Image 
                                             src={project.image} 
                                             alt={project.title} 
-                                            className="object-contain w-full h-full transition-transform duration-700" 
+                                            fill
+                                            className="object-contain p-2 transition-transform duration-700" 
                                         />
                                     </div>
                                     <div className="p-8 relative z-20 bg-base-100 flex flex-col flex-grow">
