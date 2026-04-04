@@ -27,19 +27,6 @@ const Projects = () => {
             }
         );
 
-        // Exit Animation - Fades out as it leaves the top
-        gsap.to(projectsRef.current, {
-            opacity: 0,
-            y: -50,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: projectsRef.current,
-                start: 'bottom center',
-                end: 'bottom top',
-                scrub: true,
-            }
-        });
-
         const projectCards = gsap.utils.toArray<HTMLElement>('.project-card');
         
         if (projectCards && Array.isArray(projectCards)) {
@@ -66,10 +53,9 @@ const Projects = () => {
                 const img = card.querySelector('img');
                 if (img) {
                     gsap.fromTo(img,
-                        { scale: 1.2, y: -20 },
+                        { y: -10 },
                         {
-                            scale: 1,
-                            y: 0,
+                            y: 10,
                             ease: 'none',
                             scrollTrigger: {
                                 trigger: card,
@@ -88,76 +74,89 @@ const Projects = () => {
         <section id="projects" className="py-20 bg-base-200" ref={projectsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">My Featured Projects</h2>
-                    <div className="w-20 h-1 bg-primary mx-auto"></div>
+                    <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">My Featured Projects</h2>
+                    <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4 mb-8"></div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12 max-w-[90rem] mx-auto xl:px-8">
                     {projects && Array.isArray(projects) ? (
-                        projects.map((project, index) => (
-                            <a 
-                                key={index} 
-                                href={project.link || "#"} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="group relative bg-base-100 rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-3 block cursor-pointer project-card shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(var(--p),0.2)]"
-                            >
-                                {/* Inner Glow Effect */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"></div>
+                        projects.map((project, index) => {
+                            const CardWrapper = project.link ? 'a' : 'div';
+                            const wrapperProps = project.link ? {
+                                href: project.link,
+                                target: "_blank",
+                                rel: "noopener noreferrer"
+                            } : {};
 
-                                <div className="relative w-full aspect-[16/10] bg-base-300/50 overflow-hidden border-b border-white/5">
-                                    {/* Subtle Image Overlay */}
-                                    <div className="absolute inset-0 bg-base-100/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-                                    
-                                    <img 
-                                        src={project.image} 
-                                        alt={project.title} 
-                                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" 
-                                    />
-                                </div>
-                                <div className="p-8 relative z-20 bg-base-100 flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex gap-2">
-                                            {project.title.includes("IN DEVELOPMENT") && (
-                                                <span className="px-3 py-1 bg-yellow-400/10 border border-yellow-400/20 text-xs font-bold text-yellow-400 tracking-wider uppercase rounded-full flex items-center gap-2">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
-                                                    In Dev
-                                                </span>
-                                            )}
-                                        </div>
+                            return (
+                                <CardWrapper 
+                                    key={index} 
+                                    {...wrapperProps}
+                                    className={`group relative bg-base-100 rounded-2xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-3 flex flex-col project-card shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(var(--p),0.2)] ${project.link ? 'cursor-pointer' : 'cursor-default'}`}
+                                >
+                                    {/* Inner Glow Effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20"></div>
+
+                                    <div className="relative w-full aspect-[16/10] bg-base-300/50 overflow-hidden border-b border-white/5 p-2">
+                                        {/* Subtle Image Overlay */}
+                                        <div className="absolute inset-0 bg-base-100/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                                        
+                                        <img 
+                                            src={project.image} 
+                                            alt={project.title} 
+                                            className="object-contain w-full h-full transition-transform duration-700" 
+                                        />
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-3 text-base-content group-hover:text-primary transition-colors duration-300 font-montserrat tracking-tight">
-                                        {project.title.replace(" (IN DEVELOPMENT)", "")}
-                                    </h3>
-                                    <p className="text-base-content/70 text-sm mb-6 leading-relaxed line-clamp-3 flex-grow">
-                                        {project.description}
-                                    </p>
-                                    
-                                    <div className="flex flex-col gap-6 mt-auto">
-                                        <div className="flex flex-wrap gap-1.5">
+                                    <div className="p-8 relative z-20 bg-base-100 flex flex-col flex-grow">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex gap-2">
+                                                {project.title.includes("IN DEVELOPMENT") && (
+                                                    <span className="px-3 py-1 bg-yellow-400/10 border border-yellow-400/20 text-[10px] font-bold text-yellow-400 tracking-widest uppercase rounded-full flex items-center gap-2">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
+                                                        In Dev
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <h3 className="text-2xl font-bold mb-2 text-base-content group-hover:text-primary transition-colors duration-300 font-montserrat tracking-tight">
+                                            {project.title.replace(" (IN DEVELOPMENT)", "")}
+                                        </h3>
+
+                                        {/* Technologies directly under Title */}
+                                        <div className="flex flex-wrap gap-1.5 mb-6">
                                             {project.badges && Array.isArray(project.badges) ? (
                                                 project.badges.map((badge, badgeIndex) => (
                                                     <span 
                                                         key={badgeIndex} 
-                                                        className="px-2 py-0.5 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-[10px] font-medium tracking-wide"
+                                                        className="px-2 py-0.5 bg-base-200 border border-base-content/10 text-base-content/70 rounded text-[10px] font-medium tracking-wide whitespace-nowrap"
                                                     >
                                                         {badge}
                                                     </span>
                                                 ))
+                                            ) : null}
+                                        </div>
+
+                                        <p className="text-base-content/70 text-sm mb-8 leading-relaxed">
+                                            {project.description}
+                                        </p>
+                                        
+                                        <div className="mt-auto pt-6 border-t border-white/5">
+                                            {/* Minimal View Project Link - Only show if link exists */}
+                                            {project.link ? (
+                                                <div className="flex items-center gap-2 text-sm font-semibold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                                    <span>View Project</span>
+                                                    <i className="fas fa-arrow-right text-xs"></i>
+                                                </div>
                                             ) : (
-                                                <span className="text-[10px] text-base-content/50">No badges</span>
+                                                <div className="text-[10px] font-bold uppercase tracking-widest text-base-content/30">
+                                                    System Overview
+                                                </div>
                                             )}
                                         </div>
-                                        
-                                        {/* Minimal View Project Link */}
-                                        <div className="flex items-center gap-2 text-sm font-semibold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                                            <span>View Project</span>
-                                            <i className="fas fa-arrow-right text-xs"></i>
-                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        ))
+                                </CardWrapper>
+                            );
+                        })
                     ) : (
                         <div className="col-span-full text-center py-10">
                             <p className="text-base-content/60">No projects to display</p>

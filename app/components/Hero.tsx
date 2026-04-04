@@ -30,7 +30,6 @@ const Hero = () => {
         // --- High-End Parallax Scrub Effects (Keep GSAP for scroll scrubbing) ---
         gsap.to('.hero-text-container', {
             y: 150,
-            opacity: 0,
             ease: 'none',
             scrollTrigger: {
                 trigger: heroRef.current,
@@ -69,7 +68,7 @@ const Hero = () => {
                         src="/me.jpg" 
                         alt="Rondether Gonzales" 
                         fill 
-                        style={{ objectFit: 'cover', objectPosition: 'center' }} 
+                        style={{ objectFit: 'cover', objectPosition: 'top' }} 
                         priority 
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent"></div>
@@ -83,7 +82,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="font-montserrat text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12"
+                        className="font-montserrat text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight drop-shadow-lg mt-8 lg:mt-12"
                     >
                         Hi, I&apos;m <br/>
                         <span className="text-primary mix-blend-difference font-extrabold relative inline-block">

@@ -14,6 +14,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       touchMultiplier: 2,
     });
 
+    // Lock scrolling for the duration of the IntroLoader (2.8s + 1s exit animation)
+    lenis.stop();
+    setTimeout(() => {
+      lenis.start();
+    }, 3800);
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);

@@ -51,7 +51,7 @@ const Navbar = () => {
                         <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact</a></li>
                     </ul>
                 </div>
-                <a href="#" className="btn btn-ghost text-xl font-poppins font-bold tracking-wide">Rondether Gonzales</a>
+                <a href="#" className="btn btn-ghost text-lg md:text-xl font-poppins font-bold tracking-wide">Rondether Gonzales</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">

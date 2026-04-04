@@ -26,7 +26,7 @@ const Footer = () => {
             
             <aside>
                 <p className="font-medium text-sm">Rondether Gonzales</p> 
-                <p className="text-xs mt-1">Copyright © 2026 - All rights reserved</p>
+                <p className="text-xs mt-1">Copyright © 2025 - All rights reserved</p>
             </aside>
         </footer>
     );
