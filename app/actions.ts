@@ -24,11 +24,11 @@ export async function sendEmail(formData: FormData) {
   const SMTP_PORT = 465;
   const SMTP_SECURE = true;
   const SMTP_USER = 'gonzalesrondether86@gmail.com';
-  const SMTP_PASS = process.env.SMTP_PASS;
+  const SMTP_PASS = process.env.NEXT_PUBLIC_SMTP_PASS;
 
   // Check if the password environment variable is set
   if (!SMTP_PASS) {
-    console.error('Missing SMTP_PASS. Please check your Netlify environment variables.');
+    console.error('Missing NEXT_PUBLIC_SMTP_PASS. Please check your Netlify environment variables.');
     return {
       success: false,
       error: 'Email configuration is missing. Please contact the site administrator.'
