@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "heartbeat": "bash git-heartbeat.sh",
     "setup-smtp": "bash setup-smtp.sh",
     "test-smtp": "node test-smtp.js",
     "update-smtp": "bash update-smtp-password.sh"
