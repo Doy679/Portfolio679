@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { sendEmail } from '../actions';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,24 +29,42 @@ const ContactForm = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsPending(true);
-        
+
         const formData = new FormData(e.currentTarget);
-        const result = await sendEmail(formData);
 
-        if (result.success) {
-            setToastMessage('Message sent successfully.');
-            setToastType('success');
-            (e.target as HTMLFormElement).reset();
-        } else {
-            setToastMessage(result.error || 'Failed to send message.');
+        try {
+            const response = await fetch('https://formspree.io/f/your-form-id', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setToastMessage('Message sent successfully!');
+                setToastType('success');
+                (e.target as HTMLFormElement).reset();
+            } else {
+                const result = await response.json();
+                setToastMessage(result.error || 'Failed to send message.');
+                setToastType('error');
+            }
+
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 3000);
+        } catch (error) {
+            setToastMessage('Network error. Please try again later.');
             setToastType('error');
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 3000);
+        } finally {
+            setIsPending(false);
         }
-
-        setShowToast(true);
-        setIsPending(false);
-        setTimeout(() => {
-            setShowToast(false);
-        }, 3000);
     };
 
     return (

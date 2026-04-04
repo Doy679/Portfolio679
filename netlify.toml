@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+  functions = "netlify/functions"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact"
+  status = 200
