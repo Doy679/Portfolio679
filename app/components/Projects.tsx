@@ -23,11 +23,8 @@ const Projects = () => {
     const isAnimatingRef = useRef(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Detect mobile for layout switching
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 1024);
-        };
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
         checkMobile();
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
@@ -36,7 +33,6 @@ const Projects = () => {
     useGSAP(() => {
         if (!sectionRef.current || !scrollAreaRef.current || isMobile) return;
 
-        // Header Scramble Trigger
         ScrollTrigger.create({
             trigger: sectionRef.current,
             start: 'top 70%',
@@ -45,7 +41,6 @@ const Projects = () => {
             onEnterBack: () => setStartScramble(true)
         });
 
-        // Sticky Scroll Logic (Desktop Only)
         const totalProjects = projects.length;
         
         ScrollTrigger.create({
@@ -118,67 +113,79 @@ const Projects = () => {
 
     }, [isMobile]);
 
-    // Project Item Component for Mobile (Vertical List)
-    const ProjectItemMobile = ({ project, index }: { project: any, index: number }) => (
-        <div className="w-full flex flex-col gap-6 py-12 border-b border-primary/10 last:border-0">
-            {/* Project Image */}
-            <div className="w-full flex flex-col gap-3">
-                <div className="flex items-center justify-between px-1">
-                    <div className="text-primary font-mono text-xs font-bold">
-                        0{index + 1} <span className="text-primary/30 mx-2">/</span> 0{projects.length}
-                    </div>
-                    {project.link && project.link !== "#" && (
-                        <div className="text-primary/60 font-mono text-[9px] tracking-[0.1em] uppercase">
-                            Click to explore <i className="fas fa-external-link-alt ml-1"></i>
+    // Agile Mobile Item with Fade-in
+    const ProjectItemMobile = ({ project, index }: { project: any, index: number }) => {
+        const itemRef = useRef(null);
+        
+        useGSAP(() => {
+            gsap.fromTo(itemRef.current, 
+                { opacity: 0, y: 40 },
+                { 
+                    opacity: 1, y: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: itemRef.current,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+        }, []);
+
+        return (
+            <div ref={itemRef} className="w-full flex flex-col gap-6 py-12 border-b border-primary/10 last:border-0">
+                <div className="w-full flex flex-col gap-3">
+                    <div className="flex items-center justify-between px-1">
+                        <div className="text-primary font-mono text-xs font-bold">
+                            0{index + 1} <span className="text-primary/30 mx-2">/</span> 0{projects.length}
                         </div>
-                    )}
-                </div>
-                
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl border border-primary/10 bg-base-300">
-                    <div className="h-6 bg-base-300/90 border-b border-white/5 flex items-center px-2 gap-1 shrink-0 relative z-10">
-                        <div className="w-1.5 h-1.5 rounded-full bg-error/40"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-warning/40"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-success/40"></div>
+                        {project.link && project.link !== "#" && (
+                            <div className="text-primary/60 font-mono text-[9px] tracking-[0.1em] uppercase">
+                                Click to explore <i className="fas fa-external-link-alt ml-1"></i>
+                            </div>
+                        )}
                     </div>
                     
-                    {project.link && project.link !== "#" ? (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative">
-                            <Image src={project.image} alt={project.title} fill className="object-cover object-top p-1" />
-                        </a>
-                    ) : (
-                        <Image src={project.image} alt={project.title} fill className="object-cover object-top p-1" />
-                    )}
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-primary/10 bg-base-300">
+                        {project.link && project.link !== "#" ? (
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative">
+                                <Image src={project.image} alt={project.title} fill className="object-cover object-top" />
+                                <div className="absolute inset-0 bg-primary/10 opacity-0 active:opacity-100 transition-opacity"></div>
+                            </a>
+                        ) : (
+                            <Image src={project.image} alt={project.title} fill className="object-cover object-top" />
+                        )}
+                    </div>
                 </div>
-            </div>
 
-            {/* Project Info */}
-            <div className="space-y-4 px-1">
-                <h3 className="text-2xl font-black font-montserrat tracking-tighter uppercase text-base-content">
-                    {project.title}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                    {project.badges.map((badge: string, i: number) => (
-                        <span key={i} className="text-[8px] uppercase font-bold tracking-[0.1em] text-primary/70 bg-primary/5 px-2 py-1 rounded border border-primary/10">
-                            {badge}
-                        </span>
-                    ))}
+                <div className="space-y-4 px-1">
+                    <h3 className="text-3xl font-black font-montserrat tracking-tighter uppercase text-base-content leading-tight">
+                        {project.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                        {project.badges.map((badge: string, i: number) => (
+                            <span key={i} className="text-[10px] uppercase font-bold tracking-[0.1em] text-primary/70 bg-primary/5 px-3 py-1.5 rounded-lg border border-primary/10">
+                                {badge}
+                            </span>
+                        ))}
+                    </div>
+                    <p className="text-base-content/70 text-base leading-relaxed">
+                        {project.description}
+                    </p>
                 </div>
-                <p className="text-base-content/70 text-sm leading-relaxed">
-                    {project.description}
-                </p>
             </div>
-        </div>
-    );
+        );
+    };
 
     if (isMobile) {
         return (
             <section id="projects" className="bg-base-200 px-6 py-20" ref={sectionRef}>
                 <div className="container mx-auto">
-                    <div className="text-center mb-10">
-                        <h2 className="text-2xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
-                            My Featured Projects
+                    {/* Sticky Header for Mobile */}
+                    <div className="sticky top-20 z-20 mb-10 bg-base-200/80 backdrop-blur-sm py-4 border-b border-primary/5">
+                        <h2 className="text-2xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content text-center">
+                            Featured Projects
                         </h2>
-                        <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4"></div>
+                        <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-2"></div>
                     </div>
                     
                     <div className="flex flex-col">
@@ -199,7 +206,6 @@ const Projects = () => {
                     
                     <div className="container mx-auto px-6 lg:px-20 h-full flex flex-col">
                         
-                        {/* Section Header */}
                         <div className="pt-12 lg:pt-16 pb-4 text-center shrink-0">
                             <h2 className="text-2xl md:text-3xl font-bold font-montserrat tracking-[0.2em] uppercase text-base-content">
                                 <HackerText text="My Featured Projects" trigger={startScramble} />
@@ -207,10 +213,8 @@ const Projects = () => {
                             <div className="w-12 h-0.5 bg-primary/40 mx-auto mt-4"></div>
                         </div>
 
-                        {/* Main Content Area */}
                         <div className="flex-grow flex flex-col lg:flex-row items-start gap-8 lg:gap-16 pt-4 lg:pt-8 pb-12 overflow-visible relative">
                             
-                            {/* Project Number (Background Accent) */}
                             <div 
                                 ref={numberRef}
                                 className="absolute top-0 right-4 lg:right-10 font-black text-6xl md:text-8xl text-primary/20 font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0"
@@ -218,7 +222,6 @@ const Projects = () => {
                                 0{activeIndex + 1}
                             </div>
 
-                            {/* Left Column: Project Info */}
                             <div className="w-full lg:w-[42%] relative flex flex-col order-2 lg:order-1 z-10">
                                 <div className="space-y-4 lg:space-y-5">
                                     <div className="flex items-center gap-4 text-primary font-mono text-sm font-bold h-6">
@@ -263,7 +266,6 @@ const Projects = () => {
                                 </div>
                             </div>
 
-                            {/* Right Column: Project Image (Browser Window Style) */}
                             <div className="w-full lg:w-[60%] flex flex-col order-1 lg:order-2 z-10 lg:mt-8">
                                 <div className="min-h-[40px] flex items-center">
                                     {projects[activeIndex].link && projects[activeIndex].link !== "#" && (
@@ -330,7 +332,6 @@ const Projects = () => {
                     </div>
                 </div>
 
-                {/* Progress Indicators */}
                 <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-50 hidden lg:flex">
                     {projects.map((_, i) => (
                         <div 
