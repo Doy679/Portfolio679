@@ -108,10 +108,10 @@ const IntroLoader = () => {
                         />
                     </div>
 
-                    <div className="relative z-10 flex flex-col items-center w-full">
+                    <div className="relative z-10 flex flex-col items-center">
                         
                         {/* Central Ethereal Line */}
-                        <div className="relative h-64 md:h-80 flex flex-col md:flex-row items-center justify-center w-full">
+                        <div className="relative h-64 flex items-center justify-center">
                             <motion.div 
                                 initial={{ height: 0 }}
                                 animate={{ height: 200 }}
@@ -129,11 +129,11 @@ const IntroLoader = () => {
                                 />
                             </motion.div>
 
-                            {/* Name Reveal - Desktop (Side) & Mobile (Under) */}
-                            <div className="md:absolute md:left-full md:ml-8 mt-8 md:mt-0 overflow-hidden text-center md:text-left">
+                            {/* Name Reveal - Masked from the line */}
+                            <div className="absolute left-full ml-8 overflow-hidden">
                                 <motion.div
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: progress > 40 ? 0 : 20, opacity: progress > 40 ? 1 : 0 }}
+                                    initial={{ x: -100, opacity: 0 }}
+                                    animate={{ x: progress > 40 ? 0 : -100, opacity: progress > 40 ? 1 : 0 }}
                                     transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
                                     className="flex flex-col"
                                 >
@@ -146,15 +146,15 @@ const IntroLoader = () => {
                                 </motion.div>
                             </div>
 
-                            {/* Role Reveal - Desktop (Side) & Mobile (Under) */}
-                            <div className="md:absolute md:right-full md:mr-8 mt-4 md:mt-0 overflow-hidden">
+                            {/* Role Reveal - Masked to the other side */}
+                            <div className="absolute right-full mr-8 overflow-hidden hidden md:block">
                                 <motion.div
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: progress > 60 ? 0 : 20, opacity: progress > 60 ? 1 : 0 }}
+                                    initial={{ x: 100, opacity: 0 }}
+                                    animate={{ x: progress > 60 ? 0 : 100, opacity: progress > 60 ? 1 : 0 }}
                                     transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-                                    className="text-center md:text-right"
+                                    className="text-right"
                                 >
-                                    <span className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.5em] whitespace-nowrap">
+                                    <span className="text-xs font-mono text-white/40 uppercase tracking-[0.5em] whitespace-nowrap">
                                         Frontend Engineer
                                     </span>
                                 </motion.div>
