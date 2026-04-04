@@ -4,6 +4,7 @@ import './globals.css'
 import Script from 'next/script'
 import '../app/lib/gsap';
 import IntroLoader from './components/IntroLoader';
+import SmoothScroll from './components/SmoothScroll';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ 
@@ -31,7 +32,9 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans`}>
         <IntroLoader />
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
 
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" strategy="lazyOnload" />
       </body>

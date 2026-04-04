@@ -11,42 +11,67 @@ const Projects = () => {
     const projectsRef = React.useRef<HTMLElement>(null);
 
     useGSAP(() => {
+        // High-end Scrubbed Parallax Effect for the Section
         gsap.fromTo(projectsRef.current,
-            { opacity: 0, y: 100 },
+            { opacity: 0.5 },
             {
                 opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power3.out',
+                ease: 'none',
                 scrollTrigger: {
                     trigger: projectsRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
+                    start: 'top bottom',
+                    end: 'top 40%',
+                    scrub: true,
                 }
             }
         );
 
         const projectCards = gsap.utils.toArray<HTMLElement>('.project-card');
-        console.log(projectCards);
+        
         if (projectCards && Array.isArray(projectCards)) {
-            projectCards.forEach(card => {
-                ScrollTrigger.create({
-                    trigger: card,
-                    start: 'top 80%',
-                    onEnter: () => {
-                        gsap.fromTo(card,
-                            { opacity: 0, y: 50, willChange: 'transform, opacity' },
-                            { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', clearProps: 'all' }
-                        );
-                    },
-                    once: true,
-                });
+            projectCards.forEach((card, i) => {
+                // Determine a slight stagger/speed difference based on column/index
+                const yOffset = (i % 3) * 50 + 100; // Parallax stagger
+
+                gsap.fromTo(card,
+                    { y: yOffset, opacity: 0 },
+                    { 
+                        y: 0, 
+                        opacity: 1, 
+                        ease: 'none', 
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top bottom-=100',
+                            end: 'top center',
+                            scrub: 1, // Smooth scrub
+                        }
+                    }
+                );
+
+                // Internal Image Parallax
+                const img = card.querySelector('img');
+                if (img) {
+                    gsap.fromTo(img,
+                        { scale: 1.2, y: -20 },
+                        {
+                            scale: 1,
+                            y: 0,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: card,
+                                start: 'top bottom',
+                                end: 'bottom top',
+                                scrub: true,
+                            }
+                        }
+                    );
+                }
             });
         }
     }, { scope: projectsRef });
 
     return (
-        <section id="projects" className="py-20 bg-base-200 opacity-0" ref={projectsRef}>
+        <section id="projects" className="py-20 bg-base-200" ref={projectsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">My Featured Projects</h2>

@@ -10,17 +10,18 @@ const Skills = () => {
     const skillsRef = React.useRef(null);
 
     useGSAP(() => {
+        // Scrubbed Parallax Effect
         gsap.fromTo(skillsRef.current,
-            { opacity: 0, y: 100 },
+            { opacity: 0.2, y: 150 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-                ease: 'power3.out',
+                ease: 'none',
                 scrollTrigger: {
                     trigger: skillsRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
+                    start: 'top bottom',
+                    end: 'top 30%',
+                    scrub: true,
                 }
             }
         );
@@ -67,7 +68,7 @@ const Skills = () => {
     }, { scope: skillsRef });
 
     return (
-        <section id="skills" className="py-20 opacity-0" ref={skillsRef}>
+        <section id="skills" className="py-20" ref={skillsRef}>
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">My Skills</h2>

@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(TextPlugin);
+gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
 const Hero = () => {
     const heroRef = React.useRef(null);
@@ -38,6 +39,31 @@ const Hero = () => {
             { opacity: 0, x: 100 },
             { opacity: 0.8, x: 0, duration: 1.5, ease: 'power3.out', delay: 0.5 }
         );
+
+        // --- High-End Parallax Scrub Effects ---
+        gsap.to('.hero-text', {
+            y: 150,
+            opacity: 0,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
+        gsap.to('.hero-bg-img', {
+            y: 200,
+            scale: 1.1,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
 
     }, { scope: heroRef });
 
