@@ -69,7 +69,7 @@ const Hero = () => {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
                 className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-0 overflow-hidden mask-fade-left pointer-events-none"
             >
-                <div className="relative w-full h-full hero-bg-img opacity-40 lg:opacity-100 mix-blend-luminosity lg:mix-blend-normal">
+                <div className="relative w-full h-full hero-bg-img opacity-100 mix-blend-normal">
                      {/* 3D Element as an aura behind the image */}
                      <div className="absolute inset-0 z-0 opacity-30 lg:opacity-60 scale-150">
                         <FloatingShape />
@@ -83,7 +83,8 @@ const Hero = () => {
                         className="relative z-10"
                         priority 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-transparent to-transparent z-20"></div>
+                    {/* Adjusted gradients for better visibility on mobile */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-base-100/20 to-transparent z-20 lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent z-20"></div>
                 </div>
             </motion.div>

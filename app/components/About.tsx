@@ -41,19 +41,23 @@ const About = () => {
         // Mobile Animations (Vertical Stacking)
         mm.add("(max-width: 1023px)", () => {
             if (prefersReducedMotion) return;
-            const panels = gsap.utils.toArray('.mobile-panel');
-            panels.forEach((panel: any) => {
-                gsap.fromTo(panel, 
-                    { opacity: 0, y: 30 },
-                    { 
-                        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: panel,
-                            start: "top 85%",
-                            toggleActions: "play none none none"
+            
+            ScrollTrigger.batch('.mobile-panel', {
+                onEnter: (elements) => {
+                    gsap.fromTo(elements, 
+                        { opacity: 0, y: 30 },
+                        { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 0.8, 
+                            stagger: 0.15,
+                            ease: "power2.out",
+                            overwrite: true
                         }
-                    }
-                );
+                    );
+                },
+                start: "top 85%",
+                once: true
             });
         });
 

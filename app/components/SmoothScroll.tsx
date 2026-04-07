@@ -7,35 +7,51 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
-    
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: !isMobile,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
+    let lenis: Lenis | null = null;
+    let rafLoop: (time: number) => void;
 
-    // Sync ScrollTrigger with Lenis
-    lenis.on('scroll', ScrollTrigger.update);
+    if (isMobile) {
+      window.addEventListener('scroll', ScrollTrigger.update);
+    } else {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+      });
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+      lenis.on('scroll', ScrollTrigger.update);
 
-    gsap.ticker.lagSmoothing(0);
+      rafLoop = (time: number) => {
+        lenis?.raf(time * 1000);
+      };
+      
+      gsap.ticker.add(rafLoop);
+      gsap.ticker.lagSmoothing(0);
+    }
 
     // Lock scrolling for the duration of the IntroLoader
-    lenis.stop();
-    setTimeout(() => {
-      lenis.start();
-    }, 3800);
+    if (lenis) {
+      lenis.stop();
+      setTimeout(() => {
+        lenis?.start();
+      }, 3800);
+    } else {
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        document.body.style.overflow = '';
+      }, 3800);
+    }
 
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      if (lenis) {
+        lenis.destroy();
+        gsap.ticker.remove(rafLoop);
+      }
+      window.removeEventListener('scroll', ScrollTrigger.update);
     };
   }, []);
 

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -26,11 +26,11 @@ const Projects = () => {
                 return;
             }
 
-            const projectWrappers = gsap.utils.toArray('.project-wrapper');
+            const projectWrappers = gsap.utils.toArray('.project-wrapper') as HTMLElement[];
             const totalProjects = projects.length;
 
             // Initial State setup - Clean and Ready
-            projectWrappers.forEach((wrapper: any, i: number) => {
+            projectWrappers.forEach((wrapper, i) => {
                 const content = wrapper.querySelector('.content-card');
                 const image = wrapper.querySelector('.image-container');
                 const number = wrapper.querySelector('.bg-number');
@@ -67,13 +67,13 @@ const Projects = () => {
                 }
             });
 
-            projectWrappers.forEach((wrapper: any, i: number) => {
+            projectWrappers.forEach((wrapper, i) => {
                 const content = wrapper.querySelector('.content-card');
                 const image = wrapper.querySelector('.image-container');
                 const number = wrapper.querySelector('.bg-number');
 
                 if (i < totalProjects - 1) {
-                    const nextWrapper = projectWrappers[i + 1] as any;
+                    const nextWrapper = projectWrappers[i + 1];
                     const nextContent = nextWrapper.querySelector('.content-card');
                     const nextImage = nextWrapper.querySelector('.image-container');
                     const nextNumber = nextWrapper.querySelector('.bg-number');
@@ -93,34 +93,33 @@ const Projects = () => {
             });
         });
 
-        return () => mm.revert();
-    }, []);
-
-    const ProjectItemMobile = ({ project, index }: { project: any, index: number }) => {
-        const itemRef = useRef(null);
-        
-        useGSAP(() => {
-            const prefersReducedMotion = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+        mm.add("(max-width: 1023px)", () => {
             if (prefersReducedMotion) {
-                gsap.set(itemRef.current, { opacity: 1, y: 0 });
+                gsap.set('.project-item-mobile', { opacity: 1, y: 0 });
                 return;
             }
 
-            gsap.fromTo(itemRef.current, 
-                { opacity: 0, y: 40 },
-                { 
-                    opacity: 1, y: 0, duration: 1, ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: itemRef.current,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    }
-                }
-            );
-        }, []);
+            ScrollTrigger.batch('.project-item-mobile', {
+                onEnter: (elements) => {
+                    gsap.to(elements, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        stagger: 0.15,
+                        ease: "power3.out"
+                    });
+                },
+                start: "top 85%",
+                once: true
+            });
+        });
 
+        return () => mm.revert();
+    }, []);
+
+    const ProjectItemMobile = ({ project, index }: { project: (typeof projects)[0], index: number }) => {
         return (
-            <div ref={itemRef} className="w-full flex flex-col gap-5 py-10 border-b border-primary/10 last:border-0 relative">
+            <div className="project-item-mobile w-full flex flex-col gap-5 py-10 border-b border-primary/10 last:border-0 relative opacity-0 translate-y-10">
                 <div className="w-full flex flex-col gap-3">
                     {/* Mobile Header with Explore Hint */}
                     <div className="flex items-center justify-between px-1 mb-1">

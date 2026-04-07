@@ -14,8 +14,10 @@ const DigitalDust = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 40 : 150;
         const particles: { x: number; y: number; s: number; v: number; a: number }[] = [];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < particleCount; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,

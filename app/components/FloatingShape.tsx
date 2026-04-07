@@ -39,6 +39,8 @@ const AnimatedBlob = () => {
 export default function FloatingShape() {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  if (isMobile) return null;
+
   return (
     <div className="w-full h-[60vh] lg:h-full cursor-grab active:cursor-grabbing pointer-events-none lg:pointer-events-auto">
       <Canvas 

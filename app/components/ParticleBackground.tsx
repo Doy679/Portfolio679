@@ -1,6 +1,5 @@
 'use client';
 import React, { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
 
 class Particle {
     x: number;
@@ -73,7 +72,7 @@ const ParticleBackground = () => {
         let wh = canvas.height = window.innerHeight;
 
         const particles: Particle[] = [];
-        const amount = typeof window !== 'undefined' && window.innerWidth < 768 ? 40 : 100;
+        const amount = typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 100;
         const mouse = { x: -9999, y: -9999 };
 
         const onMouseMove = (e: MouseEvent) => {
@@ -103,6 +102,10 @@ const ParticleBackground = () => {
         };
 
         const animate = () => {
+            if (document.hidden) {
+                requestAnimationFrame(animate);
+                return;
+            }
             ctx.clearRect(0, 0, ww, wh);
             particles.forEach(p => p.render(ctx, mouse));
             requestAnimationFrame(animate);

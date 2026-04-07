@@ -73,40 +73,47 @@ const Skills = () => {
     ];
 
     useGSAP(() => {
-        // Smooth entry animation - No scrubbing to avoid conflicts
-        gsap.fromTo(skillsRef.current,
-            { opacity: 0, y: 30 },
+        // High-end staggered reveal for skill cards
+        gsap.fromTo('.skill-card', 
+            { 
+                opacity: 0, 
+                y: 50,
+                scale: 0.9,
+                rotateX: -10,
+                transformPerspective: 1000
+            },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-                ease: 'power3.out',
+                scale: 1,
+                rotateX: 0,
+                duration: 1.2,
+                stagger: {
+                    amount: 0.6,
+                    grid: "auto",
+                    from: "start"
+                },
+                ease: 'expo.out',
                 scrollTrigger: {
-                    trigger: skillsRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
-                }
+                    trigger: '.skill-card',
+                    start: 'top 90%',
+                    toggleActions: 'play none none none'
+                },
+                clearProps: "transform" // Clear transform after animation to avoid conflicts with tilt
             }
         );
 
-        // Staggered reveal for bento cards
-        ScrollTrigger.batch('.skill-card', {
-            onEnter: (elements) => {
-                gsap.fromTo(elements,
-                    { opacity: 0, y: 40, willChange: 'transform, opacity' },
-                    { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: 'expo.out', clearProps: 'all' }
-                );
-            },
-            start: 'top 85%',
-            once: true,
-        });
-
-        // Hide section when completely scrolled past into Projects
-        ScrollTrigger.create({
-            trigger: skillsRef.current,
-            start: 'bottom top',
-            onEnter: () => gsap.set(skillsRef.current, { visibility: 'hidden' }),
-            onEnterBack: () => gsap.set(skillsRef.current, { visibility: 'visible' }),
+        // Subtle floating animation for cards to make them feel "alive"
+        gsap.to('.skill-card', {
+            y: "-=10",
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            stagger: {
+                amount: 1,
+                from: "random"
+            }
         });
 
         // Tilt effect for desktop
