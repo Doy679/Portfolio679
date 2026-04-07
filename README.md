@@ -1,6 +1,6 @@
-# Personal Portfolio v2
+# Personal Portfolio v2 (Optimized)
 
-A modern, responsive personal portfolio website built with **Next.js 16**, **TypeScript**, **Tailwind CSS**, **DaisyUI**, and **GSAP**. This project showcases my skills, projects, and professional background with smooth animations and a beautiful UI.
+A high-performance, responsive personal portfolio website built with **Next.js 16**, **TypeScript**, **Tailwind CSS**, **DaisyUI**, and **GSAP**. This project is optimized for speed and visual clarity, featuring smooth, buttery animations across all devices.
 
 ![Portfolio Preview](/public/screenshot.png) 
 
@@ -8,38 +8,31 @@ A modern, responsive personal portfolio website built with **Next.js 16**, **Typ
 ## 🚀 Features
 
 *   **Modern Tech Stack:** Built with the latest Next.js 16 App Router and React 19.
-*   **Beautiful UI:** Styled with Tailwind CSS v4 and DaisyUI 5 for a clean, consistent look.
-*   **Advanced Animations:** Immersive animations using GSAP (GreenSock Animation Platform), including ScrollTrigger and TextPlugin effects.
-*   **Responsive Design:** Fully optimized for mobile, tablet, and desktop devices.
+*   **Performance Optimized:** Refined for high mobile performance with reduced particle counts and optimized render loops.
+*   **Sleek Animations:** Immersive GSAP effects, including 3D skill card reveals, smooth parallax, and floating interactive elements.
+*   **Clear Visuals:** Enhanced hero image visibility for mobile users, ensuring a bright and professional first impression.
+*   **Responsive Experience:** Intelligent device-specific logic that switches between native and smooth scrolling for the best UX.
 *   **Dark/Light Mode:** Integrated theme toggler for better user experience.
 *   **Working Contact Form:** Fully functional contact form powered by **Nodemailer** and Next.js Server Actions.
-*   **Interactive Elements:** Typewriter effects, particle backgrounds, and hover interactions.
 
 ## 🛠️ Tech Stack
 
 *   **Framework:** [Next.js](https://nextjs.org/)
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
-*   **Animation:** [GSAP](https://gsap.com/)
+*   **Animation:** [GSAP](https://gsap.com/) & [Framer Motion](https://www.framer.com/motion/)
 *   **Icons:** FontAwesome (via CDN/Classes)
 *   **Email:** Nodemailer
 
 ## 🏁 Getting Started
-
-Follow these steps to set up the project locally.
-
-### Prerequisites
-
-*   Node.js (v18 or higher recommended)
-*   npm, yarn, or pnpm
 
 ### Installation
 
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/your-repository-name.git
-    cd your-repository-name
+    git clone https://github.com/Doy679/Portfolio679.git
+    cd Portfolio679
     ```
 
 2.  **Install dependencies:**
