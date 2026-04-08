@@ -142,16 +142,21 @@ const Projects = () => {
                             <div className="w-2 h-2 rounded-full bg-warning/50"></div>
                             <div className="w-2 h-2 rounded-full bg-success/50"></div>
                         </div>
-                        {project.link && project.link !== "#" ? (
-                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-[calc(100%-1.5rem)] relative bg-base-100">
-                                <Image src={project.image} alt={project.title} fill className="object-contain object-center p-2" sizes="100vw" />
-                                <div className="absolute inset-0 bg-primary/10 opacity-0 active:opacity-100 transition-opacity"></div>
-                            </a>
-                        ) : (
-                            <div className="w-full h-[calc(100%-1.5rem)] relative bg-base-100">
-                                <Image src={project.image} alt={project.title} fill className="object-contain object-center p-2" sizes="100vw" />
+                        {/* Parallax Wrapper Starts Here */}
+                        <div className="mobile-parallax-container w-full h-[calc(100%-1.5rem)] relative overflow-hidden bg-base-100">
+                            <div className="mobile-parallax-image w-full h-[120%] relative -top-[10%]">
+                                {project.link && project.link !== "#" ? (
+                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative">
+                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4" sizes="100vw" />
+                                        <div className="absolute inset-0 bg-primary/10 opacity-0 active:opacity-100 transition-opacity"></div>
+                                    </a>
+                                ) : (
+                                    <div className="w-full h-full relative">
+                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4" sizes="100vw" />
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </div>
                 </div>
 
