@@ -29,10 +29,10 @@ const Hero = () => {
         // Blinking cursor
         gsap.to('.cursor', { opacity: 0, ease: "power2.inOut", repeat: -1 });
 
-        // Parallax Effects - Desktop Only
-        const isDesktop = window.innerWidth > 1024;
+        // Parallax Effects - Now for all devices with different intensities
+        const mm = gsap.matchMedia();
 
-        if (isDesktop) {
+        mm.add("(min-width: 1024px)", () => {
             gsap.to('.hero-text-container', {
                 y: 100,
                 ease: 'none',
@@ -55,7 +55,31 @@ const Hero = () => {
                     scrub: true,
                 }
             });
-        }
+        });
+
+        mm.add("(max-width: 1023px)", () => {
+            gsap.to('.hero-bg-img', {
+                y: 50,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true,
+                }
+            });
+        });
+
+        // Staggered Name Reveal
+        gsap.from('.name-segment', {
+            opacity: 0,
+            y: 50,
+            rotateX: -30,
+            stagger: 0.2,
+            duration: 1.2,
+            ease: "expo.out",
+            delay: 0.5
+        });
 
     }, { scope: heroRef });
 
@@ -94,20 +118,24 @@ const Hero = () => {
                     <div 
                         className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter leading-none drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
                     >
-                        <GradientTitle 
-                            text="RONDETHER" 
-                            inView={false} 
-                            initialX={-40} 
-                            initialY={0} 
-                            delay={0.3} 
-                        />
-                        <GradientTitle 
-                            text="GONZALES" 
-                            inView={false} 
-                            initialX={-40} 
-                            initialY={0} 
-                            delay={0.5} 
-                        />
+                        <div className="name-segment">
+                            <GradientTitle 
+                                text="RONDETHER" 
+                                inView={false} 
+                                initialX={-40} 
+                                initialY={0} 
+                                delay={0.3} 
+                            />
+                        </div>
+                        <div className="name-segment">
+                            <GradientTitle 
+                                text="GONZALES" 
+                                inView={false} 
+                                initialX={-40} 
+                                initialY={0} 
+                                delay={0.5} 
+                            />
+                        </div>
                     </div>
                     
                     <motion.h2 
