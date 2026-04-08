@@ -19,11 +19,17 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://rgonzales.netlify.app/'),
   title: {
     default: 'Rondether Gonzales | Junior Frontend Developer',
     template: '%s | Rondether Gonzales'
   },
   description: 'Aspiring Junior Frontend Developer specializing in React, Next.js, and high-performance web animations. Explore my portfolio of digital solutions.',
+  icons: {
+    icon: '/Favicon.jpeg',
+    shortcut: '/favicon.ico',
+    apple: '/Favicon.jpeg',
+  },
   keywords: ['Frontend Developer', 'React Developer', 'Web Development', 'Next.js', 'GSAP Animations', 'Portfolio'],
   authors: [{ name: 'Rondether Gonzales' }],
   creator: 'Rondether Gonzales',
