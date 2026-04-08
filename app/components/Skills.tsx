@@ -73,62 +73,103 @@ const Skills = () => {
     ];
 
     useGSAP(() => {
-        // High-end staggered reveal for skill cards
-        gsap.fromTo('.skill-card', 
-            { 
-                opacity: 0, 
-                y: 50,
-                scale: 0.9,
-                rotateX: -10,
-                transformPerspective: 1000
-            },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
-                duration: 1.2,
-                stagger: {
-                    amount: 0.6,
-                    grid: "auto",
-                    from: "start"
-                },
-                ease: 'expo.out',
-                scrollTrigger: {
-                    trigger: '.skill-card',
-                    start: 'top 90%',
-                    toggleActions: 'play none none none'
-                },
-                clearProps: "transform" // Clear transform after animation to avoid conflicts with tilt
-            }
-        );
+        const mm = gsap.matchMedia();
 
-        // Subtle floating animation for cards to make them feel "alive"
-        gsap.to('.skill-card', {
-            y: "-=10",
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            stagger: {
-                amount: 1,
-                from: "random"
-            }
+        // Mobile Reveal (Every Scroll)
+        mm.add("(max-width: 1023px)", () => {
+            ScrollTrigger.batch('.skill-card', {
+                onEnter: (elements) => {
+                    gsap.fromTo(elements, 
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 1, stagger: 0.15, ease: "power3.out", overwrite: true }
+                    );
+                    
+                    // Reveal logos inside the batch
+                    elements.forEach(el => {
+                        gsap.fromTo(el.querySelectorAll('.skill-logo'),
+                            { opacity: 0, y: 5 },
+                            { opacity: 1, y: 0, stagger: 0.03, duration: 0.5, overwrite: true }
+                        );
+                    });
+                },
+                onLeaveBack: (elements) => {
+                    gsap.to(elements, { opacity: 0, y: 30, scale: 0.95, duration: 0.5, overwrite: true });
+                },
+                start: "top 90%",
+                end: "bottom 10%"
+            });
         });
 
-        // Tilt effect for desktop
-        const isDesktop = window.innerWidth > 1024;
-        if (isDesktop) {
+        // Unified Desktop High-End Reveal
+        mm.add("(min-width: 1024px)", () => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#skills',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                }
+            });
+
+            tl.fromTo('.skill-card', 
+                { 
+                    opacity: 0, 
+                    y: 50,
+                    scale: 0.9,
+                    rotateX: -10,
+                    transformPerspective: 1000
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    rotateX: 0,
+                    duration: 1.2,
+                    force3D: true,
+                    stagger: 0.2,
+                    ease: 'expo.out',
+                }
+            );
+
+            // Staggered reveal for skill logos INSIDE the cards
+            tl.fromTo('.skill-logo',
+                { opacity: 0, scale: 0.8, y: 10 },
+                { 
+                    opacity: 1, 
+                    scale: 1, 
+                    y: 0, 
+                    stagger: 0.05, 
+                    duration: 0.8, 
+                    ease: "back.out(1.7)",
+                    force3D: true 
+                },
+                "-=0.8"
+            );
+
+            // Subtle floating animation for cards
+            gsap.to('.skill-card', {
+                yPercent: -2,
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                force3D: true,
+                stagger: {
+                    amount: 1.5,
+                    from: "random"
+                }
+            });
+        });
+
+        // Desktop-only Tilt Effect
+        mm.add("(min-width: 1024px)", () => {
             const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
             cards.forEach((card) => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
                     const rotateX = (y - centerY) / 30;
                     const rotateY = (centerX - x) / 30;
 
@@ -138,7 +179,7 @@ const Skills = () => {
                         scale: 1.02,
                         duration: 0.5,
                         ease: "power2.out",
-                        perspective: 1000,
+                        force3D: true,
                         overwrite: true
                     });
                 });
@@ -150,11 +191,12 @@ const Skills = () => {
                         scale: 1,
                         duration: 0.5,
                         ease: "power2.out",
+                        force3D: true,
                         overwrite: true
                     });
                 });
             });
-        }
+        });
 
     }, { scope: skillsRef });
 
