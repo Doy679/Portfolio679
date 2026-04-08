@@ -40,6 +40,6 @@ export const projects: Project[] = [
         description: "A modern e-commerce storefront dedicated to urban fashion and street culture. Built with a focus on speed and visual impact, it offers a seamless shopping experience with dynamic product categories, optimized image loading, and a secure checkout workflow.",
         image: "/Decodetheculture.png",
         badges: ["Next.js", "React", "Tailwind CSS", "Responsive Design", "Web Application"],
-        link: "https://decodetheculture.netlify.app/",
+        link: "https://decodetheculture.vercel.app/",
     },
 ];
