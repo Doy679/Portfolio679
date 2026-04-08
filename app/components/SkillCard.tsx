@@ -17,9 +17,8 @@ interface SkillCardProps {
 
 const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = "" }) => {
     return (
-        <motion.div 
-            whileHover={{ scale: 1.01, y: -5 }}
-            className={`skill-card group relative p-8 rounded-3xl glass-card border border-white/10 transition-all duration-500 hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] overflow-hidden ${className}`}
+        <div 
+            className={`skill-card group relative p-8 rounded-3xl glass-card border border-white/10 transition-all duration-500 overflow-hidden will-change-transform ${className}`}
         >
             {/* Animated Glow Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
@@ -38,7 +37,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = 
                     {skills.map((skill, i) => (
                         <div 
                             key={i} 
-                            className="logo flex items-center gap-3 bg-base-300/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/5 hover:border-primary/30 hover:bg-base-300/50 transition-all duration-300 group/item"
+                            className="skill-logo flex items-center gap-3 bg-base-300/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/5 hover:border-primary/30 hover:bg-base-300/50 transition-all duration-300 group/item will-change-transform"
                             title={skill.name}
                         >
                             <i className={`${skill.icon} text-xl transition-transform duration-300 group-hover/item:scale-110`} style={{ color: skill.color }}></i>
@@ -49,7 +48,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = 
                     ))}
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
