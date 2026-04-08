@@ -113,13 +113,13 @@ const Projects = () => {
                 once: true
             });
 
-            // New Parallax Logic
+            // Subtle Parallax Logic
             const items = gsap.utils.toArray('.project-item-mobile');
             items.forEach((item: any) => {
                 const image = item.querySelector('.mobile-parallax-image');
                 if (image) {
                     gsap.to(image, {
-                        yPercent: 20,
+                        yPercent: 10,
                         ease: "none",
                         scrollTrigger: {
                             trigger: item,
@@ -137,8 +137,11 @@ const Projects = () => {
 
     const ProjectItemMobile = ({ project, index }: { project: (typeof projects)[0], index: number }) => {
         return (
-            <div className="project-item-mobile w-full flex flex-col gap-5 py-10 border-b border-primary/10 last:border-0 relative opacity-0 translate-y-10">
-                <div className="w-full flex flex-col gap-3">
+            <div className="project-item-mobile w-full flex flex-col gap-5 py-10 border-b border-primary/10 last:border-0 relative opacity-60 scale-[0.95]">
+                {/* Background Glow Container - only visible when active */}
+                <div className="active-glow absolute inset-0 bg-primary/10 blur-[60px] rounded-full opacity-0 pointer-events-none transition-opacity duration-500"></div>
+                
+                <div className="w-full flex flex-col gap-3 relative z-10">
                     {/* Mobile Header with Explore Hint */}
                     <div className="flex items-center justify-between px-1 mb-1">
                         <div className="text-primary font-mono text-xs font-bold bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
@@ -160,17 +163,17 @@ const Projects = () => {
                             <div className="w-2 h-2 rounded-full bg-warning/50"></div>
                             <div className="w-2 h-2 rounded-full bg-success/50"></div>
                         </div>
-                        {/* Parallax Wrapper Starts Here */}
+                        {/* Parallax Wrapper Starts Here - Subtle 10% Shift */}
                         <div className="mobile-parallax-container w-full h-[calc(100%-1.5rem)] relative overflow-hidden bg-base-100">
-                            <div className="mobile-parallax-image w-full h-[120%] relative -top-[10%]">
+                            <div className="mobile-parallax-image w-full h-[110%] relative -top-[5%]">
                                 {project.link && project.link !== "#" ? (
                                     <a href={project.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative">
-                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4" sizes="100vw" />
+                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-2" sizes="100vw" />
                                         <div className="absolute inset-0 bg-primary/10 opacity-0 active:opacity-100 transition-opacity"></div>
                                     </a>
                                 ) : (
                                     <div className="w-full h-full relative">
-                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4" sizes="100vw" />
+                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-2" sizes="100vw" />
                                     </div>
                                 )}
                             </div>
@@ -178,7 +181,7 @@ const Projects = () => {
                     </div>
                 </div>
 
-                <div className="space-y-4 px-1 mt-2">
+                <div className="space-y-4 px-1 mt-2 relative z-10">
                     <h3 className="text-2xl sm:text-3xl font-black font-montserrat tracking-tighter uppercase text-base-content leading-tight">
                         {project.title}
                     </h3>
