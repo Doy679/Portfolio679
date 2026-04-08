@@ -122,16 +122,17 @@ const About = () => {
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             {[
-                                { year: "2022 - 2026", degree: "BS IT", school: "Benedicto College", color: "primary" },
-                                { year: "2018 - 2020", degree: "Senior High", school: "University of Lapu-lapu", color: "accent" },
-                                { year: "2016 - 2017", degree: "Junior High", school: "Tingub National HS", color: "secondary" },
-                                { year: "2013 - 2014", degree: "Elementary", school: "Cabancalan National HS", color: "info" }
+                                { year: "2022 - 2026", degree: "BS Information Technology", school: "Benedicto College", address: "A.S Fortuna, Mandaue City", color: "primary" },
+                                { year: "2018 - 2020", degree: "Senior High School", school: "University of Cebu Lapu-lapu", address: "Looc A. C. Cortes Ave, Mandaue City", color: "accent" },
+                                { year: "2016 - 2017", degree: "Junior High School", school: "TIngub National HS", address: "Tingub, Mandaue City", color: "secondary" },
+                                { year: "2013 - 2014", degree: "Elementary School", school: "Cabancalan II Elementary School", address: "Cabancalan, Mandaue City", color: "info" }
                             ].map((edu, idx) => (
                                 <div key={idx} className={`edu-card card bg-base-100 shadow-xl border-t-4 border-${edu.color} hover:-translate-y-2 transition-transform duration-500`}>
                                     <div className="card-body p-6">
                                         <div className={`text-${edu.color} font-bold text-lg font-mono tracking-tighter`}>{edu.year}</div>
                                         <h4 className="font-black text-sm uppercase mt-1 leading-tight">{edu.degree}</h4>
                                         <p className="text-xs font-bold text-base-content/60 mt-3">{edu.school}</p>
+                                        <p className="text-[10px] text-base-content/40 italic mt-1">{edu.address}</p>
                                     </div>
                                 </div>
                             ))}
