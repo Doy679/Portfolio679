@@ -112,6 +112,24 @@ const Projects = () => {
                 start: "top 85%",
                 once: true
             });
+
+            // New Parallax Logic
+            const items = gsap.utils.toArray('.project-item-mobile');
+            items.forEach((item: any) => {
+                const image = item.querySelector('.mobile-parallax-image');
+                if (image) {
+                    gsap.to(image, {
+                        yPercent: 20,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: 0.5
+                        }
+                    });
+                }
+            });
         });
 
         return () => mm.revert();
