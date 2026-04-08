@@ -99,23 +99,38 @@ const Projects = () => {
                 return;
             }
 
-            ScrollTrigger.batch('.project-item-mobile', {
-                onEnter: (elements) => {
-                    gsap.to(elements, {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1,
-                        stagger: 0.15,
-                        ease: "power3.out"
-                    });
-                },
-                start: "top 85%",
-                once: true
-            });
-
-            // Subtle Parallax Logic
             const items = gsap.utils.toArray('.project-item-mobile');
             items.forEach((item: any) => {
+                const glow = item.querySelector('.active-glow');
+                
+                // Focus Animation
+                gsap.to(item, {
+                    scale: 1,
+                    opacity: 1,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 80%",
+                        end: "top 20%",
+                        scrub: 0.5,
+                        toggleActions: "play reverse play reverse"
+                    }
+                });
+
+                // Glow Animation
+                if (glow) {
+                    gsap.to(glow, {
+                        opacity: 1,
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 60%",
+                            end: "top 40%",
+                            scrub: 0.5,
+                            toggleActions: "play reverse play reverse",
+                        }
+                    });
+                }
+
+                // Parallax Logic (Keep as is)
                 const image = item.querySelector('.mobile-parallax-image');
                 if (image) {
                     gsap.to(image, {
