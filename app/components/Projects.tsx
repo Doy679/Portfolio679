@@ -72,19 +72,19 @@ const Projects = () => {
                 // Exit current
                 tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
                   .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
-                  .to(number, { opacity: 0, y: -100, duration: 0.5 }, i)
+                  .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1)
                   .to(item, { visibility: 'hidden', duration: 0 }, i + 0.8)
 
                   // Enter next
                   .to(nextItem, { visibility: 'visible', opacity: 1, scale: 1, y: 0, duration: 1 }, i + 0.2)
-                  .fromTo(nextNumber, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.3)
+                  .fromTo(nextNumber, { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.3)
                   .fromTo(nextImage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.4)
                   .fromTo(nextContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, i + 0.6);
             } else {
                 // Final Exit for last project card
                 tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
                   .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
-                  .to(number, { opacity: 0, y: -100, duration: 0.5 }, i);
+                  .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1);
             }
         });
 
@@ -110,7 +110,7 @@ const Projects = () => {
                         {projects.map((project, i) => (
                             <div key={i} className="project-animate-item w-full h-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-10 lg:py-0">
                                 {/* Background Number */}
-                                <div className="project-number-block bg-number absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-[15rem] lg:text-[25rem] text-primary/[0.07] font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0">
+                                <div className="project-number-block bg-number absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-[15rem] lg:text-[25rem] text-primary/[0.15] font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0">
                                     0{i + 1}
                                 </div>
                                 

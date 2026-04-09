@@ -45,6 +45,14 @@ const AnimatedBlob = () => {
 };
 
 export default function FloatingShape() {
+  const [mounted, setMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div className="w-full h-full" />;
+
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   if (isMobile) return null;
