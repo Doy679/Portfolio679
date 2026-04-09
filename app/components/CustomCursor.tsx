@@ -27,6 +27,11 @@ const CustomCursor = () => {
         const onMouseMove = (e: MouseEvent) => {
             const { clientX, clientY } = e;
             
+            // Set opacity to 1 on first move if it was hidden
+            if (gsap.getProperty(cursor, "opacity") === 0) {
+                gsap.set([cursor, follower], { opacity: 1 });
+            }
+
             // Direct follow for the small dot
             gsap.to(cursor, {
                 x: clientX,
