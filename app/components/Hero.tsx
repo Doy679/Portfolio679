@@ -75,7 +75,6 @@ const Hero = () => {
         gsap.from('.name-segment', {
             opacity: 0,
             y: 50,
-            rotateX: -30,
             stagger: 0.2,
             duration: 1.2,
             ease: "expo.out",
@@ -101,7 +100,7 @@ const Hero = () => {
             
             {/* Large Watermark Background Text */}
             <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none select-none overflow-hidden">
-                <span className="hero-watermark font-black text-[15vw] lg:text-[18vw] text-primary/[0.04] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
+                <span className="hero-watermark font-black text-[12vw] lg:text-[14vw] text-primary/[0.04] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
                     HELLO WORLD
                 </span>
             </div>
@@ -136,7 +135,7 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter leading-none drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-tight drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
                     >
                         <div className="name-segment">
                             <GradientTitle 
