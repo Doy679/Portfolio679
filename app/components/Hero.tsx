@@ -99,8 +99,8 @@ const Hero = () => {
         <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
             
             {/* Large Watermark Background Text */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-center z-0 pointer-events-none select-none overflow-hidden">
-                <span className="hero-watermark font-black text-[10vw] lg:text-[12vw] text-primary/10 font-montserrat tracking-tight leading-none uppercase whitespace-nowrap">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-start pl-4 lg:pl-10 z-[5] pointer-events-none select-none overflow-hidden">
+                <span className="hero-watermark font-black text-[12vw] lg:text-[15vw] text-primary/15 font-montserrat tracking-tight leading-none uppercase whitespace-nowrap">
                     HELLO WORLD
                 </span>
             </div>
@@ -135,22 +135,22 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-normal drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-[1.2] drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
                     >
-                        <div className="name-segment">
+                        <div className="name-segment overflow-visible py-2">
                             <GradientTitle 
                                 text="RONDETHER" 
-                                className="px-2 pb-2"
+                                className="px-4 pb-4"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
                                 delay={0.3} 
                             />
                         </div>
-                        <div className="name-segment">
+                        <div className="name-segment overflow-visible py-2">
                             <GradientTitle 
                                 text="GONZALES" 
-                                className="px-2 pb-2"
+                                className="px-4 pb-4"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
