@@ -82,10 +82,29 @@ const Hero = () => {
             delay: 0.5
         });
 
+        // Watermark Parallax
+        gsap.to('.hero-watermark', {
+            y: -100,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
     }, { scope: heroRef });
 
     return (
-        <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative" ref={heroRef}>
+        <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
+            
+            {/* Large Watermark Background Text */}
+            <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none select-none overflow-hidden">
+                <span className="hero-watermark font-black text-[20vw] lg:text-[25vw] text-primary/[0.03] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap opacity-50">
+                    STAY FOCUS
+                </span>
+            </div>
             
             {/* Split Screen Background Image */}
             <motion.div 
