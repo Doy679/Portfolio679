@@ -156,7 +156,7 @@ const Projects = () => {
                                             <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Explore ${project.title} website`} className="flex items-center gap-4 w-fit py-3 px-6 rounded-xl bg-primary/10 border border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/10 transition-all duration-500 hover:scale-105 active:scale-95">
                                                 Explore Site
                                                 <div className="h-[1px] w-6 bg-primary/40"></div>
-                                                <i className="fas fa-arrow-right text-[8px]"></i>
+                                                <i className="fas fa-arrow-left text-[8px]"></i>
                                             </a>
                                         ) : (
                                             <div className="pt-4 flex items-center gap-3 text-base-content/30 font-mono text-[10px] tracking-[0.3em] uppercase py-3 px-6 border border-white/5 rounded-xl bg-white/5 w-fit">
