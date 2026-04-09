@@ -135,22 +135,22 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-[1.1] drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-1"
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-0"
                     >
-                        <div className="name-segment overflow-visible py-2">
+                        <div className="name-segment overflow-visible">
                             <GradientTitle 
                                 text="RONDETHER" 
-                                className="px-4 pb-4"
+                                className="px-4 pb-2"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
                                 delay={0.3} 
                             />
                         </div>
-                        <div className="name-segment overflow-visible py-2">
+                        <div className="name-segment overflow-visible">
                             <GradientTitle 
                                 text="GONZALES" 
-                                className="px-4 pb-4"
+                                className="px-4 pb-2"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
