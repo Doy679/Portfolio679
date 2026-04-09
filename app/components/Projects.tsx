@@ -88,22 +88,6 @@ const Projects = () => {
             }
         });
 
-        // Parallax for all background numbers
-        projectItems.forEach((item) => {
-            const bgNumber = item.querySelector('.project-number-block');
-            if (bgNumber) {
-                gsap.to(bgNumber, {
-                    y: -150,
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-            }
-        });
-
         return () => {
             ScrollTrigger.getAll().forEach(st => st.kill());
         };
@@ -126,7 +110,7 @@ const Projects = () => {
                         {projects.map((project, i) => (
                             <div key={i} className="project-animate-item w-full h-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-10 lg:py-0">
                                 {/* Background Number */}
-                                <div className="project-number-block bg-number absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-[15rem] lg:text-[20rem] text-primary/[0.03] font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0">
+                                <div className="project-number-block bg-number absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-[15rem] lg:text-[25rem] text-primary/[0.07] font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0">
                                     0{i + 1}
                                 </div>
                                 
