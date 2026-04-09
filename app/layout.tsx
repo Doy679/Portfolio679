@@ -5,6 +5,7 @@ import Script from 'next/script'
 import '../app/lib/gsap';
 import IntroLoader from './components/IntroLoader';
 import SmoothScroll from './components/SmoothScroll';
+import CustomCursor from './components/CustomCursor';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ 
@@ -80,6 +81,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       </head>
       <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased overflow-x-clip w-full relative`}>
+        <CustomCursor />
         <IntroLoader />
         <SmoothScroll>
           <div className="flex flex-col min-h-screen w-full overflow-x-clip relative">

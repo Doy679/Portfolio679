@@ -41,6 +41,12 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
+@media (min-width: 1024px) {
+  body, a, button, .cursor-pointer {
+    cursor: none !important;
+  }
+}
+
 /* Custom Scrollbar for a premium look */
 ::-webkit-scrollbar {
   width: 8px;

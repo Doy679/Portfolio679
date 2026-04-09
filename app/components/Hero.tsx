@@ -8,6 +8,7 @@ import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingShape from './FloatingShape';
 import GradientTitle from './GradientTitle';
+import Magnetic from './Magnetic';
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
@@ -164,32 +165,40 @@ const Hero = () => {
                         transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         className="flex flex-wrap gap-4 mt-4"
                     >
-                        <motion.a 
-                            whileHover={{ scale: 1.05, y: -5 }} 
-                            whileTap={{ scale: 0.95 }} 
-                            href="#projects" 
-                            className="btn btn-primary btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300"
-                        >
-                            <i className="fas fa-briefcase mr-2"></i>View Projects
-                        </motion.a>
-                        <motion.a 
-                            whileHover={{ scale: 1.05, y: -5 }} 
-                            whileTap={{ scale: 0.95 }} 
-                            href="#contact" 
-                            className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
-                        >
-                            <i className="fas fa-envelope mr-2"></i>Contact Me
-                        </motion.a>
-                        <motion.a 
-                            whileHover={{ scale: 1.05, y: -5 }} 
-                            whileTap={{ scale: 0.95 }} 
-                            href="/cv.pdf" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
-                        >
-                            <i className="fas fa-download mr-2"></i>Download CV
-                        </motion.a>
+                        <Magnetic strength={0.4}>
+                            <motion.a 
+                                whileHover={{ scale: 1.05, y: -5 }} 
+                                whileTap={{ scale: 0.95 }} 
+                                href="#projects" 
+                                className="btn btn-primary btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300"
+                            >
+                                <i className="fas fa-briefcase mr-2"></i>View Projects
+                            </motion.a>
+                        </Magnetic>
+
+                        <Magnetic strength={0.2}>
+                            <motion.a 
+                                whileHover={{ scale: 1.05, y: -5 }} 
+                                whileTap={{ scale: 0.95 }} 
+                                href="#contact" 
+                                className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                            >
+                                <i className="fas fa-envelope mr-2"></i>Contact Me
+                            </motion.a>
+                        </Magnetic>
+
+                        <Magnetic strength={0.2}>
+                            <motion.a 
+                                whileHover={{ scale: 1.05, y: -5 }} 
+                                whileTap={{ scale: 0.95 }} 
+                                href="/cv.pdf" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                            >
+                                <i className="fas fa-download mr-2"></i>Download CV
+                            </motion.a>
+                        </Magnetic>
                     </motion.div>
                 </div>
             </div>

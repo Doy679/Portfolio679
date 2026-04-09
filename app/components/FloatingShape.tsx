@@ -8,12 +8,20 @@ import * as THREE from 'three';
 const AnimatedBlob = () => {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  // Subtle manual rotation to compliment the Float animation
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
-    }
+    if (!meshRef.current) return;
+    
+    // Smoothly interpolate towards the mouse position
+    const targetRotationX = state.mouse.y * 0.5;
+    const targetRotationY = state.mouse.x * 0.5;
+    
+    // Lerp for smooth movement
+    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetRotationX + state.clock.getElapsedTime() * 0.2, 0.05);
+    meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotationY + state.clock.getElapsedTime() * 0.3, 0.05);
+    
+    // Subtle float/pulse effect on scale
+    const s = 1 + Math.sin(state.clock.getElapsedTime()) * 0.05;
+    meshRef.current.scale.set(2.2 * s, 2.2 * s, 2.2 * s);
   });
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
