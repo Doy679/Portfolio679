@@ -102,7 +102,7 @@ const About = () => {
                 <div className="story-panel w-full lg:w-screen min-h-screen lg:h-full flex flex-col items-center justify-center px-6 md:px-10 py-20 lg:py-0 bg-base-300/30">
                      <div className="text-center w-full max-w-4xl mx-auto space-y-8 relative z-10">
                         <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-3xl mx-auto text-base-content/80">
-                            I specialize in building responsive, user-friendly web layouts using HTML, CSS, Bootstrap, and Tailwind CSS. Backed by foundational knowledge in server-side logic and databases, I enjoy bridging the gap between great design and solid technical functionality.
+                            I specialize in building responsive, user-friendly web layouts using HTML, CSS, Bootstrap, and Tailwind CSS. Beyond the basics, I am actively working with JavaScript and modern frameworks like React and Next.js. Backed by foundational knowledge in server-side logic and databases, I enjoy bridging the gap between great design and solid technical functionality to build applications that solve real-world problems.
                         </p>
                         <div className="pt-4">
                             <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg px-10 shadow-[0_10px_30px_rgba(var(--p),0.3)] hover:shadow-primary/50 transition-all duration-500">
