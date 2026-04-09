@@ -99,8 +99,8 @@ const Hero = () => {
         <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
             
             {/* Large Watermark Background Text */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-center z-[7] pointer-events-none select-none overflow-visible">
-                <span className="hero-watermark font-black text-[10vw] lg:text-[11vw] text-primary/10 font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-center px-8 lg:px-16 z-[7] pointer-events-none select-none overflow-visible">
+                <span className="hero-watermark font-black text-[7vw] lg:text-[8vw] text-primary/10 font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
                     HELLO WORLD
                 </span>
             </div>
