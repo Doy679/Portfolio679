@@ -142,7 +142,7 @@ const Projects = () => {
                                     <div className="glass-card p-6 lg:p-10 rounded-[2rem] lg:rounded-[2.5rem] border border-white/10 shadow-2xl space-y-4 lg:space-y-8 relative overflow-hidden backdrop-blur-2xl">
                                         <div className="space-y-2">
                                             <div className="flex items-center gap-4 text-primary font-mono text-xs lg:text-sm font-black uppercase tracking-widest">
-                                                <span>Project 0{i + 1}</span>
+                                                <span>{project.role}</span>
                                                 <div className="h-[2px] w-12 bg-primary/30"></div>
                                             </div>
                                             <h3 className="text-3xl lg:text-5xl font-black font-montserrat tracking-tighter leading-none uppercase text-base-content">
@@ -158,12 +158,18 @@ const Projects = () => {
                                             ))}
                                         </div>
 
-                                        <p className="text-base-content/70 text-sm lg:text-lg leading-relaxed font-medium line-clamp-4 lg:line-clamp-none">
-                                            {project.description}
-                                        </p>
+                                        <div className="space-y-4">
+                                            <p className="text-base-content/70 text-sm lg:text-base leading-relaxed font-medium">
+                                                {project.description}
+                                            </p>
+                                            <p className="text-primary/90 text-xs lg:text-sm italic font-semibold border-l-2 border-primary/40 pl-4">
+                                                <span className="uppercase text-[10px] tracking-widest block mb-1 opacity-50">Impact:</span>
+                                                {project.impact}
+                                            </p>
+                                        </div>
 
                                         {project.link && project.link !== "#" ? (
-                                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 w-fit py-3 px-6 rounded-xl bg-primary/10 border border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/10 transition-all duration-500 hover:scale-105 active:scale-95">
+                                            <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Explore ${project.title} website`} className="flex items-center gap-4 w-fit py-3 px-6 rounded-xl bg-primary/10 border border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/10 transition-all duration-500 hover:scale-105 active:scale-95">
                                                 Explore Site
                                                 <div className="h-[1px] w-6 bg-primary/40"></div>
                                                 <i className="fas fa-arrow-right text-[8px]"></i>

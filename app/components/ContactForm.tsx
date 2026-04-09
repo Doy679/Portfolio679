@@ -119,13 +119,13 @@ const ContactForm = () => {
                                 <h4 className="font-black text-sm uppercase tracking-widest mb-6 text-base-content/40">Connect with me</h4>
                                 <div className="flex flex-wrap gap-4">
                                     {[
-                                        { href: siteConfig.links.facebook, icon: "fab fa-facebook-f" },
-                                        { href: "https://www.instagram.com/ron.gzls/", icon: "fab fa-instagram" },
-                                        { href: siteConfig.links.linkedin, icon: "fab fa-linkedin-in" },
-                                        { href: siteConfig.links.github, icon: "fab fa-github" },
-                                        { href: "/cv.pdf", icon: "fas fa-file-pdf", title: "View CV" }
+                                        { href: siteConfig.links.facebook, icon: "fab fa-facebook-f", label: "Facebook" },
+                                        { href: "https://www.instagram.com/ron.gzls/", icon: "fab fa-instagram", label: "Instagram" },
+                                        { href: siteConfig.links.linkedin, icon: "fab fa-linkedin-in", label: "LinkedIn" },
+                                        { href: siteConfig.links.github, icon: "fab fa-github", label: "GitHub" },
+                                        { href: "/cv.pdf", icon: "fas fa-file-pdf", title: "View CV", label: "Download CV" }
                                     ].map((social, idx) => (
-                                        <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-primary btn-outline hover:btn-primary border-primary/20" title={social.title}>
+                                        <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="btn btn-circle btn-primary btn-outline hover:btn-primary border-primary/20" title={social.title}>
                                             <i className={social.icon}></i>
                                         </a>
                                     ))}
