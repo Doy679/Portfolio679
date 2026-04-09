@@ -99,8 +99,8 @@ const Hero = () => {
         <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
             
             {/* Large Watermark Background Text */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-start pl-4 lg:pl-10 z-[5] pointer-events-none select-none overflow-hidden">
-                <span className="hero-watermark font-black text-[12vw] lg:text-[15vw] text-primary/15 font-montserrat tracking-tight leading-none uppercase whitespace-nowrap">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full flex items-center justify-start pl-4 lg:pl-10 z-0 pointer-events-none select-none">
+                <span className="hero-watermark font-black text-[12vw] lg:text-[15vw] text-primary/10 font-montserrat tracking-tight leading-none uppercase whitespace-nowrap">
                     HELLO WORLD
                 </span>
             </div>
@@ -110,7 +110,7 @@ const Hero = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[1] overflow-hidden mask-fade-left pointer-events-none"
+                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[5] overflow-hidden mask-fade-left pointer-events-none"
             >
                 <div className="relative w-full h-full hero-bg-img opacity-100 mix-blend-normal">
                      {/* 3D Element as an aura behind the image */}
