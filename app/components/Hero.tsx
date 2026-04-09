@@ -99,8 +99,8 @@ const Hero = () => {
         <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
             
             {/* Large Watermark Background Text */}
-            <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none select-none overflow-hidden">
-                <span className="hero-watermark font-black text-[12vw] lg:text-[14vw] text-primary/[0.04] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-1/2 flex items-center justify-center z-0 pointer-events-none select-none overflow-hidden">
+                <span className="hero-watermark font-black text-[10vw] lg:text-[12vw] text-primary/10 font-montserrat tracking-tight leading-none uppercase whitespace-nowrap">
                     HELLO WORLD
                 </span>
             </div>
@@ -135,11 +135,12 @@ const Hero = () => {
             <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-tight drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-normal drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-4"
                     >
                         <div className="name-segment">
                             <GradientTitle 
                                 text="RONDETHER" 
+                                className="px-2 pb-2"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
@@ -149,6 +150,7 @@ const Hero = () => {
                         <div className="name-segment">
                             <GradientTitle 
                                 text="GONZALES" 
+                                className="px-2 pb-2"
                                 inView={false} 
                                 initialX={-40} 
                                 initialY={0} 
