@@ -24,6 +24,15 @@ const CustomCursor = () => {
         gsap.set(cursor, { xPercent: -50, yPercent: -50 });
         gsap.set(follower, { xPercent: -50, yPercent: -50 });
 
+        // Subtle pulsing for the follower
+        gsap.to(follower, {
+            scale: 1.1,
+            repeat: -1,
+            yoyo: true,
+            duration: 1,
+            ease: "sine.inOut"
+        });
+
         const onMouseMove = (e: MouseEvent) => {
             const { clientX, clientY } = e;
             
@@ -60,7 +69,7 @@ const CustomCursor = () => {
         const onHoverEnter = () => {
             gsap.to(cursor, { scale: 0, duration: 0.3 });
             gsap.to(follower, { 
-                scale: 2.5, 
+                scale: 1.5, 
                 backgroundColor: "rgba(var(--p), 0.1)", 
                 borderColor: "rgba(var(--p), 0.5)",
                 borderWidth: "1px",
