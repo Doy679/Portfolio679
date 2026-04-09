@@ -76,7 +76,7 @@ const About = () => {
         <section id="about" className="bg-base-200 overflow-x-clip relative min-h-screen" ref={wrapperRef}>
             {/* Background Parallax Text - Desktop Only */}
             <div className="hidden lg:block absolute top-[40%] left-0 -translate-y-1/2 whitespace-nowrap pointer-events-none z-0 select-none">
-                <span className="parallax-bg-text font-black text-[15vw] text-primary/[0.01] font-montserrat tracking-tighter leading-none uppercase inline-block">
+                <span className="parallax-bg-text font-black text-[10vw] text-primary/[0.02] font-montserrat tracking-tighter leading-none uppercase inline-block">
                     My Journey & Background &nbsp; My Journey & Background &nbsp; My Journey & Background
                 </span>
             </div>
