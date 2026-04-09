@@ -132,10 +132,10 @@ const Hero = () => {
                 </div>
             </motion.div>
 
-            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container">
+            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start lg:items-center hero-text-container h-full justify-end lg:justify-center pb-12 lg:pb-0">
                 <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl mt-12 lg:mt-20 flex flex-col gap-0"
+                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl flex flex-col gap-0"
                     >
                         <div className="name-segment overflow-visible">
                             <GradientTitle 
