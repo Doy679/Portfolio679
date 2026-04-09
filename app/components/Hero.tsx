@@ -101,8 +101,8 @@ const Hero = () => {
             
             {/* Large Watermark Background Text */}
             <div className="absolute inset-0 flex items-center justify-center top-[40%] z-0 pointer-events-none select-none overflow-hidden">
-                <span className="hero-watermark font-black text-[12vw] lg:text-[14vw] text-primary/[0.05] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
-                    STAY FOCUS
+                <span className="hero-watermark font-black text-[10vw] lg:text-[12vw] text-primary/[0.05] font-montserrat tracking-tighter leading-none uppercase whitespace-nowrap">
+                    HELLO WORLD
                 </span>
             </div>
             
