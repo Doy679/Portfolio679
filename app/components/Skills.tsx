@@ -160,41 +160,36 @@ const Skills = () => {
             });
         });
 
-        // Desktop-only Tilt Effect
+        // Desktop-only Tilt Effect - Optimized with quickTo
         mm.add("(min-width: 1024px)", () => {
             const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
             cards.forEach((card) => {
+                const xTo = gsap.quickTo(card, "rotateY", { duration: 0.4, ease: "power2.out" });
+                const yTo = gsap.quickTo(card, "rotateX", { duration: 0.4, ease: "power2.out" });
+                const scaleTo = gsap.quickTo(card, "scale", { duration: 0.4, ease: "power2.out" });
+
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 30;
-                    const rotateY = (centerX - x) / 30;
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / -20;
 
-                    gsap.to(card, {
-                        rotateX: rotateX,
-                        rotateY: rotateY,
-                        scale: 1.02,
-                        duration: 0.5,
-                        ease: "power2.out",
-                        force3D: true,
-                        overwrite: true
-                    });
-                });
+                    xTo(rotateY);
+                    yTo(rotateX);
+                    scaleTo(1.02);
+                }, { passive: true });
 
                 card.addEventListener('mouseleave', () => {
-                    gsap.to(card, {
-                        rotateX: 0,
-                        rotateY: 0,
-                        scale: 1,
-                        duration: 0.5,
-                        ease: "power2.out",
-                        force3D: true,
-                        overwrite: true
-                    });
+                    xTo(0);
+                    yTo(0);
+                    scaleTo(1);
                 });
+                
+                gsap.set(card, { transformPerspective: 1000, force3D: true });
+                card.style.willChange = "transform";
             });
         });
 

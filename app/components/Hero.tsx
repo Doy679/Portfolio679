@@ -110,7 +110,7 @@ const Hero = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[5] overflow-hidden mask-fade-left pointer-events-none"
+                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[8] lg:z-[5] overflow-hidden mask-fade-left pointer-events-none"
             >
                 <div className="relative w-full h-full hero-bg-img opacity-100 mix-blend-normal">
                      {/* 3D Element as an aura behind the image */}
@@ -126,14 +126,14 @@ const Hero = () => {
                         className="relative z-10"
                         priority 
                     />
-                    {/* Adjusted gradients for better visibility on mobile */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100 via-base-100/20 to-transparent z-20 lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-transparent to-transparent z-20"></div>
+                    {/* Softened gradients for mobile to let image show through */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-base-100/80 via-base-100/10 to-transparent z-20 lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-base-100/40 via-transparent to-transparent z-20"></div>
                 </div>
             </motion.div>
 
-            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 relative items-start hero-text-container h-full justify-end lg:justify-center pb-12 lg:pb-0">
-                <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0">
+            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 lg:z-10 relative items-start hero-text-container h-full justify-end lg:justify-center pb-12 lg:pb-0 pointer-events-none">
+                <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0 pointer-events-auto">
                     <div 
                         className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl flex flex-col gap-0"
                     >
