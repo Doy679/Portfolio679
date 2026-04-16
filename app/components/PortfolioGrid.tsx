@@ -40,13 +40,15 @@ export default function PortfolioGrid() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           
           {projects && Array.isArray(projects) ? projects.map((project, index) => (
-            <div key={index} className="card w-96 bg-base-100 shadow-xl scroll-item">
-              <figure><Image src={project.image} alt={project.title} width={500} height={500} /></figure>
+            <div key={index} className="card w-96 bg-base-100 shadow-xl scroll-item interactive-card">
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:opacity-90 transition-opacity">
+                <figure><Image src={project.image} alt={project.title} width={500} height={500} className="object-cover h-48 w-full" /></figure>
+              </a>
               <div className="card-body">
                   <h2 className="card-title">{project.title}</h2>
                   <p>{project.description}</p>
                   <div className="card-actions justify-end">
-                  <a href={project.link} className="btn btn-primary">View Project</a>
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary">View Project</a>
                   </div>
               </div>
             </div>

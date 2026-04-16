@@ -17,87 +17,119 @@ const Projects = () => {
     useGSAP(() => {
         if (!sectionRef.current || !containerRef.current) return;
 
+        const mm = gsap.matchMedia();
         const projectItems = gsap.utils.toArray('.project-animate-item') as HTMLElement[];
         const totalProjects = projectItems.length;
 
-        // 1. Initial State: Stack all projects absolutely
-        gsap.set(projectItems, { 
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0, 
-            visibility: 'hidden', 
-            scale: 0.9, 
-            y: 50,
-            zIndex: (i) => 10 + i
-        });
-        
-        // 2. Set first project visible
-        gsap.set(projectItems[0], { opacity: 1, visibility: 'visible', scale: 1, y: 0, zIndex: 50 });
+        mm.add("(min-width: 1024px)", () => {
+            // Desktop logic: Stacking and Pinning
+            gsap.set(projectItems, { 
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                opacity: 0, 
+                visibility: 'hidden',
+                pointerEvents: 'none',
+                scale: 0.9, 
+                y: 50,
+                zIndex: 10
+            });
+            
+            gsap.set(projectItems[0], { opacity: 1, visibility: 'visible', pointerEvents: 'auto', scale: 1, y: 0, zIndex: 50 });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top top",
-                end: () => `+=${totalProjects * 150}%`, // 150vh per project
-                pin: true,
-                scrub: 1,
-                anticipatePin: 1,
-                onUpdate: (self) => {
-                    const progress = self.progress * totalProjects;
-                    const newIndex = Math.min(Math.floor(progress), totalProjects - 1);
-                    if (newIndex !== activeIndex) setActiveIndex(newIndex);
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: () => `+=${totalProjects * 150}%`,
+                    pin: true,
+                    scrub: 0.5,
+                    anticipatePin: 1,
+                    onUpdate: (self) => {
+                        const progress = self.progress * totalProjects;
+                        const newIndex = Math.min(Math.floor(progress), totalProjects - 1);
+                        if (newIndex !== activeIndex) setActiveIndex(newIndex);
+                    }
                 }
-            }
+            });
+
+            projectItems.forEach((item, i) => {
+                const content = item.querySelector('.project-content-block');
+                const image = item.querySelector('.project-image-block');
+                const number = item.querySelector('.project-number-block');
+
+                if (i === 0) {
+                    gsap.set([content, image, number].filter(Boolean), { opacity: 1, y: 0, scale: 1 });
+                }
+
+                if (i < totalProjects - 1) {
+                    const nextItem = projectItems[i + 1];
+                    const nextContent = nextItem.querySelector('.project-content-block');
+                    const nextImage = nextItem.querySelector('.project-image-block');
+                    const nextNumber = nextItem.querySelector('.project-number-block');
+
+                    tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
+                      .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
+                      .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1)
+                      .set(item, { pointerEvents: 'none', zIndex: 10 }, i + 0.8)
+                      .to(item, { visibility: 'hidden', duration: 0 }, i + 0.8)
+                      .set(nextItem, { zIndex: 50, pointerEvents: 'auto' }, i + 0.2)
+                      .to(nextItem, { visibility: 'visible', opacity: 1, scale: 1, y: 0, duration: 1 }, i + 0.2)
+                      .fromTo(nextNumber, { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.3)
+                      .fromTo(nextImage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.4)
+                      .fromTo(nextContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, i + 0.6);
+                } else {
+                    tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
+                      .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
+                      .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1)
+                      .set(item, { pointerEvents: 'none' }, i + 0.8);
+                }
+            });
         });
 
-        projectItems.forEach((item, i) => {
-            const content = item.querySelector('.project-content-block');
-            const image = item.querySelector('.project-image-block');
-            const number = item.querySelector('.project-number-block');
+        mm.add("(max-width: 1023px)", () => {
+            // Mobile logic: Simpler vertical layout reveal
+            gsap.set(projectItems, { 
+                position: 'relative', 
+                opacity: 1, 
+                visibility: 'visible', 
+                scale: 1, 
+                y: 0,
+                height: 'auto',
+                pointerEvents: 'auto'
+            });
 
-            // Internal reveals for first project
-            if (i === 0) {
-                gsap.set([content, image, number].filter(Boolean), { opacity: 1, y: 0, scale: 1 });
-            }
-
-            if (i < totalProjects - 1) {
-                const nextItem = projectItems[i + 1];
-                const nextContent = nextItem.querySelector('.project-content-block');
-                const nextImage = nextItem.querySelector('.project-image-block');
-                const nextNumber = nextItem.querySelector('.project-number-block');
-
-                // Exit current
-                tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
-                  .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
-                  .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1)
-                  .to(item, { visibility: 'hidden', duration: 0 }, i + 0.8)
-
-                  // Enter next
-                  .to(nextItem, { visibility: 'visible', opacity: 1, scale: 1, y: 0, duration: 1 }, i + 0.2)
-                  .fromTo(nextNumber, { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.3)
-                  .fromTo(nextImage, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1 }, i + 0.4)
-                  .fromTo(nextContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, i + 0.6);
-            } else {
-                // Final Exit for last project card
-                tl.to(content, { opacity: 0, y: -30, duration: 0.6 }, i)
-                  .to(image, { opacity: 0, scale: 1.1, duration: 0.8 }, i + 0.1)
-                  .to(number, { opacity: 0, scale: 0.8, duration: 0.8 }, i + 0.1);
-            }
+            projectItems.forEach((item, i) => {
+                const content = item.querySelector('.project-content-block');
+                const image = item.querySelector('.project-image-block');
+                
+                gsap.fromTo([image, content], 
+                    { opacity: 0, y: 50 },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 1, 
+                        stagger: 0.2,
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(st => st.kill());
-        };
+        return () => mm.revert();
     }, { scope: sectionRef });
 
     return (
         <section id="projects" className="bg-base-200 w-full relative z-20" ref={sectionRef}>
-            <div ref={containerRef} className="h-screen w-full overflow-hidden flex flex-col relative bg-base-200">
+            <div ref={containerRef} className="lg:h-screen w-full lg:overflow-hidden flex flex-col relative bg-base-200">
                 {/* Unified Section Header */}
-                <div className="container mx-auto px-6 lg:px-12 pt-16 lg:pt-20 pb-4 text-left shrink-0 z-50">
+                <div className="container mx-auto px-6 lg:px-12 pt-16 lg:pt-20 pb-4 text-left shrink-0 z-[60]">
                     <h2 className="text-2xl lg:text-3xl font-black font-montserrat tracking-[0.1em] uppercase text-base-content/20">
                         <GradientTitle text="Selected Works" />
                     </h2>
@@ -105,8 +137,8 @@ const Projects = () => {
                 </div>
 
                 {/* Stacking Content Area */}
-                <div className="flex-grow relative w-full h-full">
-                    <div className="container mx-auto px-6 lg:px-12 h-full flex flex-col relative perspective-[2000px]">
+                <div className="flex-grow relative w-full h-full lg:mt-0 mt-8">
+                    <div className="container mx-auto px-6 lg:px-12 h-full flex flex-col relative perspective-[2000px] gap-20 lg:gap-0">
                         {projects.map((project, i) => (
                             <div key={i} className="project-animate-item w-full h-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-10 lg:py-0">
                                 {/* Background Number */}
@@ -116,9 +148,28 @@ const Projects = () => {
                                 
                                 {/* Image Container */}
                                 <div className="project-image-block image-container w-full lg:w-[45%] group relative z-10 perspective-[1000px]">
-                                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-base-300 transition-all duration-700">
-                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4 lg:p-8" sizes="(max-width: 1024px) 90vw, 45vw" priority={i === 0} />
-                                    </div>
+                                    <a 
+                                        href={project.link && project.link !== "#" ? project.link : undefined}
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => {
+                                            if (project.link && project.link !== "#") {
+                                                window.open(project.link, '_blank');
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                        className={`block relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-base-300 transition-all duration-700 pointer-events-auto ${project.link && project.link !== "#" ? "project-image-link cursor-pointer hover:scale-[1.02] hover:shadow-primary/20" : "cursor-default"}`}
+                                    >
+                                        <Image src={project.image} alt={project.title} fill className="object-contain object-center p-4 lg:p-8 transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 1024px) 90vw, 45vw" priority={i === 0} />
+                                        
+                                        {project.link && project.link !== "#" && (
+                                            <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500 flex items-center justify-center">
+                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-base-100/80 backdrop-blur-sm p-4 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0">
+                                                    <i className="fas fa-external-link-alt text-primary"></i>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </a>
                                 </div>
 
                                 {/* Content Card */}
@@ -171,8 +222,8 @@ const Projects = () => {
                     </div>
                 </div>
 
-                {/* Unified Pagination Indicator */}
-                <div className="absolute right-6 lg:left-12 top-1/2 -translate-y-1/2 flex flex-col gap-4 lg:gap-8 z-50">
+                {/* Unified Pagination Indicator - Hidden on Mobile */}
+                <div className="hidden lg:flex absolute right-6 lg:left-12 top-1/2 -translate-y-1/2 flex flex-col gap-4 lg:gap-8 z-50">
                     {projects.map((_, i) => (
                         <div key={i} className="group cursor-pointer relative">
                             <div className={`w-1 h-6 lg:h-8 rounded-full transition-all duration-500 ${activeIndex === i ? 'bg-primary scale-y-125 lg:scale-y-150 shadow-[0_0_15px_rgba(var(--p),0.8)]' : 'bg-white/10 group-hover:bg-white/30'}`} />
