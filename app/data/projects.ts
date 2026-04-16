@@ -41,7 +41,7 @@ export const projects: Project[] = [
         description: "A diagnostic tool for the Philippine network landscape, providing real-time metrics on connectivity and latency through a clean UI.",
         image: "/wifitestph.png",
         badges: ["JavaScript", "Responsive Design", "Data Visualization"],
-        link: "https://wifitestph.vercel.app/",
+        link: "https://speedtestwifi.vercel.app/",
         role: "Lead Developer",
         impact: "Developed a lightweight, high-precision diagnostic engine that provides accessible network insights for thousands of users across the region."
     },
