@@ -30,7 +30,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       };
       
       gsap.ticker.add(rafLoop);
-      gsap.ticker.lagSmoothing(0);
+      gsap.ticker.lagSmoothing(500, 33); // Adjust for smoother recovery from heavy frames
     }
 
     // Lock scrolling for the duration of the IntroLoader
