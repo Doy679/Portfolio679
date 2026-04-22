@@ -32,6 +32,7 @@ const Skills = () => {
                 { name: "Next.js", icon: "fas fa-globe", color: "#FFFFFF" },
                 { name: "Tailwind", icon: "fab fa-css3-alt", color: "#06B6D4" },
                 { name: "GSAP", icon: "fas fa-wind", color: "#88CE02" },
+                { name: "Framer Motion", icon: "fas fa-play", color: "#0055FF" },
                 { name: "HTML/CSS", icon: "fab fa-html5", color: "#E34F26" },
                 { name: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
                 { name: "DaisyUI", icon: "fas fa-fill-drip", color: "#EC4899" }
@@ -44,6 +45,7 @@ const Skills = () => {
             skills: [
                 { name: "GIT/GITHUB", icon: "fab fa-git-alt", color: "#F05032" },
                 { name: "Node.js", icon: "fab fa-node-js", color: "#339933" },
+                { name: "npm", icon: "fab fa-npm", color: "#CB3837" },
                 { name: "Webpack", icon: "fas fa-cogs", color: "#8DD6F9" },
                 { name: "VS Code", icon: "fas fa-laptop-code", color: "#007ACC" }
             ]

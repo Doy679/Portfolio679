@@ -19,7 +19,7 @@ export const projects: Project[] = [
         impact: "Engineered a custom reservation flow that reduced booking drop-off rates and improved mobile conversion by 40%."
     },
     {
-        title: "FONUS Cebu",
+        title: "Federation Cooperatives",
         description: "A centralized administrative dashboard and public portal for a major federation. It automates reporting and simplifies record management.",
         image: "/FonusCebu.png",
         badges: ["HTML5", "CSS3", "JavaScript", "UI/UX"],
@@ -28,7 +28,7 @@ export const projects: Project[] = [
         impact: "Consolidated multiple disparate workflows into a single dashboard, saving the administrative team over 15 hours per week in manual entry."
     },
     {
-        title: "SHS Grading System",
+        title: "Grading System for SHS",
         description: "A complex academic management system designed to handle thousands of student profiles and automate weighted grade calculations.",
         image: "/Grading%20System.png",
         badges: ["Angular", "Node.js", "MySQL", "Scalable UI"],
@@ -46,7 +46,7 @@ export const projects: Project[] = [
         impact: "Developed a lightweight, high-precision diagnostic engine that provides accessible network insights for thousands of users across the region."
     },
     {
-        title: "Decode the Culture",
+        title: "Codigo Clothing Apparel",
         description: "An urban e-commerce powerhouse built for high visual impact and rapid performance. Focuses on seamless shopping and urban culture.",
         image: "/Decodetheculture.png",
         badges: ["Next.js", "React", "E-commerce", "Performance"],
