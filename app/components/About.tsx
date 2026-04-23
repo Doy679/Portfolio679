@@ -82,7 +82,7 @@ const About = () => {
             </div>
 
             <div 
-                className="flex flex-col lg:flex-row w-full lg:w-[400vw] lg:h-screen relative z-10" 
+                className="flex flex-col lg:flex-row w-full lg:w-[300vw] lg:h-screen relative z-10" 
                 ref={containerRef}
             >
                 {/* Panel 1: Intro */}
@@ -112,34 +112,7 @@ const About = () => {
                     </div>
                 </div>
 
-                {/* Panel 3: Experience */}
-                <div id="experience-panel" className="story-panel w-full lg:w-screen min-h-screen lg:h-full flex flex-col items-center justify-center px-6 md:px-10 lg:px-20 py-20 lg:py-0">
-                    <div className="w-full max-w-6xl relative z-10">
-                        <h2 className="text-3xl md:text-4xl lg:text-6xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content text-center">
-                            <GradientTitle text="Experience" />
-                        </h2>
-                        <div className="w-16 h-1 bg-primary/40 mx-auto mt-4 mb-12 md:mb-16 shadow-[0_0_15px_rgba(var(--p),0.4)]"></div>
-                        
-                        <div className="max-w-4xl mx-auto">
-                            <div className="card bg-base-100 shadow-xl border-l-4 border-primary hover:translate-x-2 transition-transform duration-500">
-                                <div className="card-body p-8">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                                        <div>
-                                            <h3 className="text-2xl font-black uppercase text-primary">J&T Express</h3>
-                                            <p className="text-lg font-bold text-base-content/80">Encoder & Staff</p>
-                                        </div>
-                                        <div className="badge badge-primary badge-outline p-4 font-mono font-bold">2020 - 2022</div>
-                                    </div>
-                                    <p className="text-base-content/70 leading-relaxed">
-                                        Responsible for accurate data entry and package tracking management. Ensured seamless logistics flow by coordinating with delivery teams and managing high-volume shipment documentation during peak operational periods.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Panel 4: Education */}
+                {/* Panel 3: Education */}
                 <div id="education-panel" className="story-panel w-full lg:w-screen min-h-screen lg:h-full flex flex-col items-center justify-center px-6 md:px-10 lg:px-20 py-20 lg:py-0 bg-base-300/30">
                     <div className="w-full max-w-6xl relative z-10">
                         <h2 className="text-3xl md:text-4xl lg:text-6xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content text-center">
