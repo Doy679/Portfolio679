@@ -24,12 +24,7 @@ html[data-theme="dark"] .glass-card {
   box-shadow: none;
 }
 
-.glass-navbar {
-  background-color: hsl(var(--b1) / 0.7) !important; /* Slightly transparent background */
-  backdrop-filter: blur(10px); /* Glassmorphism blur effect */
-  border-bottom: 1px solid hsl(var(--b1) / 0.2); /* Subtle border */
-  box-shadow: 0 4px 6px -1px hsl(var(--b1) / 0.1), 0 2px 4px -2px hsl(var(--b1) / 0.1); /* Light shadow */
-}html, body { 
+html, body { 
   overflow-x: clip; 
   width: 100%;
   position: relative;
@@ -92,19 +87,107 @@ input, select, textarea {
   display: inline-block;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 30s linear infinite;
-}
-
 @keyframes gradientMove {
   0% { background-position: 0% center; }
   50% { background-position: 100% center; }
   100% { background-position: 0% center; }
+}
+
+@media (max-width: 1023px) {
+  .mobile-project-shell {
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+      radial-gradient(circle at 12% 0%, rgba(99, 102, 241, 0.15), transparent 36%),
+      radial-gradient(circle at 100% 100%, rgba(192, 132, 252, 0.1), transparent 34%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 24px 70px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  html[data-theme="light"] .mobile-project-shell {
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.68)),
+      radial-gradient(circle at 12% 0%, rgba(99, 102, 241, 0.13), transparent 36%),
+      radial-gradient(circle at 100% 100%, rgba(192, 132, 252, 0.1), transparent 34%);
+    border-color: rgba(79, 70, 229, 0.13);
+    box-shadow:
+      0 24px 60px rgba(15, 23, 42, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+
+  .mobile-about-backdrop {
+    background:
+      linear-gradient(180deg, hsl(var(--b2)) 0%, transparent 28%, transparent 72%, hsl(var(--b2)) 100%),
+      radial-gradient(circle at 78% 10%, rgba(129, 140, 248, 0.1), transparent 34%),
+      radial-gradient(circle at 12% 68%, rgba(192, 132, 252, 0.08), transparent 30%);
+  }
+
+  .mobile-about-card {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .mobile-about-copy {
+    border-left: 2px solid rgba(129, 140, 248, 0.55);
+    padding-left: 1rem;
+    text-wrap: pretty;
+  }
+
+  .mobile-education-row {
+    border-radius: 0;
+    border-left-width: 2px;
+    background: transparent;
+  }
+
+  .mobile-project-shell {
+    border-radius: 1.9rem;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .mobile-project-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(120deg, transparent 0%, rgba(99, 102, 241, 0.12) 42%, transparent 70%);
+    opacity: 0.75;
+    transform: translateX(-120%);
+    animation: mobileSurfaceSheen 8s ease-in-out infinite;
+  }
+
+  .mobile-project-shell::after {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.75), transparent);
+    opacity: 0.8;
+  }
+
+  .mobile-works-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 42px 42px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 16%, black 76%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 16%, black 76%, transparent);
+    opacity: 0.55;
+  }
+
+}
+
+@keyframes mobileSurfaceSheen {
+  0%, 54% { transform: translateX(-120%); }
+  72%, 100% { transform: translateX(120%); }
 }

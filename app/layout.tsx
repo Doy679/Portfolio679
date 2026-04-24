@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
-import '../app/lib/gsap';
 import IntroLoader from './components/IntroLoader';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
