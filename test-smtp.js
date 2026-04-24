@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 // Test script to verify SMTP configuration
-require('dotenv').config({ path: './.env.local' });
-
-const nodemailer = require('nodemailer');
-
 async function testSMTP() {
+  const dotenv = await import('dotenv');
+  const nodemailerModule = await import('nodemailer');
+  const nodemailer = nodemailerModule.default;
+
+  dotenv.config({ path: './.env.local' });
+
   console.log('Testing SMTP configuration...\n');
 
   // Check if environment variables are set
