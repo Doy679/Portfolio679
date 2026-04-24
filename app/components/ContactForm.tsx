@@ -75,7 +75,7 @@ const ContactForm = () => {
             }
             setShowToast(true);
             setTimeout(() => setShowToast(false), 3000);
-        } catch (error) {
+        } catch {
             setToastMessage('Network error. Please try again later.');
             setToastType('error');
             setShowToast(true);
@@ -93,7 +93,7 @@ const ContactForm = () => {
                     {[...Array(8)].map((_, i) => (
                         <span key={i} className="text-xl md:text-3xl font-black font-montserrat uppercase tracking-tighter text-primary/30 flex items-center">
                             Turning ideas into reality <span className="text-primary/10 mx-6">✦</span> 
-                            Let's collaborate <span className="text-primary/10 mx-6">✦</span> 
+                            Let&apos;s collaborate <span className="text-primary/10 mx-6">✦</span> 
                             Available for new projects <span className="text-primary/10 mx-6">✦</span> &nbsp;
                         </span>
                     ))}
