@@ -5,7 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projects } from '../data/projects';
-import GradientTitle from './GradientTitle';
+import HackerText from './HackerText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,20 +23,20 @@ const Projects = () => {
 
         mm.add("(min-width: 1024px)", () => {
             // Desktop logic: Stacking and Pinning
-            gsap.set(projectItems, { 
+            gsap.set(projectItems, {
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
                 height: '100%',
-                opacity: 0, 
+                opacity: 0,
                 visibility: 'hidden',
                 pointerEvents: 'none',
-                scale: 0.9, 
+                scale: 0.9,
                 y: 50,
                 zIndex: 10
             });
-            
+
             gsap.set(projectItems[0], { opacity: 1, visibility: 'visible', pointerEvents: 'auto', scale: 1, y: 0, zIndex: 50 });
 
             const tl = gsap.timeline({
@@ -91,11 +91,11 @@ const Projects = () => {
 
         mm.add("(max-width: 1023px)", () => {
             // Mobile logic: premium vertical showcase with one-shot reveals
-            gsap.set(projectItems, { 
-                position: 'relative', 
-                opacity: 1, 
-                visibility: 'visible', 
-                scale: 1, 
+            gsap.set(projectItems, {
+                position: 'relative',
+                opacity: 1,
+                visibility: 'visible',
+                scale: 1,
                 y: 0,
                 height: 'auto',
                 pointerEvents: 'auto'
@@ -192,7 +192,7 @@ const Projects = () => {
                         <span>{String(projects.length).padStart(2, '0')}</span>
                     </div>
                     <h2 className="text-3xl lg:text-3xl font-black font-montserrat tracking-[0.14em] lg:tracking-[0.1em] uppercase text-base-content/20">
-                        <GradientTitle text="Selected Works" />
+                        <HackerText text="Selected Works" />
                     </h2>
                     <div className="w-full lg:w-24 h-px lg:h-1 bg-white/10 lg:bg-primary mt-5 lg:mt-2 overflow-hidden shadow-[0_0_15px_rgba(var(--p),0.5)]">
                         <div className="lg:hidden h-full w-2/3 bg-gradient-to-r from-primary via-secondary to-transparent"></div>
@@ -208,17 +208,17 @@ const Projects = () => {
                                 <div className="project-number-block bg-number absolute right-3 top-5 lg:right-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 font-black text-[6.5rem] lg:text-[25rem] text-primary/[0.11] lg:text-primary/[0.15] font-montserrat tracking-tighter leading-none select-none pointer-events-none z-0">
                                     0{i + 1}
                                 </div>
-                                
+
                                 {/* Image Container */}
                                 <div className="project-image-block image-container w-full lg:w-[45%] group relative z-10 perspective-[1000px]">
-                                    <a 
+                                    <a
                                         href={project.link && project.link !== "#" ? project.link : undefined}
-                                        target="_blank" 
+                                        target="_blank"
                                         rel="noopener noreferrer"
                                         className={`block relative w-full aspect-video rounded-[1.35rem] lg:rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-base-300/80 transition-all duration-700 pointer-events-auto ${project.link && project.link !== "#" ? "project-image-link cursor-pointer hover:scale-[1.02] hover:shadow-primary/20" : "cursor-default"}`}
                                     >
                                         <Image src={project.image} alt={project.title} fill className="project-image object-contain object-center p-3 lg:p-8 transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 1024px) 90vw, 45vw" priority={i === 0} />
-                                        
+
                                         {project.link && project.link !== "#" && (
                                             <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500 flex items-center justify-center">
                                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-base-100/80 backdrop-blur-sm p-4 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0">

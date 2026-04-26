@@ -3,7 +3,7 @@ import React from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import GradientTitle from './GradientTitle';
+import HackerText from './HackerText';
 import SkillCard from './SkillCard';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -202,7 +202,7 @@ const Skills = () => {
             <div className="container mx-auto px-6 md:px-10 lg:px-20">
                 <div className="text-center mb-20">
                     <h2 className="text-3xl md:text-4xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
-                        <GradientTitle text="My Skills" />
+                        <HackerText text="My Skills" />
                     </h2>
                     <div className="w-16 h-1 bg-primary/30 mx-auto mt-6 rounded-full shadow-[0_0_20px_rgba(var(--p),0.2)]"></div>
                 </div>
