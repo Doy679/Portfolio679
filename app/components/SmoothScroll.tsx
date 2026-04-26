@@ -38,11 +38,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       lenis.stop();
       setTimeout(() => {
         lenis?.start();
+        ScrollTrigger.refresh();
       }, 3800);
     } else {
       document.body.style.overflow = 'hidden';
       setTimeout(() => {
         document.body.style.overflow = '';
+        ScrollTrigger.refresh();
       }, 3800);
     }
 

@@ -7,7 +7,6 @@ import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingShape from './FloatingShape';
-import GradientTitle from './GradientTitle';
 import Magnetic from './Magnetic';
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
@@ -60,7 +59,7 @@ const Hero = () => {
 
         mm.add("(max-width: 1023px)", () => {
             gsap.to('.hero-bg-img', {
-                y: 50,
+                y: 28,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: heroRef.current,
@@ -69,16 +68,6 @@ const Hero = () => {
                     scrub: true,
                 }
             });
-        });
-
-        // Staggered Name Reveal
-        gsap.from('.name-segment', {
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            duration: 1.2,
-            ease: "expo.out",
-            delay: 0.5
         });
 
         // Watermark Parallax
@@ -96,7 +85,7 @@ const Hero = () => {
     }, { scope: heroRef });
 
     return (
-        <div id="home" className="hero min-h-screen pt-16 lg:pt-0 relative overflow-hidden" ref={heroRef}>
+        <div id="home" className="hero min-h-[100svh] pt-12 lg:pt-0 relative overflow-hidden" ref={heroRef}>
             
             {/* Large Watermark Background Text */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full lg:w-[60%] flex items-center justify-center px-8 lg:px-16 z-[7] pointer-events-none select-none overflow-visible">
@@ -110,7 +99,7 @@ const Hero = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[8] lg:z-[5] overflow-hidden mask-fade-left pointer-events-none"
+                className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[8] lg:z-[5] overflow-hidden lg:mask-fade-left pointer-events-none"
             >
                 <div className="relative w-full h-full hero-bg-img opacity-100 mix-blend-normal">
                      {/* 3D Element as an aura behind the image */}
@@ -122,40 +111,25 @@ const Hero = () => {
                         src="/new.png" 
                         alt="Rondether Gonzales" 
                         fill 
-                        style={{ objectFit: 'cover', objectPosition: 'top' }} 
-                        className="relative z-10"
+                        className="relative z-10 object-cover object-[58%_18%] lg:object-top"
                         priority 
                     />
-                    {/* Softened gradients for mobile to let image show through */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100/80 via-base-100/10 to-transparent z-20 lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-base-100/40 via-transparent to-transparent z-20"></div>
+                    {/* Mobile keeps the portrait readable while desktop preserves the split fade. */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-base-100/35 via-base-100/10 to-base-100/45 z-20 lg:bg-gradient-to-r lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-base-100/55 via-base-100/20 to-base-100/5 z-20 lg:hidden"></div>
                 </div>
             </motion.div>
 
-            <div className="hero-content flex-col w-full px-6 md:px-10 z-10 lg:z-10 relative items-start hero-text-container h-full justify-end lg:justify-center pb-12 lg:pb-0 pointer-events-none">
-                <div className="w-full lg:w-3/4 text-left pt-20 lg:pt-0 pointer-events-auto">
+            <div className="hero-content flex-col w-full px-4 sm:px-6 md:px-10 z-10 lg:z-10 relative items-start hero-text-container h-full justify-center pb-6 pt-20 lg:pt-0 lg:pb-0 pointer-events-none">
+                <div className="w-full lg:w-3/4 text-left pointer-events-auto">
                     <div 
-                        className="font-montserrat text-4xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl flex flex-col gap-0"
+                        className="font-montserrat text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black tracking-normal leading-none drop-shadow-2xl flex flex-col gap-0"
                     >
                         <div className="name-segment overflow-visible">
-                            <GradientTitle 
-                                text="RONDETHER" 
-                                className="px-4 pb-2"
-                                inView={false} 
-                                initialX={-40} 
-                                initialY={0} 
-                                delay={0.3} 
-                            />
+                            <span className="gradient-text-animate inline-block px-2 sm:px-4 pb-1 sm:pb-2">RONDETHER</span>
                         </div>
                         <div className="name-segment overflow-visible">
-                            <GradientTitle 
-                                text="GONZALES" 
-                                className="px-4 pb-2"
-                                inView={false} 
-                                initialX={-40} 
-                                initialY={0} 
-                                delay={0.5} 
-                            />
+                            <span className="gradient-text-animate inline-block px-2 sm:px-4 pb-1 sm:pb-2">GONZALES</span>
                         </div>
                     </div>
                     
@@ -163,7 +137,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-3xl md:text-4xl font-bold py-6"
+                        className="text-xl sm:text-2xl md:text-4xl font-bold py-4 sm:py-6"
                     >
                         <span ref={typingTextRef}></span><span className="cursor text-primary">|</span>
                     </motion.h2>
@@ -172,7 +146,7 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className="py-6 max-w-2xl text-lg lg:text-xl drop-shadow-md font-medium text-base-content/80"
+                        className="py-2 sm:py-4 lg:py-6 max-w-2xl text-xs sm:text-sm md:text-lg lg:text-xl leading-relaxed drop-shadow-md font-medium text-base-content/80"
                     >
                         Driven by a deep passion for technology and committed to building effective digital solutions.
                         My focus is in Front-End Development, utilizing foundational web languages
@@ -183,14 +157,14 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-wrap gap-4 mt-4"
+                        className="flex flex-wrap gap-2 sm:gap-4 mt-6"
                     >
                         <Magnetic strength={0.4}>
                             <motion.a 
                                 whileHover={{ scale: 1.05, y: -5 }} 
                                 whileTap={{ scale: 0.95 }} 
                                 href="#projects" 
-                                className="btn btn-primary btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300"
+                                className="btn btn-primary btn-sm sm:btn-md lg:btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300"
                             >
                                 <i className="fas fa-briefcase mr-2"></i>View Projects
                             </motion.a>
@@ -201,7 +175,7 @@ const Hero = () => {
                                 whileHover={{ scale: 1.05, y: -5 }} 
                                 whileTap={{ scale: 0.95 }} 
                                 href="#contact" 
-                                className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                                className="btn btn-outline btn-primary btn-sm sm:btn-md lg:btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
                             >
                                 <i className="fas fa-envelope mr-2"></i>Contact Me
                             </motion.a>
@@ -214,7 +188,7 @@ const Hero = () => {
                                 href="/cv.pdf" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="btn btn-outline btn-primary btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
+                                className="btn btn-outline btn-primary btn-sm sm:btn-md lg:btn-lg bg-base-100/50 backdrop-blur-sm transition-all duration-300"
                             >
                                 <i className="fas fa-download mr-2"></i>Download CV
                             </motion.a>
