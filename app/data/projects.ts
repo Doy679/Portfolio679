@@ -10,6 +10,15 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        title: "Vicoy Photography",
+        description: "A cinematic photography portfolio for Cebu couple, prenup, and intimate wedding stories with editorial sections, client galleries, and booking-focused calls to action.",
+        image: "/VicoyPhotography.png",
+        badges: ["HTML5", "CSS3", "JavaScript", "Responsive Design"],
+        link: "https://vicoyphotography.vercel.app/",
+        role: "Frontend Developer",
+        impact: "Built a polished visual experience that presents photography services, featured love stories, and booking touchpoints in one cohesive brand flow."
+    },
+    {
         title: "Brisasolei",
         description: "A high-performance resort booking platform engineered for seamless guest experiences. It features a fully responsive design and real-time availability checks.",
         image: "/Brisasolei.png",
