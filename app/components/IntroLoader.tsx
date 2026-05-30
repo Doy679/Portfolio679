@@ -1,203 +1,129 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const DigitalDust = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const isMobile = window.innerWidth < 768;
-        const particleCount = isMobile ? 40 : 150;
-        const particles: { x: number; y: number; s: number; v: number; a: number }[] = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                s: Math.random() * 2,
-                v: Math.random() * 0.5 + 0.2,
-                a: Math.random() * Math.PI * 2
-            });
-        }
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(129, 140, 248, 0.15)";
-            particles.forEach(p => {
-                p.y -= p.v;
-                if (p.y < 0) p.y = canvas.height;
-                ctx.beginPath();
-                ctx.arc(p.x + Math.sin(p.a) * 10, p.y, p.s, 0, Math.PI * 2);
-                ctx.fill();
-                p.a += 0.01;
-            });
-            requestAnimationFrame(animate);
-        };
-
-        animate();
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none opacity-40" />;
-};
+const bootLogs = [
+    "INITIALIZING KERNEL...",
+    "MOUNTING VIRTUAL FILE SYSTEM...",
+    "LOADING REACT & NEXT.JS BUNDLES...",
+    "ESTABLISHING SECURE CONNECTION...",
+    "COMPILING GSAP ANIMATIONS...",
+    "BYPASSING FIREWALLS...",
+    "ACCESS GRANTED.",
+    "SYSTEM READY."
+];
 
 const IntroLoader = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
+    const [logs, setLogs] = useState<string[]>([]);
+    const [totalBlocks, setTotalBlocks] = useState(20);
 
     useEffect(() => {
+        setTotalBlocks(window.innerWidth < 768 ? 15 : 30);
+
         document.body.style.overflow = 'hidden';
         window.scrollTo(0, 0);
 
-        const interval = setInterval(() => {
-            setProgress(prev => {
-                if (prev < 100) return prev + 1;
-                clearInterval(interval);
-                return 100;
-            });
-        }, 30);
+        const duration = 2800; // 2.8s to reach 100%
+        const intervalTime = 40;
+        const steps = duration / intervalTime;
+        let currentStep = 0;
+        let currentLogsLength = 0;
 
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-            setTimeout(() => {
-                document.body.style.overflow = '';
-            }, 1000);
-        }, 4200);
+        const interval = setInterval(() => {
+            currentStep++;
+            const newProgress = Math.min(Math.round((currentStep / steps) * 100), 100);
+            setProgress(newProgress);
+            
+            const expectedLogCount = Math.floor((newProgress / 100) * bootLogs.length);
+            if (expectedLogCount > currentLogsLength && expectedLogCount <= bootLogs.length) {
+                currentLogsLength = expectedLogCount;
+                setLogs(bootLogs.slice(0, expectedLogCount));
+            }
+
+            if (currentStep >= steps) {
+                clearInterval(interval);
+                
+                // Wait at 100% for 500ms so the user sees it finish
+                setTimeout(() => {
+                    setIsLoading(false);
+                    // Give time for exit animation before enabling scroll
+                    setTimeout(() => {
+                        document.body.style.overflow = '';
+                    }, 500); 
+                }, 500);
+            }
+        }, intervalTime);
 
         return () => {
             clearInterval(interval);
-            clearTimeout(timer);
             document.body.style.overflow = '';
         };
     }, []);
+
+    // Generate ASCII progress bar
+    const filledBlocks = Math.floor((progress / 100) * totalBlocks);
+    const emptyBlocks = Math.max(0, totalBlocks - filledBlocks);
+    const progressBar = `[${'#'.repeat(filledBlocks)}${'-'.repeat(emptyBlocks)}]`;
 
     return (
         <AnimatePresence>
             {isLoading && (
                 <motion.div
-                    initial={{ opacity: 1 }}
+                    initial={{ y: 0 }}
                     exit={{ 
-                        opacity: 0,
-                        transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] } 
+                        y: '-100%',
+                        transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] } 
                     }}
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#080808] overflow-hidden"
+                    className="fixed inset-0 z-[9999] bg-[#050505] flex items-center justify-center p-6 md:p-12 font-mono"
                 >
-                    <DigitalDust />
+                    <div className="w-full max-w-4xl text-primary text-sm md:text-lg leading-relaxed flex flex-col gap-2 relative z-10">
+                        <div className="mb-6 opacity-70">
+                            <p className="text-white/60">RONDETHER_OS [Version 2.0.26]</p>
+                            <p className="text-white/40">(c) 2026 Rondether Gonzales. All rights reserved.</p>
+                        </div>
 
-                    {/* Layered Background Glows */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
-                        <motion.div 
-                            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[140px]"
-                        />
-                        <motion.div 
-                            animate={{ scale: [1.2, 1, 1.2], opacity: [0.05, 0.1, 0.05] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-[160px]"
-                        />
-                    </div>
-
-                    <div className="relative z-10 flex flex-col items-center">
-                        
-                        {/* Central Ethereal Line */}
-                        <div className="relative h-64 flex items-center justify-center">
-                            <motion.div 
-                                initial={{ height: 0 }}
-                                animate={{ height: 200 }}
-                                transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1] }}
-                                className="w-[1px] bg-gradient-to-b from-transparent via-primary to-transparent relative"
-                            >
-                                {/* Glowing Core Dot */}
+                        <div className="flex flex-col gap-2 min-h-[250px] md:min-h-[300px]">
+                            {logs.map((log, index) => (
                                 <motion.div 
-                                    animate={{ 
-                                        scale: [1, 1.5, 1],
-                                        boxShadow: ["0 0 20px #818cf8", "0 0 50px #c084fc", "0 0 20px #818cf8"]
-                                    }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full z-20"
-                                />
-                            </motion.div>
-
-                            {/* Name Reveal - Desktop (Horizontal) & Mobile (Vertical Stack) */}
-                            <div className="absolute left-1/2 -translate-x-1/2 md:left-full md:translate-x-0 md:ml-8 mt-64 md:mt-0 overflow-hidden w-[90vw] md:w-auto text-center md:text-left">
-                                <motion.div
-                                    initial={{ x: -100, opacity: 0 }}
-                                    animate={{ 
-                                        x: progress > 40 ? 0 : -100, 
-                                        opacity: progress > 40 ? 1 : 0,
-                                        y: 0 
-                                    }}
-                                    transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-                                    className="flex flex-col"
+                                    key={index}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="flex gap-4"
                                 >
-                                    <h1 className="text-3xl md:text-6xl font-black font-montserrat tracking-tighter text-white uppercase leading-[0.8]">
-                                        RONDETHER
-                                    </h1>
-                                    <h1 className="text-3xl md:text-6xl font-black font-montserrat tracking-tighter text-primary uppercase leading-[0.8] mt-2">
-                                        GONZALES
-                                    </h1>
+                                    <span className="opacity-50 text-secondary">{`>`}</span>
+                                    <span className="text-primary/90">{log}</span>
                                 </motion.div>
+                            ))}
+                        </div>
+
+                        <div className="mt-8 text-primary">
+                            <div className="flex justify-between items-end mb-2 text-white/50 text-xs tracking-[0.2em]">
+                                <span>BOOT SEQUENCE</span>
+                                <span className="text-primary">{progress}%</span>
                             </div>
-
-                            {/* Role Reveal - Desktop (Other Side) & Mobile (Below Name) */}
-                            <div className="absolute left-1/2 -translate-x-1/2 md:left-auto md:right-full md:translate-x-0 md:mr-8 mt-[22rem] md:mt-0 overflow-hidden w-[90vw] md:w-auto text-center md:text-right">
-                                <motion.div
-                                    initial={{ x: 100, opacity: 0 }}
-                                    animate={{ 
-                                        x: progress > 60 ? 0 : 100, 
-                                        opacity: progress > 60 ? 1 : 0,
-                                        y: 0
-                                    }}
-                                    transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
-                                >
-                                    <span className="text-[10px] md:text-xs font-mono text-white/40 uppercase tracking-[0.5em] whitespace-nowrap">
-                                        Frontend Engineer
-                                    </span>
-                                </motion.div>
+                            <div className="text-lg md:text-3xl tracking-widest font-bold text-primary">
+                                {progressBar}
                             </div>
                         </div>
 
-                        {/* Minimalist Progress Indicator */}
-                        <div className="mt-24 flex flex-col items-center gap-4">
-                            <div className="flex gap-1">
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                    <motion.div 
-                                        key={i}
-                                        initial={{ opacity: 0.1 }}
-                                        animate={{ opacity: progress > (i * 20) ? 1 : 0.1 }}
-                                        className="w-12 h-[2px] bg-primary/40 rounded-full overflow-hidden"
-                                    >
-                                        <motion.div 
-                                            initial={{ width: 0 }}
-                                            animate={{ width: progress > (i * 20) ? '100%' : '0%' }}
-                                            className="h-full bg-primary"
-                                        />
-                                    </motion.div>
-                                ))}
-                            </div>
-                            <div className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.3em]">
-                                <span className="text-white/20">System Load</span>
-                                <span className="text-primary font-bold">{progress}%</span>
-                            </div>
-                        </div>
-
+                        {/* Blinking cursor */}
+                        <motion.div 
+                            animate={{ opacity: [1, 0, 1] }}
+                            transition={{ duration: 0.8, repeat: Infinity }}
+                            className="w-3 md:w-4 h-5 md:h-6 bg-primary inline-block mt-6"
+                        />
                     </div>
-
-                    {/* High-End Finish: Subtle Vignette */}
-                    <div className="absolute inset-0 pointer-events-none bg-radial-vignette opacity-50"></div>
+                    
+                    {/* Glowing Orb Background to match landing page */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none z-0">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+                    </div>
+                    
+                    {/* Scanline overlay effect */}
+                    <div className="absolute inset-0 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjEiIGZpbGw9InJnYmEoMCwgMjU1LCAwLCAwLjA1KSIvPjwvc3ZnPg==')] opacity-50 z-20"></div>
                 </motion.div>
             )}
         </AnimatePresence>

@@ -63,4 +63,13 @@ export const projects: Project[] = [
         role: "Lead Frontend Engineer",
         impact: "Optimized image delivery and state management to achieve a sub-1s load time, leading to a significant increase in user engagement."
     },
+    {
+        title: "Ridge Theory CRM",
+        description: "A secure and comprehensive Customer Relationship Management (CRM) system designed to streamline leads, deals, and activity tracking.",
+        image: "/CRM.png",
+        badges: ["React", "Next.js", "Node.js", "Responsive Design", "Authentication"],
+        link: "https://crm-system-seven-delta.vercel.app/login",
+        role: "Frontend Developer",
+        impact: "Developed a secure authentication portal and centralized dashboard for managing leads and daily activities, improving overall workflow efficiency."
+    },
 ];

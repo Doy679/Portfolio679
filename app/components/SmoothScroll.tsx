@@ -1,61 +1,33 @@
-'use client';
-import { useEffect } from 'react';
-import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+'use client'
+import { useEffect } from 'react'
+import Lenis from 'lenis'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
-    let lenis: Lenis | null = null;
-    let rafLoop: (time: number) => void;
+    // Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2, // Tweak this for faster/slower scrolling
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Default smooth easing
+      // smoothWheel: true, (deprecated in newer Lenis versions, it is smooth by default)
+    })
 
-    if (isMobile) {
-      window.addEventListener('scroll', ScrollTrigger.update);
-    } else {
-      lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: 'vertical',
-        gestureOrientation: 'vertical',
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        touchMultiplier: 2,
-      });
+    // Keep GSAP animations working as they are
+    lenis.on('scroll', ScrollTrigger.update)
 
-      lenis.on('scroll', ScrollTrigger.update);
-
-      rafLoop = (time: number) => {
-        lenis?.raf(time * 1000);
-      };
-      
-      gsap.ticker.add(rafLoop);
-      gsap.ticker.lagSmoothing(500, 33); // Adjust for smoother recovery from heavy frames
+    // Connect it to the browser's animation frame
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
     }
 
-    // Lock scrolling for the duration of the IntroLoader
-    if (lenis) {
-      lenis.stop();
-      setTimeout(() => {
-        lenis?.start();
-        ScrollTrigger.refresh();
-      }, 3800);
-    } else {
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => {
-        document.body.style.overflow = '';
-        ScrollTrigger.refresh();
-      }, 3800);
-    }
+    requestAnimationFrame(raf)
 
+    // Cleanup on unmount
     return () => {
-      if (lenis) {
-        lenis.destroy();
-        gsap.ticker.remove(rafLoop);
-      }
-      window.removeEventListener('scroll', ScrollTrigger.update);
-    };
-  }, []);
+      lenis.destroy()
+    }
+  }, [])
 
-  return <>{children}</>;
+  return <>{children}</>
 }

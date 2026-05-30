@@ -30,24 +30,27 @@ export async function sendEmail(formData: FormData): Promise<EmailResult> {
 
   const { name, email, subject, message } = data;
 
-  // Use SMTP_PASS (Server-only secret)
+  const SMTP_HOST = process.env.SMTP_HOST || siteConfig.contact.smtp.host;
+  const SMTP_PORT = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : siteConfig.contact.smtp.port;
+  const SMTP_SECURE = process.env.SMTP_SECURE === 'true' || siteConfig.contact.smtp.secure;
+  const SMTP_USER = process.env.SMTP_USER || siteConfig.contact.email;
   const SMTP_PASS = process.env.SMTP_PASS || process.env.NEXT_PUBLIC_SMTP_PASS;
 
-  if (!SMTP_PASS) {
-    console.error('Missing SMTP_PASS environment variable.');
+  if (!SMTP_PASS || !SMTP_USER) {
+    console.error('Missing SMTP_PASS or SMTP_USER environment variable.');
     return {
       success: false,
-      error: 'Email configuration is missing. Please contact the site administrator.'
+      error: `Config Error: SMTP_PASS is ${SMTP_PASS ? 'set' : 'missing'}, SMTP_USER is ${SMTP_USER ? 'set' : 'missing'}, HOST: ${SMTP_HOST}, PORT: ${SMTP_PORT}`
     };
   }
 
   try {
     const transporter = nodemailer.createTransport({
-      host: siteConfig.contact.smtp.host,
-      port: siteConfig.contact.smtp.port,
-      secure: siteConfig.contact.smtp.secure,
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_SECURE,
       auth: {
-        user: siteConfig.contact.email,
+        user: SMTP_USER,
         pass: SMTP_PASS,
       },
     });
@@ -55,10 +58,10 @@ export async function sendEmail(formData: FormData): Promise<EmailResult> {
     await transporter.verify();
 
     await transporter.sendMail({
-      from: `"${name}" <${siteConfig.contact.email}>`,
-      to: siteConfig.contact.email,
+      from: `"${name}" <${SMTP_USER}>`,
+      to: SMTP_USER,
       replyTo: email,
-      subject: `New Message: ${subject}`,
+      subject: `Portfolio Contact: ${subject}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
@@ -95,17 +98,9 @@ export async function sendEmail(formData: FormData): Promise<EmailResult> {
     });
 
     return { success: true };
-  } catch (error: unknown) {
-    const err = error as { code?: string; message?: string };
-    console.error('Error sending email:', err);
-
-    if (err.code === 'EAUTH') {
-      return { success: false, error: 'Authentication failed. Please check your email configuration.' };
-    } else if (err.code === 'ECONNREFUSED') {
-      return { success: false, error: 'Unable to connect to the email server.' };
-    }
-    
-    return { success: false, error: 'An unexpected error occurred. Please try again later.' };
+  } catch (error: any) {
+    console.error('Error sending email:', error);
+    return { success: false, error: `Raw Error: ${error.message || JSON.stringify(error)}` };
   }
 }
 

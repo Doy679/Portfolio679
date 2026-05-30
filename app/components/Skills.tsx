@@ -13,63 +13,59 @@ const Skills = () => {
 
     const skillCategories = [
         {
-            title: "Programming Languages",
+            title: "Languages",
             icon: "fas fa-code",
             className: "md:col-span-5",
             skills: [
-                { name: "JS/TS", icon: "fab fa-js-square", color: "#F7DF1E" },
-                { name: "Java", icon: "fab fa-java", color: "#ED8B00" },
-                { name: "C/C++", icon: "fas fa-file-code", color: "#00599C" },
-                { name: "C#", icon: "fas fa-file-code", color: "#239120" }
+                { name: "JavaScript", icon: "fab fa-js-square", color: "#F7DF1E" },
+                { name: "Typescript", icon: "fas fa-file-code", color: "#3178C6" },
+                { name: "HTML, CSS", icon: "fab fa-html5", color: "#E34F26" }
             ]
         },
         {
-            title: "Frontend & Frameworks",
+            title: "Frameworks",
             icon: "fas fa-layer-group",
             className: "md:col-span-7",
             skills: [
                 { name: "React", icon: "fab fa-react", color: "#61DAFB" },
                 { name: "Next.js", icon: "fas fa-globe", color: "#FFFFFF" },
-                { name: "Tailwind", icon: "fab fa-css3-alt", color: "#06B6D4" },
                 { name: "GSAP", icon: "fas fa-wind", color: "#88CE02" },
-                { name: "Framer Motion", icon: "fas fa-play", color: "#0055FF" },
-                { name: "HTML/CSS", icon: "fab fa-html5", color: "#E34F26" },
-                { name: "Bootstrap", icon: "fab fa-bootstrap", color: "#7952B3" },
-                { name: "DaisyUI", icon: "fas fa-fill-drip", color: "#EC4899" }
+                { name: "Daisy UI", icon: "fas fa-fill-drip", color: "#EC4899" },
+                { name: "Tailwind CSS", icon: "fab fa-css3-alt", color: "#06B6D4" },
+                { name: "Framer Motion", icon: "fas fa-play", color: "#0055FF" }
             ]
         },
         {
-            title: "Supporting Tools",
+            title: "Tools & Technologies",
             icon: "fas fa-tools",
             className: "md:col-span-6",
             skills: [
-                { name: "GIT/GITHUB", icon: "fab fa-git-alt", color: "#F05032" },
                 { name: "Node.js", icon: "fab fa-node-js", color: "#339933" },
                 { name: "npm", icon: "fab fa-npm", color: "#CB3837" },
-                { name: "Webpack", icon: "fas fa-cogs", color: "#8DD6F9" },
-                { name: "VS Code", icon: "fas fa-laptop-code", color: "#007ACC" }
+                { name: "UI/UX Design", icon: "fas fa-pen-nib", color: "#A855F7" },
+                { name: "Git/GitHub", icon: "fab fa-git-alt", color: "#F05032" },
+                { name: "AI-Assisted Development", icon: "fas fa-robot", color: "#10B981" }
+            ]
+        },
+        {
+            title: "Core Competencies",
+            icon: "fas fa-users",
+            className: "md:col-span-6",
+            skills: [
+                { name: "Team Collaboration", icon: "fas fa-people-group", color: "#3B82F6" },
+                { name: "Problem Solving", icon: "fas fa-lightbulb", color: "#FBBF24" },
+                { name: "Agile/Scrum", icon: "fas fa-sync-alt", color: "#14B8A6" },
+                { name: "Adaptability", icon: "fas fa-arrows-turn-to-dots", color: "#8B5CF6" }
             ]
         },
         {
             title: "OS & Environments",
             icon: "fas fa-desktop",
-            className: "md:col-span-6",
+            className: "md:col-span-12",
             skills: [
                 { name: "Windows", icon: "fab fa-windows", color: "#0078D4" },
                 { name: "Linux", icon: "fab fa-linux", color: "#FCC624" },
                 { name: "Command Line", icon: "fas fa-terminal", color: "#4D4D4D" }
-            ]
-        },
-        {
-            title: "IT Support & Hardware Expertise",
-            icon: "fas fa-screwdriver-wrench",
-            className: "md:col-span-12",
-            skills: [
-                { name: "PC Hardware", icon: "fas fa-microchip", color: "#10B981" },
-                { name: "Networking", icon: "fas fa-network-wired", color: "#60A5FA" },
-                { name: "Reformat O.S.", icon: "fas fa-compact-disc", color: "#F87171" },
-                { name: "LAN Routing", icon: "fas fa-route", color: "#A78BFA" },
-                { name: "Printer Sharing", icon: "fas fa-print", color: "#9CA3AF" }
             ]
         }
     ];

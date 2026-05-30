@@ -69,17 +69,23 @@ const ContactForm = () => {
                 setToastType('success');
                 (e.target as HTMLFormElement).reset();
             } else {
-                if (result.fieldErrors) setFieldErrors(result.fieldErrors);
-                setToastMessage(result.error || 'Failed to send message.');
+                if (result.fieldErrors) {
+                    setFieldErrors(result.fieldErrors);
+                    // Extract the first validation error to show in the toast
+                    const firstError = Object.values(result.fieldErrors)[0];
+                    setToastMessage(`Validation Error: ${firstError}`);
+                } else {
+                    setToastMessage(result.error || 'Failed to send message.');
+                }
                 setToastType('error');
             }
             setShowToast(true);
-            setTimeout(() => setShowToast(false), 3000);
-        } catch {
-            setToastMessage('Network error. Please try again later.');
+            setTimeout(() => setShowToast(false), 5000);
+        } catch (error: any) {
+            setToastMessage(`Network error: ${error?.message || 'Please try again later.'}`);
             setToastType('error');
             setShowToast(true);
-            setTimeout(() => setShowToast(false), 3000);
+            setTimeout(() => setShowToast(false), 5000);
         } finally {
             setIsPending(false);
         }
@@ -149,8 +155,9 @@ const ContactForm = () => {
                 </div>
             </div>
             {showToast && (
-                <div className="toast toast-top toast-center z-[100] mt-16">
+                <div className="toast toast-bottom toast-end fixed z-[100] mb-8 mr-4 md:mr-8">
                     <div className={`alert ${toastType === 'success' ? 'alert-success' : 'alert-error'} shadow-2xl`}>
+                        <i className={`fas ${toastType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2`}></i>
                         <span>{toastMessage}</span>
                     </div>
                 </div>
