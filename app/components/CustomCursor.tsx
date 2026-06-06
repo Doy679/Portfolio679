@@ -132,11 +132,11 @@ const CustomCursor = () => {
         <>
             <div 
                 ref={cursorRef} 
-                className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[9999] opacity-0 mix-blend-difference will-change-transform"
+                className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[99999] opacity-0 mix-blend-difference will-change-transform"
             />
             <div 
                 ref={followerRef} 
-                className="fixed top-0 left-0 w-10 h-10 border-2 border-primary/30 rounded-full pointer-events-none z-[9998] opacity-0 will-change-transform"
+                className="fixed top-0 left-0 w-10 h-10 border-2 border-primary/30 rounded-full pointer-events-none z-[99998] opacity-0 will-change-transform"
             />
         </>
     );
