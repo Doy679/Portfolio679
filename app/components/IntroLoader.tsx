@@ -12,7 +12,6 @@ const IntroLoader = () => {
     useEffect(() => {
         // Initial setup for body to match their CSS body block
         document.body.style.overflow = 'hidden';
-        document.body.style.backgroundColor = '#050506';
         
         const interval = setInterval(() => {
             setCoordX((Math.random() * 100 - 50).toFixed(2));
@@ -22,9 +21,14 @@ const IntroLoader = () => {
         return () => {
             clearInterval(interval);
             document.body.style.overflow = '';
-            document.body.style.backgroundColor = '';
         };
     }, []);
+
+    useEffect(() => {
+        if (!isLoading) {
+            document.body.style.overflow = '';
+        }
+    }, [isLoading]);
 
     const handleBegin = () => {
         setScene1Fading(true);
@@ -52,7 +56,7 @@ const IntroLoader = () => {
     if (!isLoading) return null;
 
     return (
-        <div id="loader-wrapper" className="fixed inset-0 z-[10000] flex items-center justify-center bg-[#050506] text-[#d3ccc0] select-none" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
+        <div id="loader-wrapper" className="fixed inset-0 z-[10000] flex items-center justify-center bg-[#1d232a] text-[#d3ccc0] select-none" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
             <style dangerouslySetInnerHTML={{ __html: `
                 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Teko:wght@400;600;700&family=Rajdhani:wght@400;600;700&display=swap');
                 
