@@ -61,13 +61,14 @@ export default function FloatingShape() {
     <div className="w-full h-[60vh] lg:h-full cursor-grab active:cursor-grabbing pointer-events-none lg:pointer-events-auto">
       <Canvas 
         camera={{ position: [0, 0, 5], fov: 45 }} 
-        dpr={[1, isMobile ? 1 : 2]}
+        dpr={[1, 1.5]} // Limit DPR to 1.5 for performance
         gl={{ 
           powerPreference: "high-performance",
-          antialias: true,
+          antialias: false, // Turn off antialias for better perf
           alpha: true,
           stencil: false,
-          depth: true
+          depth: true,
+          preserveDrawingBuffer: false
         }}
       >
         <ambientLight intensity={0.5} />
