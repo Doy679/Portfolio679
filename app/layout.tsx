@@ -79,7 +79,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       </head>
-      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased overflow-x-clip w-full relative`}>
+      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased overflow-x-clip w-full relative bg-[#1d232a] text-base-content`}>
         <CustomCursor />
         <IntroLoader />
         <SmoothScroll>

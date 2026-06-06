@@ -115,8 +115,8 @@ const Hero = () => {
                         priority 
                     />
                     {/* Mobile keeps the portrait readable while desktop preserves the split fade. */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-base-100/35 via-base-100/10 to-base-100/45 z-20 lg:bg-gradient-to-r lg:from-base-100 lg:via-transparent lg:to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100/55 via-base-100/20 to-base-100/5 z-20 lg:hidden"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#1d232a]/35 via-[#1d232a]/10 to-[#1d232a]/45 z-20 lg:bg-gradient-to-r lg:from-[#1d232a] lg:via-[#1d232a]/20 lg:to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#1d232a]/55 via-[#1d232a]/20 to-[#1d232a]/5 z-20 lg:hidden"></div>
                 </div>
             </motion.div>
 
