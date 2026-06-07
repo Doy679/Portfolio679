@@ -28,7 +28,7 @@ const AnimatedBlob = () => {
 
   return (
     <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
-      <Sphere ref={meshRef} args={[1, isMobile ? 32 : 64, isMobile ? 32 : 64]} scale={2.2}>
+      <Sphere ref={meshRef} args={[1, 32, 32]} scale={2.2}>
         <MeshDistortMaterial
           color="#6366f1" // Tailwind primary indigo
           envMapIntensity={1.5}
@@ -81,7 +81,7 @@ export default function FloatingShape() {
         <AnimatedBlob />
         
         {/* Soft shadow underneath the floating object */}
-        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={isMobile ? 128 : 256} />
+        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={128} />
       </Canvas>
     </div>
   );
