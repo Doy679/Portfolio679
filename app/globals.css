@@ -51,11 +51,6 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-main {
-  will-change: transform;
-  transform: translateZ(0);
-}
-
 body {
   -webkit-text-size-adjust: 100%;
 }
