@@ -293,10 +293,10 @@ const IntroLoader = () => {
                 <div className="flex-1 flex flex-col items-center justify-center relative">
                     
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none anim-element anim-device z-10">
-                        <div className="relative w-[600px] h-[600px] flex items-center justify-center opacity-80 mix-blend-screen">
-                            <div className="absolute w-[400px] h-[400px] bg-[#1a2b4c] rounded-full blur-[100px] opacity-60"></div>
+                        <div className="relative w-[85vw] max-w-[450px] aspect-square flex items-center justify-center opacity-80 mix-blend-screen" style={{ willChange: 'transform' }}>
+                            <div className="absolute w-[60vw] max-w-[300px] aspect-square bg-[#1a2b4c] rounded-full blur-[80px] opacity-50"></div>
                             
-                            <svg viewBox="0 0 500 500" className="w-full h-full absolute">
+                            <svg viewBox="0 0 500 500" className="w-full h-full absolute" style={{ willChange: 'transform' }}>
                                 <defs>
                                     <radialGradient id="metalGrad" cx="50%" cy="50%" r="50%">
                                         <stop offset="0%" stopColor="#4a5d7c" />
@@ -308,22 +308,15 @@ const IntroLoader = () => {
                                         <stop offset="50%" stopColor="rgba(50, 100, 200, 0.2)" />
                                         <stop offset="100%" stopColor="transparent" />
                                     </radialGradient>
-                                    <filter id="glow">
-                                        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                                        <feMerge>
-                                            <feMergeNode in="coloredBlur"/>
-                                            <feMergeNode in="SourceGraphic"/>
-                                        </feMerge>
-                                    </filter>
                                 </defs>
 
                                 <circle cx="250" cy="250" r="240" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
                                 <line x1="250" y1="0" x2="250" y2="500" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
                                 <line x1="0" y1="250" x2="500" y2="250" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
 
-                                <g className="spin-slow">
+                                <g className="spin-slow" style={{ willChange: 'transform' }}>
                                     <circle cx="250" cy="250" r="210" fill="none" stroke="#3a4b6c" strokeWidth="2" strokeDasharray="4 8" />
-                                    <circle cx="250" cy="250" r="210" fill="none" stroke="#7a9bcd" strokeWidth="4" strokeDasharray="1 40" filter="url(#glow)" />
+                                    <circle cx="250" cy="250" r="210" fill="none" stroke="#7a9bcd" strokeWidth="4" strokeDasharray="1 40" />
                                     <circle cx="250" cy="250" r="180" fill="none" stroke="#2a3b5c" strokeWidth="15" opacity="0.5" />
                                     <circle cx="250" cy="250" r="180" fill="none" stroke="#5a7b9c" strokeWidth="1" strokeDasharray="2 2" />
                                     <g stroke="#4a6fa5" strokeWidth="1">
@@ -332,7 +325,7 @@ const IntroLoader = () => {
                                     </g>
                                 </g>
 
-                                <g className="spin-slow-reverse">
+                                <g className="spin-slow-reverse" style={{ willChange: 'transform' }}>
                                     <circle cx="250" cy="250" r="140" fill="url(#metalGrad)" stroke="#111" strokeWidth="5" />
                                     <circle cx="250" cy="250" r="130" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
                                     <circle cx="250" cy="250" r="100" fill="#0f1520" stroke="#2a3b5c" strokeWidth="2" />
@@ -342,9 +335,9 @@ const IntroLoader = () => {
                                 </g>
 
                                 <circle cx="250" cy="250" r="40" fill="url(#glowGrad)" />
-                                <circle cx="250" cy="250" r="20" fill="#0a0f18" stroke="#4a6fa5" strokeWidth="2" filter="url(#glow)" />
-                                <circle cx="250" cy="250" r="5" fill="#fff" filter="url(#glow)" />
-                                <path d="M250 238 L250 245 M242 242 L246 248 M258 242 L254 248" stroke="#7a9bcd" strokeWidth="1.5" fill="none" filter="url(#glow)"/>
+                                <circle cx="250" cy="250" r="20" fill="#0a0f18" stroke="#4a6fa5" strokeWidth="2" />
+                                <circle cx="250" cy="250" r="5" fill="#fff" />
+                                <path d="M250 238 L250 245 M242 242 L246 248 M258 242 L254 248" stroke="#7a9bcd" strokeWidth="1.5" fill="none" />
                             </svg>
                         </div>
                     </div>
