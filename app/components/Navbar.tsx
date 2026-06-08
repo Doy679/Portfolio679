@@ -50,7 +50,9 @@ const Navbar = () => {
     }, [theme]);
 
     useEffect(() => {
-        const handleScroll = () => {
+        let ticking = false;
+
+        const updateScroll = () => {
             setIsScrolled(window.scrollY > 50);
             
             // Detect active section
@@ -64,9 +66,18 @@ const Navbar = () => {
                 return false;
             });
             if (current) setActiveSection(current);
+            
+            ticking = false;
         };
 
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateScroll);
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 

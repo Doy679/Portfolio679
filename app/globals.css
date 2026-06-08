@@ -42,7 +42,6 @@ html[data-theme="dark"] .glass-card {
 }
 
 html, body { 
-  overflow-x: clip; 
   width: 100%;
   position: relative;
   margin: 0;
@@ -102,16 +101,21 @@ input, select, textarea {
   background: linear-gradient(
     to right, 
     #818cf8 0%, 
-    #c084fc 50%, 
-    #818cf8 100%
+    #c084fc 100%
   );
-  background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #818cf8; /* Fallback for browsers that don't support text-clip */
-  animation: gradientMove 8s ease-in-out infinite;
+  animation: gradientHue 8s linear infinite;
   display: inline-block;
+  will-change: filter;
+}
+
+@keyframes gradientHue {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(45deg); }
+  100% { filter: hue-rotate(0deg); }
 }
 
 .hacker-text {
@@ -130,12 +134,6 @@ input, select, textarea {
 .hacker-text-inner {
   display: inline-block;
   min-width: 0;
-}
-
-@keyframes gradientMove {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
 }
 
 .about-section {

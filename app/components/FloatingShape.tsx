@@ -76,12 +76,12 @@ export default function FloatingShape() {
         <directionalLight position={[-10, -10, -5]} intensity={1} color="#8b5cf6" />
         
         {/* Environment for shiny reflections */}
-        <Environment preset="city" />
+        <Environment preset="city" resolution={128} />
         
         <AnimatedBlob />
         
         {/* Soft shadow underneath the floating object */}
-        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={128} />
+        <ContactShadows position={[0, -2.5, 0]} opacity={0.4} scale={10} blur={2} far={4} resolution={128} frames={1} />
       </Canvas>
     </div>
   );
