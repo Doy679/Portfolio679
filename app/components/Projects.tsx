@@ -50,7 +50,7 @@ const Projects = () => {
                     onUpdate: (self) => {
                         const progress = self.progress * totalProjects;
                         const newIndex = Math.min(Math.floor(progress), totalProjects - 1);
-                        if (newIndex !== activeIndex) setActiveIndex(newIndex);
+                        setActiveIndex((prevIndex) => prevIndex !== newIndex ? newIndex : prevIndex);
                     }
                 }
             });

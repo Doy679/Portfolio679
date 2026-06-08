@@ -1,13 +1,15 @@
 'use client';
 import React, { useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import FloatingShape from './FloatingShape';
 import Magnetic from './Magnetic';
+
+const FloatingShape = dynamic(() => import('./FloatingShape'), { ssr: false });
 
 gsap.registerPlugin(TextPlugin, ScrollTrigger);
 
