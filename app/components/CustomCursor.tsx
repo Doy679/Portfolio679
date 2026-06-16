@@ -1,142 +1,109 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
+import { useEffect, useState } from 'react';
 
 const CustomCursor = () => {
-    const cursorRef = useRef<HTMLDivElement>(null);
-    const followerRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isHovering, setIsHovering] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(true);
 
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.innerWidth < 1024);
+        // Only run on desktop/devices with a precise pointer
+        const mediaQuery = window.matchMedia('(pointer: fine)');
+        setIsDesktop(mediaQuery.matches);
+        
+        if (!mediaQuery.matches) return;
+
+        let requestRef: number;
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        // Smooth cursor variables
+        let cursorX = 0;
+        let cursorY = 0;
+
+        const updateCursor = () => {
+            // Easing factor for smoothness
+            const dx = mouseX - cursorX;
+            const dy = mouseY - cursorY;
+            
+            cursorX += dx * 0.2;
+            cursorY += dy * 0.2;
+            
+            setPosition({ x: cursorX, y: cursorY });
+            requestRef = requestAnimationFrame(updateCursor);
         };
-        checkMobile();
-        window.addEventListener('resize', checkMobile, { passive: true });
-
-        if (isMobile) return;
-
-        const cursor = cursorRef.current;
-        const follower = followerRef.current;
-
-        if (!cursor || !follower) return;
-
-        // Optimized initial state
-        gsap.set([cursor, follower], { 
-            xPercent: -50, 
-            yPercent: -50,
-            force3D: true
-        });
-
-        // Faster setters using quickTo for high-performance following
-        const xCursorTo = gsap.quickTo(cursor, "x", { duration: 0.05, ease: "power3" });
-        const yCursorTo = gsap.quickTo(cursor, "y", { duration: 0.05, ease: "power3" });
-        const xFollowerTo = gsap.quickTo(follower, "x", { duration: 0.3, ease: "power2.out" });
-        const yFollowerTo = gsap.quickTo(follower, "y", { duration: 0.3, ease: "power2.out" });
-
-        // Subtle pulsing for the follower
-        const pulse = gsap.to(follower, {
-            scale: 1.1,
-            repeat: -1,
-            yoyo: true,
-            duration: 1.2,
-            ease: "sine.inOut",
-            paused: false
-        });
 
         const onMouseMove = (e: MouseEvent) => {
-            const { clientX, clientY } = e;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (!isVisible) setIsVisible(true);
+        };
+
+        const onMouseLeave = () => setIsVisible(false);
+        const onMouseEnter = () => setIsVisible(true);
+
+        const checkHover = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            // Check if hovered element is clickable
+            const isClickable = 
+                target.tagName.toLowerCase() === 'a' ||
+                target.tagName.toLowerCase() === 'button' ||
+                target.closest('a') !== null ||
+                target.closest('button') !== null ||
+                window.getComputedStyle(target).cursor === 'pointer';
             
-            // Set opacity to 1 on first move if it was hidden
-            if (gsap.getProperty(cursor, "opacity") === 0) {
-                gsap.set([cursor, follower], { opacity: 1 });
+            setIsHovering(isClickable);
+        };
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousemove', checkHover);
+        document.body.addEventListener('mouseleave', onMouseLeave);
+        document.body.addEventListener('mouseenter', onMouseEnter);
+        
+        requestRef = requestAnimationFrame(updateCursor);
+
+        // Hide default cursor gracefully by adding a class to body
+        document.body.style.cursor = 'none';
+        
+        // Use a generic style tag for hover elements to ensure cursor: none
+        const style = document.createElement('style');
+        style.innerHTML = `
+            * {
+                cursor: none !important;
             }
-
-            xCursorTo(clientX);
-            yCursorTo(clientY);
-            xFollowerTo(clientX);
-            yFollowerTo(clientY);
-        };
-
-        const onMouseEnter = () => {
-            gsap.to([cursor, follower], { opacity: 1, duration: 0.2, ease: "power2.out" });
-        };
-
-        const onMouseLeave = () => {
-            gsap.to([cursor, follower], { opacity: 0, duration: 0.2, ease: "power2.out" });
-        };
-
-        const onHoverEnter = () => {
-            gsap.to(cursor, { scale: 0, duration: 0.2, ease: "power2.out" });
-            gsap.to(follower, { 
-                scale: 1.8, 
-                backgroundColor: "rgba(var(--p), 0.15)", 
-                borderColor: "rgba(var(--p), 0.6)",
-                borderWidth: "1px",
-                duration: 0.2,
-                ease: "power2.out"
-            });
-            pulse.pause();
-        };
-
-        const onHoverLeave = () => {
-            gsap.to(cursor, { scale: 1, duration: 0.2, ease: "power2.out" });
-            gsap.to(follower, { 
-                scale: 1, 
-                backgroundColor: "transparent", 
-                borderColor: "rgba(var(--p), 0.3)",
-                borderWidth: "2px",
-                duration: 0.2,
-                ease: "power2.out"
-            });
-            pulse.resume();
-        };
-
-        window.addEventListener('mousemove', onMouseMove, { passive: true });
-        window.addEventListener('mouseenter', onMouseEnter);
-        window.addEventListener('mouseleave', onMouseLeave);
-
-        // Track all interactive elements including project images
-        const updateInteractives = () => {
-            const interactives = document.querySelectorAll('a, button, .cursor-pointer, .project-image-link, .interactive-card');
-            interactives.forEach(el => {
-                el.removeEventListener('mouseenter', onHoverEnter);
-                el.removeEventListener('mouseleave', onHoverLeave);
-                el.addEventListener('mouseenter', onHoverEnter);
-                el.addEventListener('mouseleave', onHoverLeave);
-            });
-        };
-
-        // Run once and also after a short delay to catch late-rendering elements
-        updateInteractives();
-        const timeoutId = setTimeout(updateInteractives, 1000);
+        `;
+        document.head.appendChild(style);
 
         return () => {
-            window.removeEventListener('resize', checkMobile);
             window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mouseenter', onMouseEnter);
-            window.removeEventListener('mouseleave', onMouseLeave);
-            clearTimeout(timeoutId);
-            
-            const interactives = document.querySelectorAll('a, button, .cursor-pointer, .project-image-link, .interactive-card');
-            interactives.forEach(el => {
-                el.removeEventListener('mouseenter', onHoverEnter);
-                el.removeEventListener('mouseleave', onHoverLeave);
-            });
+            window.removeEventListener('mousemove', checkHover);
+            document.body.removeEventListener('mouseleave', onMouseLeave);
+            document.body.removeEventListener('mouseenter', onMouseEnter);
+            cancelAnimationFrame(requestRef);
+            document.body.style.cursor = 'auto';
+            document.head.removeChild(style);
         };
-    }, [isMobile]);
+    }, [isVisible]);
 
-    if (isMobile) return null;
+    if (!isDesktop || !isVisible) return null;
 
     return (
         <>
+            {/* Outer ring */}
             <div 
-                ref={cursorRef} 
-                className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[99999] opacity-0 will-change-transform shadow-[0_0_10px_rgba(var(--p),0.8)]"
+                className={`fixed top-0 left-0 w-8 h-8 rounded-full border border-primary z-[9999] pointer-events-none mix-blend-difference transition-transform duration-100 ease-out`}
+                style={{ 
+                    transform: `translate(${position.x - 16}px, ${position.y - 16}px) scale(${isHovering ? 1.5 : 1})`,
+                    opacity: isHovering ? 0.8 : 0.4
+                }}
             />
+            {/* Inner dot */}
             <div 
-                ref={followerRef} 
-                className="fixed top-0 left-0 w-10 h-10 border-2 border-primary/30 rounded-full pointer-events-none z-[99998] opacity-0 will-change-transform"
+                className={`fixed top-0 left-0 w-2 h-2 rounded-full bg-primary z-[9999] pointer-events-none mix-blend-difference transition-transform duration-100`}
+                style={{ 
+                    transform: `translate(${position.x - 4}px, ${position.y - 4}px) scale(${isHovering ? 0 : 1})`,
+                }}
             />
         </>
     );

@@ -1,42 +1,27 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import HackerText from './HackerText';
-
-gsap.registerPlugin(ScrollToPlugin);
+import React, { useEffect, useState } from 'react';
 
 const Navbar = () => {
     const [theme, setTheme] = useState('dark');
     const [isScrolled, setIsScrolled] = useState(false);
-    const [showFullName, setShowFullName] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
-    const logoRef = useRef<HTMLDivElement>(null);
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
         e.preventDefault();
         const sectionId = target.replace('#', '');
         setActiveSection(sectionId);
-        gsap.to(window, {
-            duration: 0.9,
-            scrollTo: {
-                y: target,
-                offsetY: target === '#home' ? 0 : 88,
-                autoKill: false
-            },
-            ease: "power4.inOut",
-            overwrite: "auto"
-        });
+        
+        const el = document.getElementById(sectionId);
+        if (el) {
+            const offsetY = target === '#home' ? 0 : 88;
+            const top = el.getBoundingClientRect().top + window.scrollY - offsetY;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
         
         // Close mobile dropdown if open
         const elem = document.activeElement as HTMLElement;
         if (elem) {
             elem.blur();
-        }
-        
-        if (target === '#home') {
-            setShowFullName(true);
-            setTimeout(() => setShowFullName(false), 3000);
         }
     };
 
@@ -81,16 +66,6 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Animate the name reveal
-    useEffect(() => {
-        if (logoRef.current && showFullName) {
-            gsap.fromTo(logoRef.current, 
-                { opacity: 0, x: -10 }, 
-                { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' }
-            );
-        }
-    }, [showFullName]);
-
     return (
         <div className={`navbar fixed top-0 left-0 right-0 z-[100] transition-all duration-500 min-h-12 lg:min-h-16 px-4 lg:px-12 ${isScrolled ? 'bg-base-100/60 backdrop-blur-xl border-b border-primary/10 py-1.5 lg:py-2' : 'bg-transparent py-2 lg:py-4'}`}>
             <div className="navbar-start">
@@ -106,25 +81,16 @@ const Navbar = () => {
                     </ul>
                 </div>
                 
-                {/* Interactive Logo */}
+                {/* Logo */}
                 <a 
                     href="#home" 
                     onClick={(e) => handleNavClick(e, '#home')} 
-                    className={`btn btn-ghost btn-sm lg:btn-md transition-all duration-500 flex items-center gap-3 px-2 group ${showFullName ? 'w-auto' : 'btn-circle'}`}
-                    onMouseEnter={() => setShowFullName(true)}
-                    onMouseLeave={() => setShowFullName(false)}
+                    className="btn btn-ghost btn-sm lg:btn-md transition-all duration-500 flex items-center gap-3 px-2 group btn-circle hover:bg-primary/10"
                 >
                     <div className="relative flex items-center justify-center shrink-0">
-                        <div className="absolute w-8 h-8 sm:w-10 sm:h-10 border border-primary/20 rounded-full group-hover:border-primary/60 group-hover:scale-110 transition-all duration-500"></div>
-                        <span className="text-lg sm:text-2xl font-black font-montserrat text-primary group-hover:scale-90 transition-transform">R</span>
+                        <div className="absolute w-8 h-8 sm:w-10 sm:h-10 border border-primary/20 rounded-full group-hover:border-primary/60 transition-all duration-300"></div>
+                        <span className="text-lg sm:text-2xl font-black font-montserrat text-primary">R</span>
                     </div>
-                    {showFullName && (
-                        <div ref={logoRef} className="overflow-hidden whitespace-nowrap pr-2">
-                            <span className="text-sm font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
-                                <HackerText text="ondether Gonzales" gradient={false} duration={0.8} start="top 100%" />
-                            </span>
-                        </div>
-                    )}
                 </a>
             </div>
             

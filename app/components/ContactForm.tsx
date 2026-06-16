@@ -1,13 +1,9 @@
 'use client';
-import React, { useState, useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useState } from 'react';
 import { sendEmail } from '../actions';
 import { siteConfig } from '../config/site';
 import { ContactFormData } from '../lib/validation';
-
-gsap.registerPlugin(ScrollTrigger);
+import HackerText from './HackerText';
 
 const ContactForm = () => {
     const [showToast, setShowToast] = useState(false);
@@ -15,47 +11,6 @@ const ContactForm = () => {
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const [isPending, setIsPending] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
-    const formRef = useRef<HTMLFormElement>(null);
-    const contactRef = useRef<HTMLElement>(null);
-    const marqueeRef = useRef<HTMLDivElement>(null);
-
-    useGSAP(() => {
-        // Infinite Spinning Animation (Restored)
-        if (marqueeRef.current) {
-            gsap.to(marqueeRef.current, {
-                xPercent: -50,
-                repeat: -1,
-                duration: 60,
-                ease: "none",
-            });
-        }
-
-        // Section Reveal
-        gsap.fromTo(contactRef.current,
-            { opacity: 0, y: 100 },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: contactRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
-                }
-            }
-        );
-
-        const inputs = gsap.utils.toArray<HTMLInputElement | HTMLTextAreaElement>('.form-field');
-        inputs.forEach(input => {
-            ScrollTrigger.create({
-                trigger: input,
-                start: 'top 90%',
-                toggleClass: 'input-primary',
-                toggleActions: 'play none none reverse'
-            });
-        });
-    }, { scope: contactRef });
-
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -71,7 +26,6 @@ const ContactForm = () => {
             } else {
                 if (result.fieldErrors) {
                     setFieldErrors(result.fieldErrors);
-                    // Extract the first validation error to show in the toast
                     const firstError = Object.values(result.fieldErrors)[0];
                     setToastMessage(`Validation Error: ${firstError}`);
                 } else {
@@ -92,28 +46,17 @@ const ContactForm = () => {
     };
 
     return (
-        <section id="contact" className="py-24 bg-base-200 relative z-30" ref={contactRef}>
-            {/* spinning carousel animation above of get in touch (Restored) */}
-            <div className="w-full bg-primary/5 border-y border-primary/10 py-6 mb-24 overflow-hidden relative select-none">
-                <div ref={marqueeRef} className="flex whitespace-nowrap w-max">
-                    {[...Array(8)].map((_, i) => (
-                        <span key={i} className="text-xl md:text-3xl font-black font-montserrat uppercase tracking-tighter text-primary/30 flex items-center">
-                            Turning ideas into reality <span className="text-primary/10 mx-6">✦</span> 
-                            Let&apos;s collaborate <span className="text-primary/10 mx-6">✦</span> 
-                            Available for new projects <span className="text-primary/10 mx-6">✦</span> &nbsp;
-                        </span>
-                    ))}
-                </div>
-            </div>
-
+        <section id="contact" className="pt-10 pb-24 bg-base-200 relative z-30">
             <div className="container mx-auto px-6 md:px-10 lg:px-20 relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">Get In Touch</h2>
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
+                        <HackerText text="Get In Touch" />
+                    </h2>
                     <div className="w-16 h-1 bg-primary/40 mx-auto mt-4 mb-8 shadow-[0_0_15px_rgba(var(--p),0.4)]"></div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                    <div className="card bg-base-100 shadow-xl glass-card">
+                    <div className="card bg-base-100 shadow-xl border border-white/5">
                         <div className="card-body p-8 md:p-10">
                             <h3 className="card-title text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight">Contact Info</h3>
                             <div className="space-y-6 mt-8">
@@ -140,15 +83,15 @@ const ContactForm = () => {
                         </div>
                     </div>
 
-                    <div className="card bg-base-100 shadow-xl glass-card">
+                    <div className="card bg-base-100 shadow-xl border border-white/5">
                         <div className="card-body p-8 md:p-10">
                             <h3 className="card-title text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight">Send a Message</h3>
-                            <form className="space-y-6 mt-8" onSubmit={handleSubmit} ref={formRef}>
-                                <div className="form-control"><input type="text" name="name" placeholder="Your Name" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all form-field ${fieldErrors.name ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><input type="email" name="email" placeholder="Your Email" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all form-field ${fieldErrors.email ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><input type="text" name="subject" placeholder="Subject" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all form-field ${fieldErrors.subject ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><textarea name="message" className={`textarea textarea-bordered h-40 w-full p-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all form-field ${fieldErrors.message ? 'textarea-error' : ''}`} placeholder="Your message here..." required></textarea></div>
-                                <button type="submit" className="btn btn-primary w-full h-16 text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20" disabled={isPending}>{isPending ? <span className="loading loading-spinner"></span> : 'Send Message'}</button>
+                            <form className="space-y-6 mt-8" onSubmit={handleSubmit}>
+                                <div className="form-control"><input type="text" name="name" placeholder="Your Name" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.name ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><input type="email" name="email" placeholder="Your Email" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.email ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><input type="text" name="subject" placeholder="Subject" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.subject ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><textarea name="message" className={`textarea textarea-bordered h-40 w-full p-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.message ? 'textarea-error' : ''}`} placeholder="Your message here..." required></textarea></div>
+                                <button type="submit" className="btn btn-primary w-full h-16 text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform" disabled={isPending}>{isPending ? <span className="loading loading-spinner"></span> : 'Send Message'}</button>
                             </form>
                         </div>
                     </div>

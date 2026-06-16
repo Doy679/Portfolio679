@@ -63,9 +63,7 @@ body {
 }
 
 @media (min-width: 1024px) {
-  * {
-    cursor: none !important;
-  }
+  /* Cursor rules removed for custom cursor implementation */
 }
 
 /* Custom Scrollbar for a premium look */

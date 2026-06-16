@@ -1,16 +1,9 @@
 'use client';
 import React from 'react';
-import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import HackerText from './HackerText';
 import SkillCard from './SkillCard';
-
-gsap.registerPlugin(ScrollTrigger);
+import HackerText from './HackerText';
 
 const Skills = () => {
-    const skillsRef = React.useRef(null);
-
     const skillCategories = [
         {
             title: "Languages",
@@ -29,10 +22,8 @@ const Skills = () => {
             skills: [
                 { name: "React", icon: "fab fa-react", color: "#61DAFB" },
                 { name: "Next.js", icon: "fas fa-globe", color: "#FFFFFF" },
-                { name: "GSAP", icon: "fas fa-wind", color: "#88CE02" },
                 { name: "Daisy UI", icon: "fas fa-fill-drip", color: "#EC4899" },
-                { name: "Tailwind CSS", icon: "fab fa-css3-alt", color: "#06B6D4" },
-                { name: "Framer Motion", icon: "fas fa-play", color: "#0055FF" }
+                { name: "Tailwind CSS", icon: "fab fa-css3-alt", color: "#06B6D4" }
             ]
         },
         {
@@ -70,131 +61,8 @@ const Skills = () => {
         }
     ];
 
-    useGSAP(() => {
-        const mm = gsap.matchMedia();
-
-        // Mobile Reveal (Every Scroll)
-        mm.add("(max-width: 1023px)", () => {
-            ScrollTrigger.batch('.skill-card', {
-                onEnter: (elements) => {
-                    gsap.fromTo(elements, 
-                        { opacity: 0, y: 30, scale: 0.95 },
-                        { opacity: 1, y: 0, scale: 1, duration: 1, stagger: 0.15, ease: "power3.out", overwrite: true }
-                    );
-                    
-                    // Reveal logos inside the batch
-                    elements.forEach(el => {
-                        gsap.fromTo(el.querySelectorAll('.skill-logo'),
-                            { opacity: 0, y: 5 },
-                            { opacity: 1, y: 0, stagger: 0.03, duration: 0.5, overwrite: true }
-                        );
-                    });
-                },
-                onLeaveBack: (elements) => {
-                    gsap.to(elements, { opacity: 0, y: 30, scale: 0.95, duration: 0.5, overwrite: true });
-                },
-                start: "top 90%",
-                end: "bottom 10%"
-            });
-        });
-
-        // Unified Desktop High-End Reveal
-        mm.add("(min-width: 1024px)", () => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: '#skills',
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
-                }
-            });
-
-            tl.fromTo('.skill-card', 
-                { 
-                    opacity: 0, 
-                    y: 50,
-                    scale: 0.9,
-                    rotateX: -10,
-                    transformPerspective: 1000
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    rotateX: 0,
-                    duration: 1.2,
-                    force3D: true,
-                    stagger: 0.2,
-                    ease: 'expo.out',
-                }
-            );
-
-            // Staggered reveal for skill logos INSIDE the cards
-            tl.fromTo('.skill-logo',
-                { opacity: 0, scale: 0.8, y: 10 },
-                { 
-                    opacity: 1, 
-                    scale: 1, 
-                    y: 0, 
-                    stagger: 0.05, 
-                    duration: 0.8, 
-                    ease: "back.out(1.7)",
-                    force3D: true 
-                },
-                "-=0.8"
-            );
-
-            // Subtle floating animation for cards
-            gsap.to('.skill-card', {
-                yPercent: -2,
-                duration: 3,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                force3D: true,
-                stagger: {
-                    amount: 1.5,
-                    from: "random"
-                }
-            });
-        });
-
-        // Desktop-only Tilt Effect - Optimized with quickTo
-        mm.add("(min-width: 1024px)", () => {
-            const cards = gsap.utils.toArray<HTMLElement>('.skill-card');
-            cards.forEach((card) => {
-                const xTo = gsap.quickTo(card, "rotateY", { duration: 0.4, ease: "power2.out" });
-                const yTo = gsap.quickTo(card, "rotateX", { duration: 0.4, ease: "power2.out" });
-                const scaleTo = gsap.quickTo(card, "scale", { duration: 0.4, ease: "power2.out" });
-
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 20;
-                    const rotateY = (centerX - x) / -20;
-
-                    xTo(rotateY);
-                    yTo(rotateX);
-                    scaleTo(1.02);
-                }, { passive: true });
-
-                card.addEventListener('mouseleave', () => {
-                    xTo(0);
-                    yTo(0);
-                    scaleTo(1);
-                });
-                
-                gsap.set(card, { transformPerspective: 1000, force3D: true });
-                card.style.willChange = "transform";
-            });
-        });
-
-    }, { scope: skillsRef });
-
     return (
-        <section id="skills" className="py-24 bg-base-200/50" ref={skillsRef}>
+        <section id="skills" className="py-24 bg-base-200/50">
             <div className="container mx-auto px-6 md:px-10 lg:px-20">
                 <div className="text-center mb-20">
                     <h2 className="text-3xl md:text-4xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">

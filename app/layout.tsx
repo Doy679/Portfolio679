@@ -2,9 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
-import IntroLoader from './components/IntroLoader';
-import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
+import IntroLoader from './components/IntroLoader';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ 
@@ -79,14 +78,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       </head>
-      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased overflow-x-clip w-full relative bg-[#1d232a] text-base-content`}>
-        <CustomCursor />
+      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased w-full relative bg-[#1d232a] text-base-content`}>
         <IntroLoader />
-        <SmoothScroll>
-          <div className="flex flex-col min-h-screen w-full overflow-x-clip relative">
-            {children}
-          </div>
-        </SmoothScroll>
+        <CustomCursor />
+        <div className="flex flex-col min-h-screen w-full relative">
+          {children}
+        </div>
 
         <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" strategy="lazyOnload" />
       </body>
