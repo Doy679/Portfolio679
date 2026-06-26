@@ -5,13 +5,37 @@ const CustomCursor = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const [isDesktop, setIsDesktop] = useState(true);
+    const [isDesktop] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(pointer: fine)').matches;
+        }
+        return true;
+    });
+    const [theme, setTheme] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return document.documentElement.getAttribute('data-theme') || 'dark';
+        }
+        return 'dark';
+    });
+
+    useEffect(() => {
+        const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+
+        const observer = new MutationObserver(() => {
+            setTheme(getTheme());
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme'],
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         // Only run on desktop/devices with a precise pointer
         const mediaQuery = window.matchMedia('(pointer: fine)');
-        setIsDesktop(mediaQuery.matches);
-        
         if (!mediaQuery.matches) return;
 
         let requestRef: number;
@@ -88,19 +112,28 @@ const CustomCursor = () => {
 
     if (!isDesktop || !isVisible) return null;
 
+    const isDark = theme === 'dark';
+
+    // Style properties to increase contrast depending on the active theme
+    const ringBorderColor = isDark ? 'border-primary/60' : 'border-neutral-900/60';
+    const dotBgColor = isDark ? 'bg-primary' : 'bg-neutral-900';
+    const ringShadow = isDark 
+        ? 'shadow-[0_0_12px_rgba(99,102,241,0.5)]' 
+        : 'shadow-[0_2px_8px_rgba(0,0,0,0.15)]';
+
     return (
         <>
             {/* Outer ring */}
             <div 
-                className={`fixed top-0 left-0 w-8 h-8 rounded-full border border-primary z-[9999] pointer-events-none mix-blend-difference transition-transform duration-100 ease-out`}
+                className={`fixed top-0 left-0 w-8 h-8 rounded-full border ${ringBorderColor} ${ringShadow} z-[9999] pointer-events-none transition-transform duration-100 ease-out`}
                 style={{ 
                     transform: `translate(${position.x - 16}px, ${position.y - 16}px) scale(${isHovering ? 1.5 : 1})`,
-                    opacity: isHovering ? 0.8 : 0.4
+                    opacity: isHovering ? 0.95 : 0.6
                 }}
             />
             {/* Inner dot */}
             <div 
-                className={`fixed top-0 left-0 w-2 h-2 rounded-full bg-primary z-[9999] pointer-events-none mix-blend-difference transition-transform duration-100`}
+                className={`fixed top-0 left-0 w-2 h-2 rounded-full ${dotBgColor} z-[9999] pointer-events-none transition-transform duration-100`}
                 style={{ 
                     transform: `translate(${position.x - 4}px, ${position.y - 4}px) scale(${isHovering ? 0 : 1})`,
                 }}
