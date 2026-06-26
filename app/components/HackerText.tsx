@@ -42,11 +42,10 @@ export default function HackerText({
   useEffect(() => {
     if (!inView) return; // Do nothing if not on screen
 
-    let interval: NodeJS.Timeout;
     let iteration = 0;
 
-    interval = setInterval(() => {
-      setDisplayText((prev) =>
+    const interval = setInterval(() => {
+      setDisplayText(() =>
         text
           .split("")
           .map((letter, index) => {
