@@ -56,7 +56,7 @@ const ContactForm = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                    <div className="card bg-base-100 shadow-xl border border-white/5">
+                    <div className="card bg-base-100 shadow-xl border border-base-content/10">
                         <div className="card-body p-8 md:p-10">
                             <h3 className="card-title text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight">Contact Info</h3>
                             <div className="space-y-6 mt-8">
@@ -83,14 +83,14 @@ const ContactForm = () => {
                         </div>
                     </div>
 
-                    <div className="card bg-base-100 shadow-xl border border-white/5">
+                    <div className="card bg-base-100 shadow-xl border border-base-content/10">
                         <div className="card-body p-8 md:p-10">
                             <h3 className="card-title text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight">Send a Message</h3>
                             <form className="space-y-6 mt-8" onSubmit={handleSubmit}>
-                                <div className="form-control"><input type="text" name="name" placeholder="Your Name" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.name ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><input type="email" name="email" placeholder="Your Email" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.email ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><input type="text" name="subject" placeholder="Subject" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.subject ? 'input-error' : ''}`} required /></div>
-                                <div className="form-control"><textarea name="message" className={`textarea textarea-bordered h-40 w-full p-6 bg-base-200/50 border-white/5 focus:border-primary/50 transition-all ${fieldErrors.message ? 'textarea-error' : ''}`} placeholder="Your message here..." required></textarea></div>
+                                <div className="form-control"><input type="text" name="name" placeholder="Your Name" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-base-content/10 focus:border-primary/50 transition-all ${fieldErrors.name ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><input type="email" name="email" placeholder="Your Email" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-base-content/10 focus:border-primary/50 transition-all ${fieldErrors.email ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><input type="text" name="subject" placeholder="Subject" className={`input input-bordered w-full py-7 px-6 bg-base-200/50 border-base-content/10 focus:border-primary/50 transition-all ${fieldErrors.subject ? 'input-error' : ''}`} required /></div>
+                                <div className="form-control"><textarea name="message" className={`textarea textarea-bordered h-40 w-full p-6 bg-base-200/50 border-base-content/10 focus:border-primary/50 transition-all ${fieldErrors.message ? 'textarea-error' : ''}`} placeholder="Your message here..." required></textarea></div>
                                 <button type="submit" className="btn btn-primary w-full h-16 text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform" disabled={isPending}>{isPending ? <span className="loading loading-spinner"></span> : 'Send Message'}</button>
                             </form>
                         </div>
