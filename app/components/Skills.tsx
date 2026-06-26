@@ -21,7 +21,7 @@ const Skills = () => {
             className: "md:col-span-7",
             skills: [
                 { name: "React", icon: "fab fa-react", color: "#61DAFB" },
-                { name: "Next.js", icon: "fas fa-globe", color: "#FFFFFF" },
+                { name: "Next.js", icon: "fas fa-globe", color: "currentColor" },
                 { name: "Daisy UI", icon: "fas fa-fill-drip", color: "#EC4899" },
                 { name: "Tailwind CSS", icon: "fab fa-css3-alt", color: "#06B6D4" }
             ]

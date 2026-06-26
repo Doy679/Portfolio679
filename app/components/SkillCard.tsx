@@ -17,7 +17,7 @@ interface SkillCardProps {
 const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = "" }) => {
     return (
         <div 
-            className={`skill-card group relative p-8 rounded-3xl glass-card border border-white/10 transition-all duration-500 overflow-hidden will-change-transform ${className}`}
+            className={`skill-card group relative p-8 rounded-3xl glass-card border border-base-content/10 transition-all duration-500 overflow-hidden will-change-transform ${className}`}
         >
             {/* Animated Glow Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
@@ -36,7 +36,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = 
                     {skills.map((skill, i) => (
                         <div 
                             key={i} 
-                            className="skill-logo flex items-center gap-3 bg-base-300/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/5 hover:border-primary/30 hover:bg-base-300/50 transition-all duration-300 group/item will-change-transform"
+                            className="skill-logo flex items-center gap-3 bg-base-300/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-base-content/5 hover:border-primary/30 hover:bg-base-300/50 transition-all duration-300 group/item will-change-transform"
                             title={skill.name}
                         >
                             <i className={`${skill.icon} text-xl transition-transform duration-300 group-hover/item:scale-110`} style={{ color: skill.color }}></i>
