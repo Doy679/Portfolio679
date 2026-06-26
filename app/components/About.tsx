@@ -135,7 +135,7 @@ const About = () => {
 
             <div className="container mx-auto px-5 sm:px-6 md:px-10 lg:px-20 relative z-10">
                 <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 lg:gap-8 items-start">
-                    <div ref={addToCards} className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-10">
+                    <div ref={addToCards} className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-base-content/10 p-6 sm:p-8 lg:p-10">
                         <div className="flex items-center justify-between gap-4 mb-6 text-[10px] font-mono uppercase tracking-[0.32em] text-primary/75">
                             <span className="flex gap-2 overflow-hidden">
                                 <span ref={addToHeadings} className="inline-block">
@@ -152,7 +152,7 @@ const About = () => {
                             </span>
                         </h2>
 
-                        <div className="w-full h-px bg-white/10 my-7 overflow-hidden">
+                        <div className="w-full h-px bg-base-content/10 my-7 overflow-hidden">
                             <div ref={addToLines} className="h-full w-2/3 bg-gradient-to-r from-primary via-secondary to-transparent"></div>
                         </div>
 
@@ -166,7 +166,7 @@ const About = () => {
                                 { value: "UI", label: "Focus" },
                                 { value: "Web", label: "Direction" }
                             ].map((item) => (
-                                <div ref={addToParagraphs} key={item.label} className="rounded-2xl bg-white/[0.04] border border-white/10 p-3 text-center transition-all hover:bg-white/[0.08]">
+                                <div ref={addToParagraphs} key={item.label} className="rounded-2xl bg-base-content/[0.04] border border-base-content/10 p-3 text-center transition-all hover:bg-base-content/[0.08]">
                                     <div className="font-montserrat font-black text-lg text-primary">{item.value}</div>
                                     <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-base-content/45">{item.label}</div>
                                 </div>
@@ -175,7 +175,7 @@ const About = () => {
                     </div>
 
                     <div ref={addToCards} className="grid gap-6">
-                        <div className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-10">
+                        <div className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-base-content/10 p-6 sm:p-8 lg:p-10">
                             <div className="flex items-center justify-between gap-4 mb-5 text-[10px] font-mono uppercase tracking-[0.32em] text-primary/75">
                                 <span className="flex gap-2 overflow-hidden">
                                     <span ref={addToHeadings} className="inline-block">
@@ -192,7 +192,7 @@ const About = () => {
                                 </span>
                             </h3>
 
-                            <div className="w-full h-px bg-white/10 my-6 overflow-hidden">
+                            <div className="w-full h-px bg-base-content/10 my-6 overflow-hidden">
                                 <div ref={addToLines} className="h-full w-full bg-gradient-to-r from-primary via-transparent to-transparent"></div>
                             </div>
 
@@ -227,7 +227,7 @@ const About = () => {
                 </div>
 
                 <div id="education-panel" className="mt-16 sm:mt-20 lg:mt-24">
-                    <div ref={addToCards} className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-10">
+                    <div ref={addToCards} className="bg-base-100/50 backdrop-blur-md rounded-3xl border border-base-content/10 p-6 sm:p-8 lg:p-10">
                         <div className="max-w-3xl">
                             <div className="flex items-center gap-4 text-[10px] font-mono uppercase tracking-[0.32em] text-primary/75 overflow-hidden">
                                 <span ref={addToHeadings} className="inline-flex items-center w-full gap-4">
@@ -255,7 +255,7 @@ const About = () => {
                                 const colorClasses = educationColorClasses[edu.color];
 
                                 return (
-                                    <article ref={addToParagraphs} key={edu.school} className={`bg-white/5 rounded-2xl p-5 sm:p-6 border-l-2 lg:border-l lg:border-t-4 ${colorClasses.border} transition-transform hover:-translate-y-2 duration-300`}>
+                                    <article ref={addToParagraphs} key={edu.school} className={`bg-base-content/5 rounded-2xl p-5 sm:p-6 border-l-2 lg:border-l lg:border-t-4 ${colorClasses.border} transition-transform hover:-translate-y-2 duration-300`}>
                                         <div className="flex items-start justify-between gap-4">
                                             <span className={`font-mono font-black text-sm sm:text-base ${colorClasses.text}`}>{edu.year}</span>
                                         </div>
