@@ -67,7 +67,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className={`navbar fixed top-0 left-0 right-0 z-[100] transition-all duration-500 min-h-12 lg:min-h-16 px-4 lg:px-12 ${isScrolled ? 'bg-base-100/60 backdrop-blur-xl border-b border-primary/10 py-1.5 lg:py-2' : 'bg-transparent py-2 lg:py-4'}`}>
+        <div className={`navbar fixed top-0 left-0 right-0 z-[100] transition-all duration-500 min-h-10 lg:min-h-12 px-4 lg:px-12 ${isScrolled ? 'bg-base-100/60 backdrop-blur-xl border-b border-primary/10 py-1 lg:py-1' : 'bg-transparent py-1 lg:py-2'}`}>
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-sm lg:btn-md lg:hidden hover:bg-primary/10">
