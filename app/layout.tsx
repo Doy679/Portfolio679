@@ -78,7 +78,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       </head>
-      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased w-full relative bg-[#1d232a] text-base-content`}>
+      <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased w-full relative bg-base-100 transition-colors duration-500 text-base-content`}>
         <IntroLoader />
         <CustomCursor />
         <div className="flex flex-col min-h-screen w-full relative">
