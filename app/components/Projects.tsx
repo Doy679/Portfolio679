@@ -91,7 +91,7 @@ export default function Projects() {
         {projects.map((project, index) => (
           <div 
             key={project.title} 
-            className="group w-full lg:w-[700px] flex-shrink-0 flex flex-col h-full bg-base-100/50 backdrop-blur-md rounded-3xl border border-white/5 shadow-2xl overflow-hidden transition-all duration-300 hover:border-primary/30"
+            className="group w-full lg:w-[700px] flex-shrink-0 flex flex-col h-full bg-base-100/50 backdrop-blur-md rounded-3xl border border-base-content/10 shadow-2xl overflow-hidden transition-all duration-300 hover:border-primary/30"
           >
             {/* Image Wrapper */}
             <div className="relative w-full h-[250px] lg:h-[55%] overflow-hidden bg-base-300">
@@ -104,7 +104,7 @@ export default function Projects() {
                 priority={index < 2}
               />
               {/* Optional overlay gradient for styling */}
-              <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent opacity-80 lg:opacity-50 transition-opacity duration-300 group-hover:opacity-20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-base-100 to-transparent opacity-40 lg:opacity-20 dark:opacity-80 dark:lg:opacity-50 transition-opacity duration-300 group-hover:opacity-10" />
             </div>
 
             {/* Content Wrapper */}
@@ -128,7 +128,7 @@ export default function Projects() {
                     {project.badges.map((tag) => (
                     <span 
                         key={tag} 
-                        className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 rounded-lg text-white/70 group-hover:border-primary/20 transition-colors"
+                        className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-base-content/5 border border-base-content/10 rounded-lg text-base-content/70 group-hover:border-primary/30 transition-colors"
                     >
                         {tag}
                     </span>
