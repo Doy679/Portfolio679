@@ -8,14 +8,14 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// PLACEHOLDER SOURCE.
-// `/new.png` is the current opaque photo, used so the parallax is visible now.
-// When the real transparent cut-out lands at `/portrait.webp`:
-//   1. set PORTRAIT_SRC = '/portrait.webp'
-//   2. change the <Image> className: object-cover  ->  object-contain
-//   3. change the portrait wrapper: inset-[-4%]     ->  inset-0
-const PORTRAIT_SRC = '/new.png';
-const PORTRAIT_IS_CUTOUT = false; // flip to true when using the transparent asset
+// PORTRAIT SOURCE.
+// `/portrait.webp` is the transparent cut-out (rembg from the source photo),
+// so the portrait floats over the page for the true depth pop-out.
+// PORTRAIT_IS_CUTOUT drives object-fit + overscan:
+//   true  -> object-contain object-bottom, inset-0   (transparent edges, no gap)
+//   false -> object-cover object-top,      inset-[-8%] (opaque fallback w/ overscan)
+const PORTRAIT_SRC = '/portrait.webp';
+const PORTRAIT_IS_CUTOUT = true; // transparent cut-out active -> true depth pop-out
 
 const HeroPortrait = () => {
     const rootRef = useRef<HTMLDivElement>(null);
@@ -38,12 +38,12 @@ const HeroPortrait = () => {
             const onMove = (e: MouseEvent) => {
                 const nx = (e.clientX / window.innerWidth - 0.5) * 2;   // -1..1
                 const ny = (e.clientY / window.innerHeight - 0.5) * 2;  // -1..1
-                bgX(nx * -2.2);   // far layer drifts opposite, least
-                bgY(ny * -1.6);
-                pX(nx * 3.2);     // portrait moves most, toward cursor
-                pY(ny * 2.4);
-                pScale(1.05);
-                sX(nx * 2);
+                bgX(nx * -3.2);   // far layer drifts opposite, least
+                bgY(ny * -2.4);
+                pX(nx * 4.8);     // portrait moves most, toward cursor
+                pY(ny * 3.6);
+                pScale(1.07);
+                sX(nx * 3);
             };
             const onLeave = () => { bgX(0); bgY(0); pX(0); pY(0); pScale(1); sX(0); };
 
@@ -94,7 +94,7 @@ const HeroPortrait = () => {
 
             {/* Layer 3: the portrait. Negative inset = overscan so parallax never reveals
                 container edges while the placeholder is an opaque rectangle. */}
-            <div ref={portraitRef} className={`absolute ${PORTRAIT_IS_CUTOUT ? 'inset-0' : 'inset-[-4%]'} will-change-transform`}>
+            <div ref={portraitRef} className={`absolute ${PORTRAIT_IS_CUTOUT ? 'inset-0' : 'inset-[-8%]'} will-change-transform`}>
                 <Image
                     src={PORTRAIT_SRC}
                     alt="Rondether Gonzales"
