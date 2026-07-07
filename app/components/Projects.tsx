@@ -8,6 +8,7 @@ import Image from 'next/image';
 import HackerText from './HackerText';
 import { projects } from '../data/projects';
 import { Icon } from '../lib/icons';
+import { TiltCard } from './TiltCard';
 
 // Register ScrollTrigger globally
 gsap.registerPlugin(ScrollTrigger);
@@ -90,8 +91,8 @@ export default function Projects() {
         className="flex flex-col lg:flex-row gap-8 lg:gap-16 px-6 lg:px-12 lg:w-max lg:flex-nowrap lg:h-[75vh] pb-12 lg:pb-0 w-full lg:mt-auto lg:mb-12"
       >
         {projects.map((project, index) => (
-          <div 
-            key={project.title} 
+          <TiltCard
+            key={project.title}
             className="group w-full lg:w-[700px] flex-shrink-0 flex flex-col h-full bg-base-100/50 backdrop-blur-md rounded-3xl border border-base-content/10 shadow-2xl overflow-hidden transition-all duration-300 hover:border-primary/30"
           >
             {/* Image Wrapper */}
@@ -147,7 +148,7 @@ export default function Projects() {
                 )}
               </div>
             </div>
-          </div>
+          </TiltCard>
         ))}
       </div>
     </section>
