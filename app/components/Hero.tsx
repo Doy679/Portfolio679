@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useRef } from 'react';
-import Image from 'next/image';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import HeroPortrait from './HeroPortrait';
 
 const Hero = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -58,21 +58,8 @@ const Hero = () => {
                 </span>
             </div>
             
-            {/* Split Screen Background Image */}
-            <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full z-[8] lg:z-[5] overflow-hidden pointer-events-none opacity-100">
-                <div className="relative w-full h-full opacity-100 mix-blend-normal">
-                     <Image 
-                        src="/new.png" 
-                        alt="Rondether Gonzales" 
-                        fill 
-                        className="relative z-10 object-cover object-[58%_18%] lg:object-top"
-                        priority 
-                    />
-                    {/* Mobile keeps the portrait readable while desktop preserves the split fade. */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-base-100/15 via-transparent to-base-100/25 dark:from-base-100/35 dark:via-base-100/15 dark:to-base-100/45 z-20 lg:bg-gradient-to-r lg:from-base-100 lg:via-base-100/[0.08] dark:lg:via-base-100/35 lg:to-transparent transition-colors duration-500"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-base-100/25 dark:from-base-100/50 via-transparent to-transparent z-20 lg:hidden transition-colors duration-500"></div>
-                </div>
-            </div>
+            {/* Cut-out portrait with mouse parallax (Lando-style pop-out) */}
+            <HeroPortrait />
 
             <div className="hero-content flex-col w-full px-4 sm:px-6 md:px-10 z-10 lg:z-10 relative items-start h-full justify-center pb-6 pt-32 lg:pt-28 lg:pb-0 pointer-events-none">
                 <div className="w-full lg:w-3/4 text-left pointer-events-auto">
