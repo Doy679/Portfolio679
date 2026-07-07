@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import HackerText from './HackerText';
 import { Icon } from '../lib/icons';
+import { Magnetic } from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -203,7 +204,7 @@ const About = () => {
 
                             <div className="flex flex-wrap gap-2 mt-6">
                                 {focusTags.map((tag) => (
-                                    <span ref={addToBadges} key={tag} className="text-[10px] sm:text-xs uppercase font-bold tracking-[0.14em] text-primary/85 bg-primary/10 px-3 py-2 rounded-xl border border-primary/15 transition-all hover:bg-primary/20 cursor-default">
+                                    <span ref={addToBadges} key={tag} className="text-[10px] sm:text-xs uppercase font-bold tracking-[0.14em] text-primary/85 bg-primary/10 px-3 py-2 rounded-xl border border-primary/15 transition-all hover:bg-primary/20 hover:-translate-y-0.5 hover:scale-105 hover:border-primary/40 cursor-default">
                                         {tag}
                                     </span>
                                 ))}
@@ -219,9 +220,11 @@ const About = () => {
                             </p>
 
                             <div ref={addToParagraphs}>
-                                <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg w-full sm:w-auto px-8 shadow-[0_10px_30px_rgba(var(--p),0.3)] hover:shadow-primary/50 mt-6 transition-all duration-300">
-                                    <Icon name="fa-download" className="mr-2" />Download My CV
-                                </a>
+                                <Magnetic className="w-full sm:w-auto mt-6">
+                                    <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg w-full sm:w-auto px-8 shadow-[0_10px_30px_rgba(var(--p),0.3)] hover:shadow-primary/50 transition-all duration-300">
+                                        <Icon name="fa-download" className="mr-2" />Download My CV
+                                    </a>
+                                </Magnetic>
                             </div>
                         </div>
                     </div>

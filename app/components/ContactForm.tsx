@@ -1,10 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { sendEmail } from '../actions';
 import { siteConfig } from '../config/site';
 import { ContactFormData } from '../lib/validation';
 import HackerText from './HackerText';
 import { Icon } from '../lib/icons';
+import { Magnetic } from './Magnetic';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ContactForm = () => {
     const [showToast, setShowToast] = useState(false);
@@ -12,6 +18,7 @@ const ContactForm = () => {
     const [toastType, setToastType] = useState<'success' | 'error'>('success');
     const [isPending, setIsPending] = useState(false);
     const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
+    const sectionRef = useRef<HTMLElement>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -46,8 +53,29 @@ const ContactForm = () => {
         }
     };
 
+    useGSAP(() => {
+        const mm = gsap.matchMedia();
+        mm.add('(prefers-reduced-motion: no-preference)', () => {
+            const cards = gsap.utils.toArray<HTMLElement>('.card', sectionRef.current);
+            cards.forEach((card) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none',
+                    },
+                });
+            });
+        });
+        return () => mm.revert();
+    }, { scope: sectionRef });
+
     return (
-        <section id="contact" className="pt-10 pb-24 bg-base-200 relative z-30">
+        <section id="contact" ref={sectionRef} className="pt-10 pb-24 bg-base-200 relative z-30">
             <div className="container mx-auto px-6 md:px-10 lg:px-20 relative z-10">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
@@ -75,9 +103,11 @@ const ContactForm = () => {
                                         { href: siteConfig.links.github, icon: "fab fa-github", label: "GitHub" },
                                         { href: "/cv.pdf", icon: "fas fa-file-pdf", title: "View CV", label: "Download CV" }
                                     ].map((social, idx) => (
-                                        <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="btn btn-circle btn-primary btn-outline hover:btn-primary border-primary/20" title={social.title}>
-                                            <Icon name={social.icon} />
-                                        </a>
+                                        <Magnetic key={idx} strength={0.5}>
+                                            <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="btn btn-circle btn-primary btn-outline hover:btn-primary border-primary/20" title={social.title}>
+                                                <Icon name={social.icon} />
+                                            </a>
+                                        </Magnetic>
                                     ))}
                                 </div>
                             </div>

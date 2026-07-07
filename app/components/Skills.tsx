@@ -1,9 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import SkillCard from './SkillCard';
 import HackerText from './HackerText';
+import { Aurora } from './Aurora';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
+    const sectionRef = useRef<HTMLElement>(null);
     const skillCategories = [
         {
             title: "Languages",
@@ -61,9 +68,33 @@ const Skills = () => {
         }
     ];
 
+    useGSAP(() => {
+        const mm = gsap.matchMedia();
+        mm.add('(prefers-reduced-motion: no-preference)', () => {
+            // Per-card trigger (robust against layout/refresh timing): each card
+            // reveals as it individually scrolls into view.
+            const cards = gsap.utils.toArray<HTMLElement>('.skill-card', sectionRef.current);
+            cards.forEach((card) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 88%',
+                        toggleActions: 'play none none none',
+                    },
+                });
+            });
+        });
+        return () => mm.revert();
+    }, { scope: sectionRef });
+
     return (
-        <section id="skills" className="py-24 bg-base-200/50">
-            <div className="container mx-auto px-6 md:px-10 lg:px-20">
+        <section id="skills" ref={sectionRef} className="relative overflow-hidden py-24 bg-base-200/50">
+            <Aurora />
+            <div className="container mx-auto px-6 md:px-10 lg:px-20 relative z-10">
                 <div className="text-center mb-20">
                     <h2 className="text-3xl md:text-4xl font-black font-montserrat tracking-[0.2em] uppercase text-base-content">
                         <HackerText text="My Skills" />

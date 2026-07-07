@@ -3,6 +3,7 @@ import { Inter, Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
 import CustomCursor from './components/CustomCursor';
 import IntroLoader from './components/IntroLoader';
+import ScrollProgress from './components/ScrollProgress';
 
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ 
@@ -79,6 +80,7 @@ export default function RootLayout({
       <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased w-full relative bg-base-100 transition-colors duration-500 text-base-content`}>
         <IntroLoader />
         <CustomCursor />
+        <ScrollProgress />
         <div className="flex flex-col min-h-screen w-full relative">
           {children}
         </div>
