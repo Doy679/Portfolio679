@@ -4,6 +4,7 @@ import { sendEmail } from '../actions';
 import { siteConfig } from '../config/site';
 import { ContactFormData } from '../lib/validation';
 import HackerText from './HackerText';
+import { Icon } from '../lib/icons';
 
 const ContactForm = () => {
     const [showToast, setShowToast] = useState(false);
@@ -60,9 +61,9 @@ const ContactForm = () => {
                         <div className="card-body p-8 md:p-10">
                             <h3 className="card-title text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight">Contact Info</h3>
                             <div className="space-y-6 mt-8">
-                                <p className="flex items-center gap-4"><i className="fas fa-envelope text-primary text-xl"></i> <a href={`mailto:${siteConfig.contact.email}`} className="text-lg font-medium hover:text-primary transition-colors">{siteConfig.contact.email}</a></p>
-                                <p className="flex items-center gap-4"><i className="fas fa-phone-alt text-primary text-xl"></i> <span className="text-lg font-medium">+63 985 906 5880</span></p>
-                                <p className="flex items-center gap-4"><i className="fas fa-location-dot text-primary text-xl"></i> <span className="text-lg font-medium">Tingub Mandaue City</span></p>
+                                <p className="flex items-center gap-4"><Icon name="fa-envelope" className="text-primary text-xl" /> <a href={`mailto:${siteConfig.contact.email}`} className="text-lg font-medium hover:text-primary transition-colors">{siteConfig.contact.email}</a></p>
+                                <p className="flex items-center gap-4"><Icon name="fa-phone-alt" className="text-primary text-xl" /> <span className="text-lg font-medium">+63 985 906 5880</span></p>
+                                <p className="flex items-center gap-4"><Icon name="fa-location-dot" className="text-primary text-xl" /> <span className="text-lg font-medium">Tingub Mandaue City</span></p>
                             </div>
                             <div className="mt-10">
                                 <h4 className="font-black text-sm uppercase tracking-widest mb-6 text-base-content/40">Connect with me</h4>
@@ -75,7 +76,7 @@ const ContactForm = () => {
                                         { href: "/cv.pdf", icon: "fas fa-file-pdf", title: "View CV", label: "Download CV" }
                                     ].map((social, idx) => (
                                         <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="btn btn-circle btn-primary btn-outline hover:btn-primary border-primary/20" title={social.title}>
-                                            <i className={social.icon}></i>
+                                            <Icon name={social.icon} />
                                         </a>
                                     ))}
                                 </div>
@@ -100,7 +101,7 @@ const ContactForm = () => {
             {showToast && (
                 <div className="toast toast-bottom toast-end fixed z-[100] mb-8 mr-4 md:mr-8">
                     <div className={`alert ${toastType === 'success' ? 'alert-success' : 'alert-error'} shadow-2xl`}>
-                        <i className={`fas ${toastType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2`}></i>
+                        <Icon name={toastType === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} className="mr-2" />
                         <span>{toastMessage}</span>
                     </div>
                 </div>

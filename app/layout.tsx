@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Montserrat, Poppins } from 'next/font/google'
 import './globals.css'
-import Script from 'next/script'
 import CustomCursor from './components/CustomCursor';
 import IntroLoader from './components/IntroLoader';
 
@@ -76,7 +75,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
       </head>
       <body className={`${inter.className} ${montserrat.variable} ${poppins.variable} font-sans antialiased w-full relative bg-base-100 transition-colors duration-500 text-base-content`}>
         <IntroLoader />
@@ -84,8 +82,6 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen w-full relative">
           {children}
         </div>
-
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" strategy="lazyOnload" />
       </body>
     </html>
   )

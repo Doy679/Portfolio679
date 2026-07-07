@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { Icon } from '../lib/icons';
 
 interface Skill {
     name: string;
@@ -25,7 +26,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = 
             <div className="relative z-10 flex flex-col h-full">
                 <div className="flex flex-wrap items-center gap-4 mb-8">
                     <div className="p-3 rounded-2xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors duration-500 shadow-lg shadow-primary/5 shrink-0">
-                        <i className={`${icon} text-2xl`}></i>
+                        <Icon name={icon} className="text-2xl" />
                     </div>
                     <h3 className="text-2xl md:text-3xl font-black font-montserrat uppercase tracking-tight text-base-content leading-[1.1] flex-1 min-w-[200px]">
                         {title}
@@ -39,7 +40,7 @@ const SkillCard: React.FC<SkillCardProps> = ({ title, icon, skills, className = 
                             className="skill-logo flex items-center gap-3 bg-base-300/30 backdrop-blur-md px-4 py-2.5 rounded-xl border border-base-content/5 hover:border-primary/30 hover:bg-base-300/50 transition-all duration-300 group/item will-change-transform"
                             title={skill.name}
                         >
-                            <i className={`${skill.icon} text-xl transition-transform duration-300 group-hover/item:scale-110`} style={{ color: skill.color }}></i>
+                            <Icon name={skill.icon} className="text-xl transition-transform duration-300 group-hover/item:scale-110" style={{ color: skill.color }} />
                             <span className="text-xs font-bold uppercase tracking-widest text-base-content/60 group-hover/item:text-primary transition-colors">
                                 {skill.name}
                             </span>

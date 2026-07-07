@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import HeroPortrait from './HeroPortrait';
+import { Icon } from '../lib/icons';
 
 const Hero = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -94,14 +95,14 @@ const Hero = () => {
                                 href="#projects" 
                                 className="btn btn-primary btn-sm sm:btn-md lg:btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300 hover:scale-105 border-none"
                             >
-                                <i className="fas fa-briefcase mr-2"></i>View Projects
+                                <Icon name="fa-briefcase" className="mr-2" />View Projects
                             </a>
 
                             <a 
                                 href="#contact" 
                                 className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
                             >
-                                <i className="fas fa-envelope mr-2"></i>Contact Me
+                                <Icon name="fa-envelope" className="mr-2" />Contact Me
                             </a>
 
                             <a 
@@ -110,7 +111,7 @@ const Hero = () => {
                                 rel="noopener noreferrer" 
                                 className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
                             >
-                                <i className="fas fa-download mr-2"></i>Download CV
+                                <Icon name="fa-download" className="mr-2" />Download CV
                             </a>
                         </div>
                     </div>

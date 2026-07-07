@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Icon } from '../lib/icons';
 
 const socialLinks = [
   { id: 'github', icon: 'fa-brands fa-github', url: 'https://github.com/Doy679', label: 'GitHub' },
@@ -23,7 +24,7 @@ export default function SocialShareMenu() {
       >
         {/* Main Share Button Icon */}
         <div className="w-11 h-11 shrink-0 bg-primary text-primary-content rounded-full flex items-center justify-center z-20">
-          <i className={`fa-solid fa-share-nodes text-lg transition-transform duration-300 ${isOpen ? '-rotate-180 scale-110' : ''}`} />
+          <Icon name="fa-share-nodes" className={`text-lg transition-transform duration-300 ${isOpen ? '-rotate-180 scale-110' : ''}`} />
         </div>
 
         {/* Social Icons Container */}
@@ -40,7 +41,7 @@ export default function SocialShareMenu() {
                   aria-label={social.label}
                 >
                   <span className="flex items-center justify-center">
-                    <i className={`${social.icon} text-[1.1rem]`}></i>
+                    <Icon name={social.icon} className="text-[1.1rem]" />
                   </span>
                 </a>
               ))}

@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react';
 import Image from 'next/image';
 import HackerText from './HackerText';
 import { projects } from '../data/projects';
+import { Icon } from '../lib/icons';
 
 // Register ScrollTrigger globally
 gsap.registerPlugin(ScrollTrigger);
@@ -141,7 +142,7 @@ export default function Projects() {
                         rel="noopener noreferrer" 
                         className="inline-flex items-center justify-between gap-3 py-2 px-4 rounded-xl bg-primary/10 border border-primary/20 text-primary font-black uppercase tracking-wider text-[10px] shadow-lg shadow-primary/10 transition-all duration-300 hover:bg-primary/20 hover:scale-105"
                     >
-                        Explore <i className="fas fa-arrow-up-right-from-square text-[10px]"></i>
+                        Explore <Icon name="fa-arrow-up-right-from-square" className="text-[10px]" />
                     </a>
                 )}
               </div>
