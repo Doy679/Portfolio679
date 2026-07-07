@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import HeroPortrait from './HeroPortrait';
 import { Icon } from '../lib/icons';
+import { Magnetic } from './Magnetic';
 
 const Hero = () => {
     const heroRef = useRef<HTMLDivElement>(null);
@@ -91,28 +92,34 @@ const Hero = () => {
                     
                     <div className="overflow-hidden mt-6">
                         <div ref={addToTextRefs} className="inline-flex flex-wrap gap-2 sm:gap-4">
-                            <a 
-                                href="#projects" 
-                                className="btn btn-primary btn-sm sm:btn-md lg:btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300 hover:scale-105 border-none"
-                            >
-                                <Icon name="fa-briefcase" className="mr-2" />View Projects
-                            </a>
+                            <Magnetic>
+                                <a
+                                    href="#projects"
+                                    className="btn btn-primary btn-sm sm:btn-md lg:btn-lg shadow-[0_10px_20px_rgba(var(--p),0.3)] transition-all duration-300 hover:scale-105 border-none"
+                                >
+                                    <Icon name="fa-briefcase" className="mr-2" />View Projects
+                                </a>
+                            </Magnetic>
 
-                            <a 
-                                href="#contact" 
-                                className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
-                            >
-                                <Icon name="fa-envelope" className="mr-2" />Contact Me
-                            </a>
+                            <Magnetic>
+                                <a
+                                    href="#contact"
+                                    className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
+                                >
+                                    <Icon name="fa-envelope" className="mr-2" />Contact Me
+                                </a>
+                            </Magnetic>
 
-                            <a 
-                                href="/cv.pdf" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
-                            >
-                                <Icon name="fa-download" className="mr-2" />Download CV
-                            </a>
+                            <Magnetic>
+                                <a
+                                    href="/cv.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline btn-sm sm:btn-md lg:btn-lg border-base-content/20 text-base-content hover:bg-base-content/5 hover:border-base-content/40 transition-all duration-300 hover:scale-105"
+                                >
+                                    <Icon name="fa-download" className="mr-2" />Download CV
+                                </a>
+                            </Magnetic>
                         </div>
                     </div>
                 </div>

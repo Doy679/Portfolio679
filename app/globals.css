@@ -41,7 +41,17 @@ html[data-theme="dark"] .glass-card {
     color-mix(in oklch, var(--color-base-100), transparent 18%);
 }
 
-html, body { 
+/* Backlight glow behind the hero portrait: separates the dark-suited subject
+   from a dark background in dark mode; hidden in light mode (contrast is high). */
+.hero-rimlight {
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+html[data-theme="dark"] .hero-rimlight {
+  opacity: 1;
+}
+
+html, body {
   width: 100%;
   position: relative;
   margin: 0;

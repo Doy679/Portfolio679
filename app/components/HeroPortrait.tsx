@@ -95,6 +95,11 @@ const HeroPortrait = () => {
             {/* Layer 3: the portrait. Negative inset = overscan so parallax never reveals
                 container edges while the placeholder is an opaque rectangle. */}
             <div ref={portraitRef} className={`absolute ${PORTRAIT_IS_CUTOUT ? 'inset-0' : 'inset-[-8%]'} will-change-transform`}>
+                {/* Dark-mode backlight so the dark-suited subject separates from the dark bg */}
+                <div
+                    className="hero-rimlight absolute left-1/2 top-[34%] -translate-x-1/2 -translate-y-1/2 w-[72%] aspect-square rounded-full pointer-events-none"
+                    style={{ background: 'radial-gradient(closest-side, rgba(99,102,241,0.40), rgba(99,102,241,0.12) 46%, transparent 72%)' }}
+                />
                 <Image
                     src={PORTRAIT_SRC}
                     alt="Rondether Gonzales"
