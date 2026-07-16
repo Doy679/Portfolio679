@@ -19,6 +19,7 @@ export default function IntroLoader() {
     const tl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         setIsUnmounted(true); 
       }
     });
@@ -51,7 +52,13 @@ export default function IntroLoader() {
     .to(topPanelRef.current, {
       yPercent: -100,
       duration: 1.2,
-      ease: "expo.inOut"
+      ease: "expo.inOut",
+      onStart: () => {
+        if (typeof window !== 'undefined') {
+          (window as any).introLoaderDone = true;
+          window.dispatchEvent(new Event('introLoaderFinished'));
+        }
+      }
     }, "+=0.3")
     .to(bottomPanelRef.current, {
       yPercent: 100,
@@ -62,6 +69,7 @@ export default function IntroLoader() {
 
   useGSAP(() => {
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
     
     let currentProgress = 0;
     
@@ -83,6 +91,7 @@ export default function IntroLoader() {
 
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
