@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: 'Rondether Gonzales Portfolio',
     images: [
       {
-        url: '/og-image.png', // You should create this image later
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Rondether Gonzales Portfolio Preview',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Rondether Gonzales | Junior Frontend Developer',
     description: 'Building the future of the web with React and Next.js.',
-    images: ['/og-image.png'],
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
