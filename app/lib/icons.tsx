@@ -6,6 +6,7 @@ import {
     FaFillDrip, FaGitAlt, FaGithub, FaGlobe, FaHtml5, FaInstagram, FaJsSquare,
     FaLayerGroup, FaLightbulb, FaLinkedinIn, FaLinux, FaNodeJs, FaNpm, FaPenNib,
     FaPhoneAlt, FaReact, FaRobot, FaSyncAlt, FaTerminal, FaTools, FaUsers, FaWindows,
+    FaTimes,
 } from 'react-icons/fa';
 import {
     FaArrowsTurnToDots, FaArrowUpRightFromSquare, FaLocationDot, FaPeopleGroup,
@@ -28,6 +29,7 @@ const iconMap: Record<string, IconType> = {
     'fa-file-code': FaFileCode,
     'fa-file-pdf': FaFilePdf,
     'fa-fill-drip': FaFillDrip,
+    'fa-xmark': FaTimes,
     'fa-git-alt': FaGitAlt,
     'fa-github': FaGithub,
     'fa-globe': FaGlobe,
