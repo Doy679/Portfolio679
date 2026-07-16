@@ -32,6 +32,19 @@ export default function Home() {
       infinite: false,
     } as any); // using 'any' to bypass strict TS checking for Lenis options
 
+    // Stop scrolling immediately during the loading screen animation
+    if (typeof window !== 'undefined' && !(window as any).introLoaderDone) {
+      lenis.stop();
+    }
+
+    const handleIntroFinish = () => {
+      lenis.start();
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('introLoaderFinished', handleIntroFinish);
+    }
+
     // Synchronize Lenis scrolling with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -44,6 +57,9 @@ export default function Home() {
     return () => {
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('introLoaderFinished', handleIntroFinish);
+      }
     };
   }, []);
 
