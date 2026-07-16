@@ -53,6 +53,7 @@ html[data-theme="dark"] .hero-rimlight {
 
 html, body {
   width: 100%;
+  overflow-x: hidden;
   position: relative;
   margin: 0;
   padding: 0;
@@ -374,4 +375,83 @@ html[data-theme="light"] .about-card {
 @keyframes mobileSurfaceSheen {
   0%, 54% { transform: translateX(-120%); }
   72%, 100% { transform: translateX(120%); }
+}
+
+/* Hide Next.js Dev Overlay / Turbopack circular badge in dev mode */
+nextjs-portal,
+#nextjs-dev-overlay,
+#nextjs-dev-overlay-button,
+[data-nextjs-dialog-overlay] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Hologram High Animation Styles */
+@keyframes hologramFlicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.2)) saturate(1);
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.1)) saturate(1.8) hue-rotate(30deg);
+  }
+}
+
+@keyframes scanlineSweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(300%); }
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes chromaticFlicker {
+  0%, 100% {
+    text-shadow: 0 0 2px rgba(34, 211, 238, 0.3);
+    transform: translate(0, 0);
+  }
+  19.9% {
+    text-shadow: 0 0 2px rgba(34, 211, 238, 0.3);
+    transform: translate(0, 0);
+  }
+  20% {
+    text-shadow: 1px -1px 0 #ff00ff, -1px 1px 0 #00ffff;
+    transform: translate(-1px, 1px);
+  }
+  21.5% {
+    text-shadow: -1.5px 1px 0 #ff00ff, 1.5px -1px 0 #00ffff;
+    transform: translate(1px, -1px);
+  }
+  22% {
+    text-shadow: 0 0 2px rgba(34, 211, 238, 0.3);
+    transform: translate(0, 0);
+  }
+}
+
+.animate-hologram-flicker {
+  animation: hologramFlicker 6s linear infinite;
+}
+
+.animate-scanline {
+  animation: scanlineSweep 3s linear infinite;
+}
+
+.animate-dash-flow {
+  stroke-dasharray: 8, 4;
+  animation: dashFlow 1.5s linear infinite;
+}
+
+.animate-chromatic {
+  animation: chromaticFlicker 5s infinite;
+}
+
+@keyframes matrixFall {
+  0% { transform: translateY(-40%); }
+  100% { transform: translateY(15%); }
 }
