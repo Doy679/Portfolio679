@@ -277,7 +277,7 @@ export default function Projects() {
                     <div className="w-2 h-2 rounded-full bg-warning/60"></div>
                     <div className="w-2 h-2 rounded-full bg-success/60"></div>
                     <div className="text-[9px] font-mono text-base-content/40 ml-4 overflow-hidden text-ellipsis whitespace-nowrap max-w-[180px] bg-base-100 px-3 py-0.5 rounded-md border border-base-content/5 select-none">
-                      {project.link ? project.link.replace('https://', '').replace('/', '') : 'project.local'}
+                      {project.link ? project.link.replace(/^https?:\/\//, '').split('/')[0] : 'project.local'}
                     </div>
                   </div>
                   <div 
