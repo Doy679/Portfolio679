@@ -13,11 +13,27 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        title: "AiCon Clothing",
+        description: "A custom performance apparel storefront for AiCon Clothing under Byaherong Motors Corporation, covering cycling, running, and triathlon kits with size chart guidance and quote requests for team orders.",
+        image: "/AiconClothing.webp",
+        badges: ["Next.js", "React", "Tailwind CSS", "Supabase", "Headless CMS", "E-commerce"],
+        link: "https://ai-bmc.southdream.net/",
+        impact: "Gave a sublimation apparel manufacturer one storefront for its full catalog, sizing references, and custom-order quotes, replacing inquiries scattered across social media threads.",
+        category: "Full-Stack",
+        problem: "Custom sublimation apparel makers sell mostly through Facebook and Messenger threads, where catalogs, size charts, and pricing requests get buried and bulk team orders are difficult to spec or track.",
+        solution: "Built a full-stack Next.js storefront with category-driven shop routes for every kit type, Supabase behind the product and quote data, and a headless CMS so the team can publish new drops without a developer.",
+        contributions: [
+            "Modeled the Supabase tables for products, variants, size charts, and incoming quote submissions.",
+            "Connected a headless CMS to the catalog so new drops, campaign banners, and promos publish without a redeploy.",
+            "Built the size chart menu and Get a Quote flow so custom team-kit inquiries arrive with sizing already specified."
+        ]
+    },
+    {
         title: "Graphicmate Enterprise",
         description: "A custom apparel manufacturing and sublimation printing workflow system. Features secure employee credential authentication, real-time production logging, and robust enterprise tracking.",
-        image: "/GraphicMate.png",
+        image: "/GraphicMate.webp",
         badges: ["Next.js", "React", "Tailwind CSS", "Enterprise System", "Authentication", "Workflow Automation"],
-        link: "https://graphicmate-system.vercel.app/login",
+        link: "https://graphicmate.southdream.net/login",
         impact: "Streamlined sublimation printing schedules and apparel manufacturing logs, enabling real-time production tracking with 99.9% uptime.",
         category: "Full-Stack",
         problem: "Sublimation printing shops and apparel manufacturing plants often struggle to track production statuses, coordinate order queues, and maintain print logs across multiple departments.",
