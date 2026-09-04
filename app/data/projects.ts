@@ -13,11 +13,27 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        title: "Byahero Motors E-Vehicle",
+        description: "A campaign and test-drive booking site for Byahero Motors Corporation's affordable electric vehicle, pairing a benefit-led product story with showroom directions and an on-the-spot slot reservation flow.",
+        image: "/ByaheroMotors.webp",
+        badges: ["Next.js", "React", "Tailwind CSS", "Landing Page", "Lead Capture", "Responsive Design"],
+        link: "https://www.byahero.org/",
+        impact: "Gave an EV launch campaign one destination for the product pitch, showroom location, and test-drive sign-ups, letting booth staff capture interested walk-ins without paper lists.",
+        category: "Frontend / UI",
+        problem: "A new electric vehicle brand had to explain an unfamiliar product, prove the running-cost savings, and convert showroom and event interest into scheduled test drives, but the pitch lived in printed flyers and scattered Messenger replies.",
+        solution: "Built a Next.js campaign site with a benefit-driven feature grid, cost and emissions stats, gallery, and an embedded showroom map, closing on a test-drive form that keeps submissions on the device so booth staff can take bookings even on unreliable venue connections.",
+        contributions: [
+            "Designed the high-contrast electric brand system in Tailwind with custom ink, bone, and volt color tokens.",
+            "Built the test-drive reservation form with required-field validation and on-device persistence for offline booth use.",
+            "Wired the Visit Us section with an embedded map, 2D/3D toggle, and direct call, message, and get-directions actions."
+        ]
+    },
+    {
         title: "AiCon Clothing",
         description: "A custom performance apparel storefront for AiCon Clothing under Byaherong Motors Corporation, covering cycling, running, and triathlon kits with size chart guidance and quote requests for team orders.",
         image: "/AiconClothing.webp",
         badges: ["Next.js", "React", "Tailwind CSS", "Supabase", "Headless CMS", "E-commerce"],
-        link: "https://ai-bmc.southdream.net/",
+        link: "https://www.artingredientconcepts.com/",
         impact: "Gave a sublimation apparel manufacturer one storefront for its full catalog, sizing references, and custom-order quotes, replacing inquiries scattered across social media threads.",
         category: "Full-Stack",
         problem: "Custom sublimation apparel makers sell mostly through Facebook and Messenger threads, where catalogs, size charts, and pricing requests get buried and bulk team orders are difficult to spec or track.",
